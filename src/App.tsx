@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import InvitationGate from './components/InvitationGate';
 import SEOHead from './components/SEOHead';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
@@ -15,6 +16,19 @@ type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'top10-game' | 'neve
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
+  const [hasAccess, setHasAccess] = useState(() => {
+    // Vérifier si l'utilisateur a déjà validé le code
+    return localStorage.getItem('fababicuite_access') === 'granted';
+  });
+
+  const handleValidCode = () => {
+    setHasAccess(true);
+  };
+
+  // Si l'utilisateur n'a pas accès, afficher la page de code d'invitation
+  if (!hasAccess) {
+    return <InvitationGate onValidCode={handleValidCode} />;
+  }
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page as AppPage);
@@ -60,28 +74,28 @@ function App() {
         };
       case 'about':
         return {
-          title: "À Propos de FABABIBOIRE - Notre Mission et Valeurs",
-          description: "Découvrez l'histoire de FABABIBOIRE, notre mission d'animer vos soirées et nos valeurs de convivialité et de partage entre amis.",
-          keywords: "à propos fababiboire, mission, valeurs, équipe, histoire",
+          title: "À Propos de FABABICUITE - Notre Mission et Valeurs",
+          description: "Découvrez l'histoire de FABABICUITE, notre mission d'animer vos soirées et nos valeurs de convivialité et de partage entre amis.",
+          keywords: "à propos fababicuite, mission, valeurs, équipe, histoire",
           canonical: "https://fababicuite.fr/a-propos"
         };
       case 'top10-game':
         return {
-          title: "Jeu Top 10 Interactif - Devinez les Classements | FABABIBOIRE",
+          title: "Jeu Top 10 Interactif - Devinez les Classements | FABABICUITE",
           description: "Jouez au Top 10 interactif ! Devinez les éléments des classements mondiaux et faites boire vos amis selon vos performances.",
           keywords: "top 10, jeu classement, quiz interactif, jeu multijoueur, deviner classement",
           canonical: "https://fababicuite.fr/top-10"
         };
       case 'never-have-i-game':
         return {
-          title: "Je N'ai Jamais Interactif - Révélez vos Secrets | FABABIBOIRE",
+          title: "Je N'ai Jamais Interactif - Révélez vos Secrets | FABABICUITE",
           description: "Jouez à Je n'ai jamais avec vos amis ! Questions personnalisables, catégories variées, révélations garanties pour animer vos soirées.",
           keywords: "je n'ai jamais, jeu révélation, questions personnalisées, jeu intime, secrets amis",
           canonical: "https://fababicuite.fr/je-nai-jamais"
         };
       case 'devine-gif-game':
         return {
-          title: "Devine le GIF - Culture Française Interactive | FABABIBOIRE",
+          title: "Devine le GIF - Culture Française Interactive | FABABICUITE",
           description: "Testez votre culture française avec Devine le GIF ! Films, séries, memes... 30 secondes pour deviner et faire boire vos amis.",
           keywords: "devine gif, culture française, quiz culture, memes français, jeu culture",
           canonical: "https://fababicuite.fr/devine-gif"
@@ -89,7 +103,7 @@ function App() {
       case 'game-detail':
         if (selectedGame) {
           return {
-            title: `${selectedGame.title} - Règles et Guide Complet | FABABIBOIRE`,
+            title: `${selectedGame.title} - Règles et Guide Complet | FABABICUITE`,
             description: `Découvrez les règles complètes de ${selectedGame.title} : ${selectedGame.description}`,
             keywords: `${selectedGame.title.toLowerCase()}, règles jeu, guide complet, ${selectedGame.category}`,
             canonical: `https://fababicuite.fr/jeu/${selectedGame.id}`
@@ -98,17 +112,17 @@ function App() {
         break;
       default:
         return {
-          title: "FABABIBOIRE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
-          description: "Découvrez FABABIBOIRE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
-          keywords: "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs, fababiboire",
+          title: "FABABICUITE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
+          description: "Découvrez FABABICUITE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
+          keywords: "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs, fababicuite",
           canonical: "https://fababicuite.fr/"
         };
     }
     
     return {
-      title: "FABABIBOIRE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
-      description: "Découvrez FABABIBOIRE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
-      keywords: "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs, fababiboire",
+      title: "FABABICUITE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
+      description: "Découvrez FABABICUITE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
+      keywords: "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs, fababicuite",
       canonical: "https://fababicuite.fr/"
     };
   };
@@ -152,7 +166,7 @@ function App() {
       <footer className="bg-gradient-to-r from-purple-800 to-pink-800 text-white py-8 mt-16">
         <div className="container mx-auto px-4 text-center">
           <p className="text-purple-200">
-            © 2024 FABABIBOIRE - Anime tes soirées avec style ! 🎉
+            © 2024 FABABICUITE - Anime tes soirées avec style ! 🎉
           </p>
         </div>
       </footer>

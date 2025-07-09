@@ -7,7 +7,7 @@ const AboutPage: React.FC = () => {
       <header className="text-center">
         <div className="text-6xl mb-6">🎉</div>
         <h1 className="text-4xl font-bold text-gray-800 mb-4" itemProp="name">
-          À propos de FABABIBOIRE
+          À propos de FABABICUITE
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto" itemProp="description">
           Nous créons des expériences ludiques pour rassembler les gens et créer des moments inoubliables.
@@ -19,7 +19,7 @@ const AboutPage: React.FC = () => {
           <div>
             <h2 className="text-2xl font-bold mb-4" id="notre-mission">Notre Mission</h2>
             <p className="text-purple-100 mb-4">
-              FABABIBOIRE est né d'une passion simple : rassembler les gens autour de jeux
+              FABABICUITE est né d'une passion simple : rassembler les gens autour de jeux
               d'ambiance qui créent des souvenirs durables et des fous rires garantis.
             </p>
             <p className="text-purple-100">

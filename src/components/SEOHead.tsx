@@ -10,8 +10,8 @@ interface SEOHeadProps {
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "FABABIBOIRE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
-  description = "Découvrez FABABIBOIRE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
+  title = "FABABICUITE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
+  description = "Découvrez FABABICUITE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
   keywords = "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs",
   canonical = "https://fababicuite.fr/",
   ogImage = "https://fababicuite.fr/og-image.jpg",

@@ -1,6 +1,6 @@
-# FABABIBOIRE
+# FABABICUITE
 
-FABABIBOIRE est une plateforme web de jeux d'alcool interactifs conçue pour animer les soirées entre amis. Découvrez notre collection de jeux d'ambiance colorés et délirants : Top 10, Je n'ai jamais, Devine le GIF et bien plus encore !
+FABABICUITE est une plateforme web de jeux d'alcool interactifs conçue pour animer les soirées entre amis. Découvrez notre collection de jeux d'ambiance colorés et délirants : Top 10, Je n'ai jamais, Devine le GIF et bien plus encore !
 
 ## 🎯 Fonctionnalités SEO
 
@@ -59,7 +59,7 @@ Testez votre culture française ! Devinez des GIFs issus de films, séries TV, m
 ### Structure des URLs
 - `/` - Page d'accueil
 - `/jeux` - Catalogue des jeux
-- `/a-propos` - À propos de FABABIBOIRE
+- `/a-propos` - À propos de FABABICUITE
 - `/top-10` - Jeu Top 10 interactif
 - `/je-nai-jamais` - Jeu Je n'ai jamais
 - `/devine-gif` - Jeu Devine le GIF
@@ -136,6 +136,13 @@ npm run preview
 - Leader sur les requêtes de jeux d'alcool
 - 20000 visiteurs organiques/mois
 - Expansion vers d'autres mots-clés
+
+## 🔐 Système d'accès
+
+L'application dispose d'un système de code d'invitation pour contrôler l'accès :
+- Code d'invitation requis au premier accès
+- Stockage sécurisé de l'autorisation en localStorage
+- Interface utilisateur intuitive pour la saisie du code
 
 ---
 

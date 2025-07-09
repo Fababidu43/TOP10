@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             </div>
             <div>
               <h1 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                FABABIBOIRE
+                FABABICUITE
               </h1>
               <p className="text-purple-200 text-xs md:text-sm">Animez vos soirées ! 🎉</p>
             </div>
