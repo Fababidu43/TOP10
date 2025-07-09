@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Trophy, Target } from 'lucide-react';
+import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Trophy, Target, Play, Video } from 'lucide-react';
 
 interface DevineGifGameProps {
   onBack: () => void;
@@ -9,8 +9,9 @@ interface GifItem {
   id: string;
   title: string;
   description: string;
-  category: 'film' | 'tv' | 'meme';
+  category: 'tiktok' | 'youtube' | 'tv' | 'meme';
   imageUrl: string;
+  videoUrl?: string;
   alternatives?: string[];
   hint?: string;
 }
@@ -22,197 +23,200 @@ interface GameState {
   timeLeft: number;
   isTimerRunning: boolean;
   scores: { [playerName: string]: { correct: number; wrong: number; timeout: number } };
-  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result';
+  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result' | 'video-playing';
   roundsPlayed: number;
   maxRounds: number;
+  showVideo: boolean;
 }
 
-// Base de données étendue de GIFs français
+// Base de données étendue de GIFs/vidéos virales françaises
 const frenchGifs: GifItem[] = [
-  // Films français cultes
+  // TikTok/Réseaux sociaux
   {
     id: '1',
-    title: 'Les Visiteurs',
-    description: 'Scène culte : "C\'est quoi ce bordel ?"',
-    category: 'film',
+    title: 'Ah vous êtes sûrement pas français',
+    description: 'Vidéo TikTok virale d\'un homme qui teste les français',
+    category: 'tiktok',
     imageUrl: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg',
-    alternatives: ['visiteurs', 'jean reno', 'christian clavier', 'godefroy'],
-    hint: 'Film avec Jean Reno et Christian Clavier'
+    alternatives: ['vous etes surement pas francais', 'pas francais', 'test francais'],
+    hint: 'Vidéo TikTok récente qui teste la nationalité'
   },
   {
     id: '2',
-    title: 'OSS 117',
-    description: 'Jean Dujardin qui fait son arrogant',
-    category: 'film',
+    title: 'Mais tu es grosse Mélissande',
+    description: 'Réplique culte devenue meme',
+    category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg',
-    alternatives: ['oss', 'jean dujardin', 'hubert bonisseur', 'agent secret'],
-    hint: 'Agent secret français très arrogant'
+    alternatives: ['grosse melissande', 'melissande', 'tu es grosse'],
+    hint: 'Réplique devenue virale sur les réseaux'
   },
   {
     id: '3',
-    title: 'Astérix Mission Cléopâtre',
-    description: 'Jamel qui dit "C\'est du brutal !"',
-    category: 'film',
+    title: 'Wesh alors',
+    description: 'Meme français populaire',
+    category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181292/pexels-photo-1181292.jpeg',
-    alternatives: ['astérix', 'cléopâtre', 'jamel', 'brutal', 'mission cleopatre'],
-    hint: 'Film avec Jamel Debbouze en Égypte'
+    alternatives: ['wesh', 'wesh alors meme'],
+    hint: 'Expression française devenue meme'
   },
   {
     id: '4',
-    title: 'Intouchables',
-    description: 'Omar Sy qui rigole avec François Cluzet',
-    category: 'film',
+    title: 'Bonjour madame',
+    description: 'Vidéo TikTok du livreur poli',
+    category: 'tiktok',
     imageUrl: 'https://images.pexels.com/photos/1181319/pexels-photo-1181319.jpeg',
-    alternatives: ['intouchables', 'omar sy', 'françois cluzet', 'driss'],
-    hint: 'Film sur l\'amitié entre un tétraplégique et son aide-soignant'
+    alternatives: ['bonjour madame livreur', 'livreur poli', 'madame bonjour'],
+    hint: 'Livreur très poli devenu viral'
   },
   {
     id: '5',
-    title: 'La Cité de la Peur',
-    description: 'Les Nuls : "Ça va couper chérie !"',
-    category: 'film',
+    title: 'C\'est pas possible',
+    description: 'Réaction française classique',
+    category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg',
-    alternatives: ['cité de la peur', 'les nuls', 'couper chérie', 'cannes'],
-    hint: 'Film des Nuls au Festival de Cannes'
+    alternatives: ['pas possible', 'c est pas possible'],
+    hint: 'Expression française d\'incrédulité'
   },
   {
     id: '6',
-    title: 'Le Dîner de Cons',
-    description: 'Jacques Villeret qui fait l\'innocent',
-    category: 'film',
+    title: 'Oskour',
+    description: 'Expression internet française',
+    category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181351/pexels-photo-1181351.jpeg',
-    alternatives: ['dîner de cons', 'jacques villeret', 'cons', 'pignon'],
-    hint: 'Film avec Jacques Villeret et Thierry Lhermitte'
+    alternatives: ['oskour meme', 'au secours'],
+    hint: 'Déformation d\'une expression de détresse'
   },
   {
     id: '7',
-    title: 'Bienvenue chez les Ch\'tis',
-    description: 'Dany Boon et son accent du Nord',
-    category: 'film',
+    title: 'Ratio',
+    description: 'Terme des réseaux sociaux français',
+    category: 'tiktok',
     imageUrl: 'https://images.pexels.com/photos/1181234/pexels-photo-1181234.jpeg',
-    alternatives: ['chtis', 'ch\'tis', 'dany boon', 'nord', 'bienvenue'],
-    hint: 'Film sur les préjugés entre le Nord et le Sud'
+    alternatives: ['ratio twitter', 'ratio tiktok'],
+    hint: 'Terme utilisé pour surpasser un commentaire'
   },
   {
     id: '8',
-    title: 'Qu\'est-ce qu\'on a fait au Bon Dieu',
-    description: 'Christian Clavier face à ses gendres',
-    category: 'film',
+    title: 'Ça va pas la tête',
+    description: 'Expression française populaire',
+    category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181445/pexels-photo-1181445.jpeg',
-    alternatives: ['bon dieu', 'christian clavier', 'gendres', 'mariage'],
-    hint: 'Comédie sur les mariages mixtes'
+    alternatives: ['ca va pas la tete', 'pas la tete'],
+    hint: 'Expression pour dire que quelqu\'un est fou'
   },
 
-  // Séries et émissions TV
+  // YouTube France
   {
     id: '9',
-    title: 'Kaamelott',
-    description: 'Arthur qui soupire face à ses chevaliers',
-    category: 'tv',
+    title: 'Salut les terriens',
+    description: 'Intro de Cyprien',
+    category: 'youtube',
     imageUrl: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg',
-    alternatives: ['kaamelott', 'arthur', 'alexandre astier', 'chevaliers'],
-    hint: 'Série sur le Roi Arthur et ses chevaliers'
+    alternatives: ['cyprien salut terriens', 'cyprien intro'],
+    hint: 'Phrase d\'intro d\'un YouTubeur français célèbre'
   },
   {
     id: '10',
-    title: 'Burger Quiz',
-    description: 'Alain Chabat qui fait "Miam miam miam"',
-    category: 'tv',
+    title: 'Coucou les amis',
+    description: 'Intro de Squeezie',
+    category: 'youtube',
     imageUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg',
-    alternatives: ['burger quiz', 'alain chabat', 'miam', 'quiz'],
-    hint: 'Émission de quiz déjantée avec Alain Chabat'
+    alternatives: ['squeezie coucou', 'squeezie intro'],
+    hint: 'Salutation d\'un YouTubeur gaming français'
   },
   {
     id: '11',
-    title: 'Koh-Lanta',
-    description: 'Denis Brogniart qui annonce une épreuve',
-    category: 'tv',
+    title: 'Norman fait des vidéos',
+    description: 'Nom de chaîne YouTube culte',
+    category: 'youtube',
     imageUrl: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg',
-    alternatives: ['koh lanta', 'denis brogniart', 'épreuve', 'survie'],
-    hint: 'Émission de survie présentée par Denis Brogniart'
+    alternatives: ['norman videos', 'norman youtube'],
+    hint: 'Nom d\'une chaîne YouTube française très populaire'
   },
   {
     id: '12',
-    title: 'TPMP',
-    description: 'Cyril Hanouna qui fait le fou',
-    category: 'tv',
+    title: 'Rémi Gaillard',
+    description: 'YouTubeur français de pranks',
+    category: 'youtube',
     imageUrl: 'https://images.pexels.com/photos/1181425/pexels-photo-1181425.jpeg',
-    alternatives: ['tpmp', 'cyril hanouna', 'baba', 'touche pas'],
-    hint: 'Émission de Cyril Hanouna sur C8'
+    alternatives: ['remi gaillard', 'gaillard pranks'],
+    hint: 'YouTubeur français connu pour ses canulars'
   },
+
+  // TV/Émissions
   {
     id: '13',
-    title: 'Fort Boyard',
-    description: 'Père Fouras et ses énigmes',
+    title: 'C\'est du jamais vu',
+    description: 'Expression de commentateur sportif',
     category: 'tv',
     imageUrl: 'https://images.pexels.com/photos/1181523/pexels-photo-1181523.jpeg',
-    alternatives: ['fort boyard', 'père fouras', 'énigmes', 'fort'],
-    hint: 'Jeu dans un fort avec des épreuves et énigmes'
+    alternatives: ['jamais vu', 'du jamais vu'],
+    hint: 'Expression utilisée par les commentateurs'
   },
   {
     id: '14',
-    title: 'Questions pour un Champion',
-    description: 'Julien Lepers et son "Bonne réponse !"',
+    title: 'Bonne réponse',
+    description: 'Phrase de Julien Lepers',
     category: 'tv',
     imageUrl: 'https://images.pexels.com/photos/1181367/pexels-photo-1181367.jpeg',
-    alternatives: ['questions champion', 'julien lepers', 'bonne réponse', 'quiz'],
-    hint: 'Quiz de culture générale avec Julien Lepers'
+    alternatives: ['julien lepers bonne reponse', 'questions champion'],
+    hint: 'Phrase culte d\'un animateur de quiz'
   },
   {
     id: '15',
-    title: 'Les Guignols',
-    description: 'Marionnettes satiriques de Canal+',
+    title: 'Miam miam miam',
+    description: 'Alain Chabat dans Burger Quiz',
     category: 'tv',
     imageUrl: 'https://images.pexels.com/photos/1181489/pexels-photo-1181489.jpeg',
-    alternatives: ['guignols', 'marionnettes', 'canal+', 'ppda'],
-    hint: 'Émission satirique avec des marionnettes'
+    alternatives: ['burger quiz miam', 'alain chabat miam'],
+    hint: 'Son caractéristique d\'une émission de quiz'
   },
 
-  // Memes et culture internet
+  // Memes internet français
   {
     id: '16',
-    title: 'Risitas',
-    description: 'L\'homme qui rit aux éclats',
+    title: 'Jean-Marie',
+    description: 'Meme du prénom français',
     category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181578/pexels-photo-1181578.jpeg',
-    alternatives: ['risitas', 'rire', 'espagnol', 'kekw'],
-    hint: 'Meme de l\'homme qui rit de manière contagieuse'
+    alternatives: ['jean marie meme', 'prenom francais'],
+    hint: 'Prénom français devenu meme'
   },
   {
     id: '17',
-    title: 'Mais t\'es qui toi ?',
-    description: 'Meme français viral',
+    title: 'Ça passe crème',
+    description: 'Expression française moderne',
     category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181634/pexels-photo-1181634.jpeg',
-    alternatives: ['mais t\'es qui', 'toi', 'meme français'],
-    hint: 'Phrase devenue meme sur internet'
+    alternatives: ['passe creme', 'ca passe creme'],
+    hint: 'Expression pour dire que ça va bien'
   },
   {
     id: '18',
-    title: 'C\'est pas faux',
-    description: 'Réplique culte de Kaamelott',
+    title: 'Tranquille',
+    description: 'Mot français populaire',
     category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181712/pexels-photo-1181712.jpeg',
-    alternatives: ['c\'est pas faux', 'kaamelott', 'perceval'],
-    hint: 'Réplique de Perceval dans Kaamelott'
+    alternatives: ['tranquille meme', 'tranquille expression'],
+    hint: 'Mot français utilisé pour dire "cool"'
   },
   {
     id: '19',
-    title: 'Oui oui oui',
-    description: 'Meme de validation enthousiaste',
+    title: 'Cheh',
+    description: 'Expression française internet',
     category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181756/pexels-photo-1181756.jpeg',
-    alternatives: ['oui oui oui', 'validation', 'enthousiaste'],
-    hint: 'Expression d\'approbation enthousiaste'
+    alternatives: ['cheh meme', 'cheh expression'],
+    hint: 'Expression pour se moquer gentiment'
   },
   {
     id: '20',
-    title: 'Ah non mais là',
-    description: 'Expression d\'indignation française',
+    title: 'Sah quel plaisir',
+    description: 'Expression française des jeunes',
     category: 'meme',
     imageUrl: 'https://images.pexels.com/photos/1181823/pexels-photo-1181823.jpeg',
-    alternatives: ['ah non mais là', 'indignation', 'français'],
-    hint: 'Expression typiquement française d\'indignation'
+    alternatives: ['sah quel plaisir', 'quel plaisir'],
+    hint: 'Expression ironique française moderne'
   }
 ];
 
@@ -227,7 +231,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     scores: {},
     gamePhase: 'setup',
     roundsPlayed: 0,
-    maxRounds: 10
+    maxRounds: 10,
+    showVideo: false
   });
   const [lastResult, setLastResult] = useState<'correct' | 'wrong' | 'timeout' | null>(null);
 
@@ -275,7 +280,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       scores: initialScores,
       gamePhase: 'playing',
       roundsPlayed: 0,
-      maxRounds: Math.min(frenchGifs.length, validPlayers.length * 3)
+      maxRounds: Math.min(frenchGifs.length, validPlayers.length * 3),
+      showVideo: false
     });
 
     startNewRound();
@@ -297,7 +303,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       currentGif: randomGif,
       timeLeft: 30,
       isTimerRunning: true,
-      gamePhase: 'waiting-answer'
+      gamePhase: 'waiting-answer',
+      showVideo: false
     }));
     setLastResult(null);
   };
@@ -311,14 +318,20 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       ...prev,
       scores: newScores,
       isTimerRunning: false,
-      gamePhase: 'round-result',
+      gamePhase: 'video-playing',
+      showVideo: true,
       roundsPlayed: prev.roundsPlayed + 1
     }));
 
     setLastResult('correct');
+    
+    // Afficher la vidéo pendant 5 secondes puis passer au suivant
     setTimeout(() => {
-      nextPlayer();
-    }, 3000);
+      setGame(prev => ({ ...prev, gamePhase: 'round-result', showVideo: false }));
+      setTimeout(() => {
+        nextPlayer();
+      }, 2000);
+    }, 5000);
   };
 
   const handleWrongAnswer = () => {
@@ -391,7 +404,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       scores: {},
       gamePhase: 'setup',
       roundsPlayed: 0,
-      maxRounds: 10
+      maxRounds: 10,
+      showVideo: false
     });
     setPlayers(['']);
     setLastResult(null);
@@ -399,8 +413,9 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'film': return '🎬';
-      case 'tv': return '📺';
+      case 'tiktok': return '📱';
+      case 'youtube': return '📺';
+      case 'tv': return '📻';
       case 'meme': return '😂';
       default: return '🎭';
     }
@@ -408,10 +423,21 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
   const getCategoryName = (category: string) => {
     switch (category) {
-      case 'film': return 'Film';
+      case 'tiktok': return 'TikTok';
+      case 'youtube': return 'YouTube';
       case 'tv': return 'TV';
       case 'meme': return 'Meme';
       default: return 'Autre';
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'tiktok': return 'from-pink-400 to-red-500';
+      case 'youtube': return 'from-red-500 to-red-600';
+      case 'tv': return 'from-blue-500 to-indigo-600';
+      case 'meme': return 'from-yellow-400 to-orange-500';
+      default: return 'from-purple-500 to-blue-500';
     }
   };
 
@@ -440,33 +466,37 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           Retour aux jeux
         </button>
 
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 rounded-xl shadow-lg p-8 border border-purple-200">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">🎬</div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Devine le GIF</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              Devine le GIF
+            </h1>
             <p className="text-gray-600">
               Devinez le contenu de GIFs issus de la culture française !
             </p>
           </div>
 
           {topPlayers.length > 0 && (
-            <div className="mb-8 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+            <div className="mb-8 p-6 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-lg border border-yellow-300">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-yellow-800">
                 <Trophy size={20} />
                 Résultats de la partie précédente
               </h3>
               <div className="space-y-2">
                 {topPlayers.slice(0, 3).map((player, index) => (
-                  <div key={player.name} className={`flex items-center justify-between p-2 rounded ${
-                    index === 0 ? 'bg-yellow-100' : index === 1 ? 'bg-gray-100' : 'bg-orange-100'
+                  <div key={player.name} className={`flex items-center justify-between p-3 rounded-lg ${
+                    index === 0 ? 'bg-gradient-to-r from-yellow-200 to-yellow-300' : 
+                    index === 1 ? 'bg-gradient-to-r from-gray-200 to-gray-300' : 
+                    'bg-gradient-to-r from-orange-200 to-orange-300'
                   }`}>
                     <div className="flex items-center gap-2">
-                      <span className="text-lg">
+                      <span className="text-2xl">
                         {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
                       </span>
                       <span className="font-medium">{player.name}</span>
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-gray-700">
                       {player.correct} ✅ | {player.wrong} ❌ | {player.timeout} ⏰
                     </div>
                   </div>
@@ -476,7 +506,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           )}
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-purple-700">
               <Users size={20} />
               Joueurs ({players.filter(p => p.trim()).length})
             </h3>
@@ -489,12 +519,12 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                     value={player}
                     onChange={(e) => updatePlayer(index, e.target.value)}
                     placeholder={`Joueur ${index + 1}`}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="flex-1 px-4 py-3 border-2 border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/80"
                   />
                   {players.length > 1 && (
                     <button
                       onClick={() => removePlayer(index)}
-                      className="text-red-500 hover:text-red-700 px-2"
+                      className="text-red-500 hover:text-red-700 px-2 py-2 rounded-lg hover:bg-red-100 transition-colors"
                     >
                       ✕
                     </button>
@@ -505,18 +535,18 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
             <button
               onClick={addPlayer}
-              className="mt-3 text-purple-600 hover:text-purple-800 text-sm font-medium"
+              className="mt-3 text-purple-600 hover:text-purple-800 text-sm font-medium bg-purple-100 px-3 py-1 rounded-lg hover:bg-purple-200 transition-colors"
             >
               + Ajouter un joueur
             </button>
           </div>
 
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
+          <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg p-4 mb-6 border border-blue-200">
             <h4 className="font-semibold text-blue-800 mb-2">Comment jouer :</h4>
             <ul className="text-sm text-blue-700 space-y-1">
               <li>• Un joueur est tiré au sort pour chaque manche</li>
-              <li>• Il a 30 secondes pour deviner le GIF affiché</li>
-              <li>• Les autres valident si la réponse est correcte</li>
+              <li>• Il a 30 secondes pour deviner le GIF/vidéo affiché</li>
+              <li>• Si c'est correct, la vidéo complète se lance !</li>
               <li>• Bonne réponse = distribue 4 gorgées</li>
               <li>• Mauvaise réponse = boit 3 gorgées</li>
               <li>• Temps écoulé = boit 5 gorgées</li>
@@ -526,10 +556,43 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           <button
             onClick={startGame}
             disabled={players.filter(p => p.trim()).length < 3}
-            className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-6 rounded-lg hover:from-purple-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium text-lg shadow-lg"
           >
-            Commencer la partie
+            🎬 Commencer la partie
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (game.gamePhase === 'video-playing' && game.currentGif) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl shadow-lg p-8 border border-green-300">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-2xl font-bold text-green-800 mb-2">
+              Bonne réponse !
+            </h2>
+            <p className="text-green-700">
+              Voici la vidéo complète : <strong>{game.currentGif.title}</strong>
+            </p>
+          </div>
+
+          <div className="bg-black rounded-lg p-8 mb-6 text-center">
+            <div className="text-white mb-4">
+              <Video size={48} className="mx-auto mb-4" />
+              <p className="text-lg">🎬 Vidéo en cours de lecture...</p>
+              <p className="text-sm opacity-75 mt-2">{game.currentGif.description}</p>
+            </div>
+            <div className="bg-green-600 text-white px-4 py-2 rounded-lg inline-block">
+              ✅ {game.currentGif.title}
+            </div>
+          </div>
+
+          <div className="text-center text-green-600">
+            <p>Passage au joueur suivant dans quelques secondes...</p>
+          </div>
         </div>
       </div>
     );
@@ -543,41 +606,41 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Zone de jeu principale */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="bg-gradient-to-br from-white to-purple-50 rounded-xl shadow-lg p-8 border border-purple-200">
               <div className="text-center mb-6">
                 <div className="flex items-center justify-center gap-4 mb-4">
                   <div className="text-4xl">{getCategoryIcon(game.currentGif.category)}</div>
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                       Tour de {currentPlayer}
                     </h2>
-                    <p className="text-gray-600">
-                      Catégorie : {getCategoryName(game.currentGif.category)}
-                    </p>
+                    <span className={`px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r ${getCategoryColor(game.currentGif.category)}`}>
+                      {getCategoryName(game.currentGif.category)}
+                    </span>
                   </div>
                 </div>
                 
-                <div className={`text-3xl font-bold mb-4 ${
+                <div className={`text-4xl font-bold mb-4 ${
                   game.timeLeft <= 10 ? 'text-red-600 animate-pulse' : 'text-purple-600'
                 }`}>
-                  <Timer size={24} className="inline mr-2" />
+                  <Timer size={32} className="inline mr-2" />
                   {game.timeLeft}s
                 </div>
               </div>
 
               {/* Simulation du GIF avec une image */}
-              <div className="bg-gray-100 rounded-lg p-8 mb-6 text-center">
+              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg p-8 mb-6 text-center border-2 border-dashed border-gray-300">
                 <img 
                   src={game.currentGif.imageUrl} 
                   alt="GIF à deviner" 
                   className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
                 />
-                <div className="bg-black bg-opacity-75 text-white p-4 rounded-lg">
+                <div className="bg-gradient-to-r from-black to-gray-800 text-white p-4 rounded-lg">
                   <p className="text-lg font-medium mb-2">
                     🎬 {game.currentGif.description}
                   </p>
                   {game.timeLeft <= 15 && game.currentGif.hint && (
-                    <p className="text-yellow-300 text-sm">
+                    <p className="text-yellow-300 text-sm animate-pulse">
                       💡 Indice : {game.currentGif.hint}
                     </p>
                   )}
@@ -586,7 +649,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
               <div className="text-center mb-6">
                 <p className="text-lg font-medium text-gray-800 mb-4">
-                  {currentPlayer}, devine ce GIF à voix haute !
+                  {currentPlayer}, devine ce GIF/vidéo à voix haute !
                 </p>
                 <p className="text-sm text-gray-600">
                   Les autres joueurs valident ta réponse
@@ -596,14 +659,14 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
               <div className="flex gap-4">
                 <button
                   onClick={handleCorrectAnswer}
-                  className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white py-3 px-6 rounded-lg hover:from-green-600 hover:to-teal-600 transition-all font-medium flex items-center justify-center gap-2"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <CheckCircle size={20} />
                   Bonne réponse
                 </button>
                 <button
                   onClick={handleWrongAnswer}
-                  className="flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 px-6 rounded-lg hover:from-red-600 hover:to-pink-600 transition-all font-medium flex items-center justify-center gap-2"
+                  className="flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-red-600 hover:to-pink-600 transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <XCircle size={20} />
                   Mauvaise réponse
@@ -614,8 +677,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
           {/* Sidebar avec les scores */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow-lg p-6 border border-blue-200">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-blue-700">
                 <Target size={20} />
                 Progression
               </h3>
@@ -624,26 +687,26 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                   <span>Manche {game.roundsPlayed + 1}</span>
                   <span>{game.roundsPlayed + 1}/{game.maxRounds}</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-3">
                   <div 
-                    className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-300"
                     style={{ width: `${((game.roundsPlayed + 1) / game.maxRounds) * 100}%` }}
                   ></div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <div className="bg-gradient-to-br from-white to-yellow-50 rounded-xl shadow-lg p-6 border border-yellow-200">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-yellow-700">
                 🏆 Scores
               </h3>
               <div className="space-y-3">
                 {getTopPlayers().map((player, index) => (
-                  <div key={player.name} className={`flex items-center justify-between p-2 rounded ${
-                    player.name === currentPlayer ? 'bg-purple-100 border border-purple-300' : 'bg-gray-50'
+                  <div key={player.name} className={`flex items-center justify-between p-3 rounded-lg ${
+                    player.name === currentPlayer ? 'bg-gradient-to-r from-purple-200 to-pink-200 border-2 border-purple-400' : 'bg-gray-100'
                   }`}>
                     <div className="flex items-center gap-2">
-                      {index === 0 && player.total > 0 && <span className="text-yellow-500">👑</span>}
+                      {index === 0 && player.total > 0 && <span className="text-yellow-500 text-xl">👑</span>}
                       <span className={`font-medium ${
                         player.name === currentPlayer ? 'text-purple-800' : 'text-gray-800'
                       }`}>
@@ -663,12 +726,12 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-6">
+            <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 border border-purple-300">
               <h3 className="font-semibold text-purple-800 mb-3">🍺 Règles d'alcool</h3>
               <div className="space-y-2 text-sm">
-                <p className="text-green-700">✅ Bonne réponse : distribue 4 gorgées</p>
-                <p className="text-red-700">❌ Mauvaise réponse : boit 3 gorgées</p>
-                <p className="text-orange-700">⏰ Temps écoulé : boit 5 gorgées</p>
+                <p className="text-green-700 font-medium">✅ Bonne réponse : distribue 4 gorgées</p>
+                <p className="text-red-700 font-medium">❌ Mauvaise réponse : boit 3 gorgées</p>
+                <p className="text-orange-700 font-medium">⏰ Temps écoulé : boit 5 gorgées</p>
               </div>
             </div>
           </div>
@@ -682,7 +745,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg p-8 border border-gray-200">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">
               {lastResult === 'correct' ? '🎉' : lastResult === 'wrong' ? '😅' : '⏰'}
@@ -699,22 +762,23 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             </p>
           </div>
 
-          <div className={`rounded-lg p-6 mb-6 text-center ${
-            lastResult === 'correct' ? 'bg-green-100 border border-green-300' : 
-            lastResult === 'wrong' ? 'bg-red-100 border border-red-300' : 'bg-orange-100 border border-orange-300'
+          <div className={`rounded-lg p-6 mb-6 text-center border-2 ${
+            lastResult === 'correct' ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-300' : 
+            lastResult === 'wrong' ? 'bg-gradient-to-r from-red-100 to-pink-100 border-red-300' : 
+            'bg-gradient-to-r from-orange-100 to-yellow-100 border-orange-300'
           }`}>
-            <h3 className={`text-lg font-bold mb-2 ${
+            <h3 className={`text-xl font-bold mb-2 ${
               lastResult === 'correct' ? 'text-green-800' : 
               lastResult === 'wrong' ? 'text-red-800' : 'text-orange-800'
             }`}>
               {currentPlayer}
             </h3>
-            <p className={`${
+            <p className={`text-lg ${
               lastResult === 'correct' ? 'text-green-700' : 
               lastResult === 'wrong' ? 'text-red-700' : 'text-orange-700'
             }`}>
-              {lastResult === 'correct' ? 'Distribue 4 gorgées aux autres joueurs !' : 
-               lastResult === 'wrong' ? 'Boit 3 gorgées !' : 'Boit 5 gorgées !'}
+              {lastResult === 'correct' ? '🎉 Distribue 4 gorgées aux autres joueurs !' : 
+               lastResult === 'wrong' ? '🍺 Boit 3 gorgées !' : '⏰ Boit 5 gorgées !'}
             </p>
           </div>
 

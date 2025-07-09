@@ -48,7 +48,7 @@ function App() {
   const selectedGame = selectedGameId ? games.find(g => g.id === selectedGameId) : null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
       
       <main className="container mx-auto px-4 py-8">
@@ -83,10 +83,10 @@ function App() {
         )}
       </main>
       
-      <footer className="bg-gray-800 text-white py-8 mt-16">
+      <footer className="bg-gradient-to-r from-purple-800 to-pink-800 text-white py-8 mt-16">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            © 2024 FABABIBOIRE - Anime tes soirées avec style !
+          <p className="text-purple-200">
+            © 2024 FABABIBOIRE - Anime tes soirées avec style ! 🎉
           </p>
         </div>
       </footer>
