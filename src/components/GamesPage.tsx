@@ -48,10 +48,10 @@ const GamesPage: React.FC<GamesPageProps> = ({ onGameSelect, onPlayGame }) => {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4">
           Tous nos jeux
         </h1>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 text-sm md:text-lg max-w-2xl mx-auto px-4">
           Découvrez notre collection de jeux d'ambiance pour animer vos soirées. 
           Filtrez par catégorie, difficulté ou nombre de joueurs pour trouver le jeu parfait !
         </p>
@@ -59,7 +59,7 @@ const GamesPage: React.FC<GamesPageProps> = ({ onGameSelect, onPlayGame }) => {
 
       <GameFilters filters={filters} onFiltersChange={setFilters} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {filteredGames.map(game => (
           <GameCard
             key={game.id}
@@ -71,12 +71,12 @@ const GamesPage: React.FC<GamesPageProps> = ({ onGameSelect, onPlayGame }) => {
       </div>
 
       {filteredGames.length === 0 && (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+        <div className="text-center py-8 md:py-16">
+          <div className="text-4xl md:text-6xl mb-4">🔍</div>
+          <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
             Aucun jeu trouvé
           </h3>
-          <p className="text-gray-600">
+          <p className="text-sm md:text-base text-gray-600">
             Essayez de modifier vos critères de recherche
           </p>
         </div>

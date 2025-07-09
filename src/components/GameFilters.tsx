@@ -14,28 +14,28 @@ const GameFilters: React.FC<GameFiltersProps> = ({ filters, onFiltersChange }) =
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-6 md:mb-8">
       <div className="flex items-center gap-2 mb-4">
         <Filter size={20} className="text-purple-600" />
-        <h3 className="text-lg font-semibold text-gray-800">Filtres</h3>
+        <h3 className="text-base md:text-lg font-semibold text-gray-800">Filtres</h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
         <div className="relative">
-          <Search size={18} className="absolute left-3 top-3 text-gray-400" />
+          <Search size={16} className="absolute left-3 top-2.5 md:top-3 text-gray-400 md:w-4 md:h-4" />
           <input
             type="text"
             placeholder="Rechercher un jeu..."
             value={filters.search}
             onChange={(e) => handleFilterChange('search', e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="w-full pl-8 md:pl-10 pr-3 md:pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm md:text-base"
           />
         </div>
         
         <select
           value={filters.category}
           onChange={(e) => handleFilterChange('category', e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm md:text-base"
         >
           <option value="">Toutes les catégories</option>
           {categories.map(category => (
@@ -48,7 +48,7 @@ const GameFilters: React.FC<GameFiltersProps> = ({ filters, onFiltersChange }) =
         <select
           value={filters.players}
           onChange={(e) => handleFilterChange('players', e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm md:text-base"
         >
           <option value="">Tous les joueurs</option>
           <option value="3-5">3-5 joueurs</option>
@@ -59,7 +59,7 @@ const GameFilters: React.FC<GameFiltersProps> = ({ filters, onFiltersChange }) =
         <select
           value={filters.difficulty}
           onChange={(e) => handleFilterChange('difficulty', e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          className="w-full px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm md:text-base"
         >
           <option value="">Toutes les difficultés</option>
           {difficulties.map(difficulty => (

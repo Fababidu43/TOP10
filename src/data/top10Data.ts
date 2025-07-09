@@ -14,6 +14,23 @@ export interface Top10Item {
 
 export const top10Categories: Top10Category[] = [
   {
+    id: 'films-box-office',
+    name: 'Films au Box-Office Mondial',
+    description: 'Les 10 films ayant rapporté le plus d\'argent au cinéma (2024)',
+    items: [
+      { rank: 1, name: 'Avatar (2009)', value: '2,9 milliards $', alternatives: ['avatar 2009', 'avatar 1', 'avatar james cameron', 'premier avatar'] },
+      { rank: 2, name: 'Avengers: Endgame', value: '2,8 milliards $', alternatives: ['endgame', 'avengers endgame', 'avengers 4'] },
+      { rank: 3, name: 'Avatar: La Voie de l\'eau', value: '2,3 milliards $', alternatives: ['avatar 2', 'avatar la voie de l\'eau', 'avatar way of water', 'avatar 2022'] },
+      { rank: 4, name: 'Titanic (1997)', value: '2,2 milliards $', alternatives: ['titanic 1997', 'titanic leonardo', 'titanic dicaprio'] },
+      { rank: 5, name: 'Star Wars: Le Réveil de la Force', value: '2,1 milliards $', alternatives: ['star wars 7', 'le réveil de la force', 'force awakens', 'episode 7', 'star wars episode 7'] },
+      { rank: 6, name: 'Avengers: Infinity War', value: '2,0 milliards $', alternatives: ['infinity war', 'avengers infinity war', 'avengers 3'] },
+      { rank: 7, name: 'Spider-Man: No Way Home', value: '1,9 milliards $', alternatives: ['spiderman no way home', 'no way home', 'spider man 3 tom holland', 'spiderman 3'] },
+      { rank: 8, name: 'Jurassic World (2015)', value: '1,7 milliards $', alternatives: ['jurassic world 1', 'jurassic world 2015', 'premier jurassic world'] },
+      { rank: 9, name: 'Le Roi Lion (2019)', value: '1,7 milliards $', alternatives: ['roi lion', 'le roi lion', 'lion king 2019', 'roi lion remake', 'roi lion cgi'] },
+      { rank: 10, name: 'The Avengers (2012)', value: '1,5 milliards $', alternatives: ['avengers', 'avengers 1', 'avengers 2012', 'premier avengers'] }
+    ]
+  },
+  {
     id: 'films-cultes-francais',
     name: 'Films Français Cultes',
     description: 'Les 10 films français les plus emblématiques et populaires',
@@ -31,84 +48,50 @@ export const top10Categories: Top10Category[] = [
     ]
   },
   {
-    id: 'acteurs-francais',
-    name: 'Acteurs Français les Plus Populaires',
-    description: 'Les 10 acteurs français les plus aimés du public',
-    items: [
-      { rank: 1, name: 'Jean Dujardin', value: 'OSS 117, The Artist', alternatives: ['dujardin', 'jean dujardin acteur'] },
-      { rank: 2, name: 'Omar Sy', value: 'Intouchables, Lupin', alternatives: ['omar sy acteur', 'sy'] },
-      { rank: 3, name: 'Marion Cotillard', value: 'La Vie en Rose, Inception', alternatives: ['cotillard', 'marion cotillard actrice'] },
-      { rank: 4, name: 'Jean Reno', value: 'Léon, Les Visiteurs', alternatives: ['reno', 'jean reno acteur'] },
-      { rank: 5, name: 'Gérard Depardieu', value: 'Cyrano, Astérix', alternatives: ['depardieu', 'gerard depardieu'] },
-      { rank: 6, name: 'Audrey Tautou', value: 'Amélie, Da Vinci Code', alternatives: ['tautou', 'audrey tautou actrice'] },
-      { rank: 7, name: 'Vincent Cassel', value: 'La Haine, Black Swan', alternatives: ['cassel', 'vincent cassel acteur'] },
-      { rank: 8, name: 'Léa Seydoux', value: 'James Bond, Blue is the Warmest Color', alternatives: ['seydoux', 'lea seydoux'] },
-      { rank: 9, name: 'François Cluzet', value: 'Intouchables, Ne le dis à personne', alternatives: ['cluzet', 'francois cluzet'] },
-      { rank: 10, name: 'Kad Merad', value: 'Bienvenue chez les Ch\'tis', alternatives: ['merad', 'kad merad acteur'] }
-    ]
-  },
-  {
-    id: 'realisateurs-francais',
-    name: 'Réalisateurs Français Célèbres',
-    description: 'Les 10 réalisateurs français les plus reconnus',
-    items: [
-      { rank: 1, name: 'François Truffaut', value: 'Nouvelle Vague, Les 400 Coups', alternatives: ['truffaut', 'francois truffaut'] },
-      { rank: 2, name: 'Jean-Luc Godard', value: 'À bout de souffle, Nouvelle Vague', alternatives: ['godard', 'jean luc godard'] },
-      { rank: 3, name: 'Luc Besson', value: 'Léon, Le Grand Bleu', alternatives: ['besson', 'luc besson realisateur'] },
-      { rank: 4, name: 'Claude Lelouch', value: 'Un homme et une femme', alternatives: ['lelouch', 'claude lelouch'] },
-      { rank: 5, name: 'Jean-Pierre Jeunet', value: 'Amélie, Delicatessen', alternatives: ['jeunet', 'jean pierre jeunet'] },
-      { rank: 6, name: 'Alain Chabat', value: 'Astérix Mission Cléopâtre', alternatives: ['chabat', 'alain chabat realisateur'] },
-      { rank: 7, name: 'Mathieu Kassovitz', value: 'La Haine', alternatives: ['kassovitz', 'mathieu kassovitz'] },
-      { rank: 8, name: 'Jacques Audiard', value: 'De battre mon cœur s\'est arrêté', alternatives: ['audiard', 'jacques audiard'] },
-      { rank: 9, name: 'Olivier Nakache', value: 'Intouchables, Nos jours heureux', alternatives: ['nakache', 'olivier nakache'] },
-      { rank: 10, name: 'Cédric Klapisch', value: 'L\'Auberge espagnole', alternatives: ['klapisch', 'cedric klapisch'] }
-    ]
-  },
-  {
     id: 'series-netflix',
     name: 'Séries Netflix les Plus Regardées',
-    description: 'Les 10 séries les plus populaires sur Netflix',
+    description: 'Les 10 séries les plus populaires sur Netflix (2024)',
     items: [
       { rank: 1, name: 'Squid Game', value: '1,65 milliard d\'heures', alternatives: ['squid games', 'jeu du calmar'] },
-      { rank: 2, name: 'Stranger Things 4', value: '1,35 milliard d\'heures', alternatives: ['stranger things saison 4', 'stranger things 4'] },
-      { rank: 3, name: 'Dahmer', value: '856 millions d\'heures', alternatives: ['dahmer netflix', 'jeffrey dahmer'] },
-      { rank: 4, name: 'Bridgerton Saison 2', value: '656 millions d\'heures', alternatives: ['bridgerton 2', 'bridgerton saison 2'] },
-      { rank: 5, name: 'Stranger Things 3', value: '582 millions d\'heures', alternatives: ['stranger things saison 3', 'stranger things 3'] },
-      { rank: 6, name: 'Lucifer Saison 5', value: '569 millions d\'heures', alternatives: ['lucifer 5', 'lucifer saison 5'] },
-      { rank: 7, name: 'All of Us Are Dead', value: '560 millions d\'heures', alternatives: ['all of us are dead', 'zombies coree'] },
-      { rank: 8, name: 'The Witcher Saison 1', value: '541 millions d\'heures', alternatives: ['witcher 1', 'the witcher saison 1', 'geralt'] },
-      { rank: 9, name: 'Inventing Anna', value: '511 millions d\'heures', alternatives: ['inventing anna', 'anna delvey'] },
-      { rank: 10, name: 'The Umbrella Academy Saison 2', value: '434 millions d\'heures', alternatives: ['umbrella academy 2', 'umbrella academy saison 2'] }
+      { rank: 2, name: 'Wednesday', value: '1,37 milliard d\'heures', alternatives: ['mercredi', 'wednesday addams', 'jenna ortega'] },
+      { rank: 3, name: 'Stranger Things 4', value: '1,35 milliard d\'heures', alternatives: ['stranger things saison 4', 'stranger things 4'] },
+      { rank: 4, name: 'Dahmer', value: '856 millions d\'heures', alternatives: ['dahmer netflix', 'jeffrey dahmer', 'evan peters'] },
+      { rank: 5, name: 'Bridgerton Saison 2', value: '656 millions d\'heures', alternatives: ['bridgerton 2', 'bridgerton saison 2'] },
+      { rank: 6, name: 'The Night Agent', value: '605 millions d\'heures', alternatives: ['night agent', 'agent de nuit'] },
+      { rank: 7, name: 'Ginny & Georgia Saison 2', value: '582 millions d\'heures', alternatives: ['ginny georgia 2', 'ginny and georgia'] },
+      { rank: 8, name: 'Lucifer Saison 5', value: '569 millions d\'heures', alternatives: ['lucifer 5', 'lucifer saison 5'] },
+      { rank: 9, name: 'All of Us Are Dead', value: '560 millions d\'heures', alternatives: ['all of us are dead', 'zombies coree'] },
+      { rank: 10, name: 'The Witcher Saison 1', value: '541 millions d\'heures', alternatives: ['witcher 1', 'the witcher saison 1', 'geralt'] }
     ]
   },
   {
     id: 'pays-population',
     name: 'Pays les Plus Peuplés',
-    description: 'Les 10 pays avec le plus d\'habitants dans le monde',
+    description: 'Les 10 pays avec le plus d\'habitants dans le monde (2024)',
     items: [
-      { rank: 1, name: 'Chine', value: '1,4 milliard', alternatives: ['china', 'république populaire de chine', 'rpc'] },
-      { rank: 2, name: 'Inde', value: '1,4 milliard', alternatives: ['india', 'hindustan'] },
-      { rank: 3, name: 'États-Unis', value: '331 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique'] },
-      { rank: 4, name: 'Indonésie', value: '273 millions', alternatives: ['indonesia'] },
-      { rank: 5, name: 'Pakistan', value: '225 millions' },
-      { rank: 6, name: 'Brésil', value: '215 millions', alternatives: ['brazil', 'bresil'] },
-      { rank: 7, name: 'Nigeria', value: '211 millions' },
-      { rank: 8, name: 'Bangladesh', value: '166 millions' },
-      { rank: 9, name: 'Russie', value: '146 millions', alternatives: ['russia', 'fédération de russie', 'urss'] },
-      { rank: 10, name: 'Mexique', value: '130 millions', alternatives: ['mexico'] }
+      { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan'] },
+      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc'] },
+      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique'] },
+      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia'] },
+      { rank: 5, name: 'Pakistan', value: '240 millions' },
+      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria'] },
+      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil'] },
+      { rank: 8, name: 'Bangladesh', value: '172 millions' },
+      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie'] },
+      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico'] }
     ]
   },
   {
     id: 'jeux-video-vendus',
     name: 'Jeux Vidéo les Plus Vendus',
-    description: 'Les 10 jeux vidéo avec le plus de ventes mondiales',
+    description: 'Les 10 jeux vidéo avec le plus de ventes mondiales (2024)',
     items: [
       { rank: 1, name: 'Minecraft', value: '300M copies', alternatives: ['mine craft', 'minecraft mojang'] },
-      { rank: 2, name: 'Grand Theft Auto V', value: '190M copies', alternatives: ['gta 5', 'gta v', 'grand theft auto 5'] },
-      { rank: 3, name: 'Tetris', value: '100M copies', alternatives: ['tetris classic', 'tetris original'] },
+      { rank: 2, name: 'Grand Theft Auto V', value: '195M copies', alternatives: ['gta 5', 'gta v', 'grand theft auto 5'] },
+      { rank: 3, name: 'Tetris (EA)', value: '100M copies', alternatives: ['tetris classic', 'tetris original', 'tetris ea'] },
       { rank: 4, name: 'Wii Sports', value: '83M copies', alternatives: ['wii sport', 'nintendo wii sports'] },
-      { rank: 5, name: 'PUBG', value: '75M copies', alternatives: ['playerunknown battlegrounds', 'pubg battlegrounds', 'battlegrounds'] },
-      { rank: 6, name: 'Mario Kart 8 Deluxe', value: '70M copies', alternatives: ['mario kart 8', 'mk8', 'mario kart switch'] },
+      { rank: 5, name: 'PUBG: Battlegrounds', value: '75M copies', alternatives: ['pubg', 'playerunknown battlegrounds', 'battlegrounds'] },
+      { rank: 6, name: 'Mario Kart 8 Deluxe', value: '60M copies', alternatives: ['mario kart 8', 'mk8', 'mario kart switch'] },
       { rank: 7, name: 'Super Mario Bros.', value: '58M copies', alternatives: ['super mario brothers', 'mario bros', 'mario nes'] },
       { rank: 8, name: 'Red Dead Redemption 2', value: '55M copies', alternatives: ['rdr2', 'red dead 2', 'red dead redemption ii'] },
       { rank: 9, name: 'Overwatch', value: '50M copies', alternatives: ['overwatch 1', 'overwatch blizzard'] },
@@ -118,35 +101,35 @@ export const top10Categories: Top10Category[] = [
   {
     id: 'langues-parlees',
     name: 'Langues les Plus Parlées',
-    description: 'Les 10 langues avec le plus de locuteurs natifs',
+    description: 'Les 10 langues avec le plus de locuteurs natifs (2024)',
     items: [
       { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese'] },
-      { rank: 2, name: 'Espagnol', value: '460 millions', alternatives: ['spanish', 'castillan', 'castellano'] },
-      { rank: 3, name: 'Anglais', value: '379 millions', alternatives: ['english'] },
+      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano'] },
+      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english'] },
       { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien'] },
       { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard'] },
-      { rank: 6, name: 'Bengalî', value: '228 millions', alternatives: ['bengali', 'bangla'] },
-      { rank: 7, name: 'Portugais', value: '258 millions', alternatives: ['portuguese', 'portugais bresilien'] },
+      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla'] },
+      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien'] },
       { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russe'] },
-      { rank: 9, name: 'Japonais', value: '128 millions', alternatives: ['japanese', 'nippon'] },
-      { rank: 10, name: 'Pendjabi', value: '92 millions', alternatives: ['punjabi', 'panjabi'] }
+      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon'] },
+      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi'] }
     ]
   },
   {
     id: 'marques-valorisees',
     name: 'Marques les Plus Valorisées',
-    description: 'Les 10 marques avec la plus grande valeur mondiale',
+    description: 'Les 10 marques avec la plus grande valeur mondiale (2024)',
     items: [
-      { rank: 1, name: 'Apple', value: '482 milliards $', alternatives: ['apple inc', 'iphone'] },
-      { rank: 2, name: 'Microsoft', value: '278 milliards $', alternatives: ['microsoft corporation', 'windows'] },
-      { rank: 3, name: 'Amazon', value: '274 milliards $', alternatives: ['amazon.com', 'bezos'] },
-      { rank: 4, name: 'Google', value: '251 milliards $', alternatives: ['alphabet', 'google inc'] },
-      { rank: 5, name: 'Samsung', value: '107 milliards $', alternatives: ['samsung electronics'] },
-      { rank: 6, name: 'Tesla', value: '106 milliards $', alternatives: ['tesla motors', 'elon musk'] },
-      { rank: 7, name: 'Meta (Facebook)', value: '101 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg'] },
-      { rank: 8, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor'] },
-      { rank: 9, name: 'Mercedes-Benz', value: '56 milliards $', alternatives: ['mercedes', 'mercedes benz'] },
-      { rank: 10, name: 'McDonald\'s', value: '51 milliards $', alternatives: ['mcdo', 'mcdonalds', 'mac do'] }
+      { rank: 1, name: 'Apple', value: '516 milliards $', alternatives: ['apple inc', 'iphone'] },
+      { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows'] },
+      { rank: 3, name: 'Amazon', value: '308 milliards $', alternatives: ['amazon.com', 'bezos'] },
+      { rank: 4, name: 'Google', value: '297 milliards $', alternatives: ['alphabet', 'google inc'] },
+      { rank: 5, name: 'Samsung', value: '99 milliards $', alternatives: ['samsung electronics'] },
+      { rank: 6, name: 'Tesla', value: '97 milliards $', alternatives: ['tesla motors', 'elon musk'] },
+      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg'] },
+      { rank: 8, name: 'NVIDIA', value: '85 milliards $', alternatives: ['nvidia corporation'] },
+      { rank: 9, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor'] },
+      { rank: 10, name: 'Coca-Cola', value: '57 milliards $', alternatives: ['coca cola', 'coke'] }
     ]
   },
   {
@@ -169,18 +152,69 @@ export const top10Categories: Top10Category[] = [
   {
     id: 'youtubers-francais',
     name: 'YouTubeurs Français les Plus Suivis',
-    description: 'Les 10 créateurs français avec le plus d\'abonnés',
+    description: 'Les 10 créateurs français avec le plus d\'abonnés (2024)',
     items: [
-      { rank: 1, name: 'Squeezie', value: '18M abonnés', alternatives: ['lucas hauchard', 'squeezie gaming'] },
-      { rank: 2, name: 'Cyprien', value: '14M abonnés', alternatives: ['cyprien iov', 'monsieur dream'] },
-      { rank: 3, name: 'Norman', value: '12M abonnés', alternatives: ['norman fait des videos', 'norman thavaud'] },
-      { rank: 4, name: 'Rémi Gaillard', value: '7M abonnés', alternatives: ['remi gaillard', 'gaillard'] },
-      { rank: 5, name: 'Tibo InShape', value: '8M abonnés', alternatives: ['tibo inshape', 'thibaud delapart'] },
-      { rank: 6, name: 'Michou', value: '7M abonnés', alternatives: ['michou youtube'] },
-      { rank: 7, name: 'Gotaga', value: '4M abonnés', alternatives: ['corentin houssein', 'gotaga twitch'] },
-      { rank: 8, name: 'Amixem', value: '7M abonnés', alternatives: ['maxime chabroud'] },
-      { rank: 9, name: 'Inoxtag', value: '6M abonnés', alternatives: ['inox tag'] },
-      { rank: 10, name: 'McFly et Carlito', value: '6M abonnés', alternatives: ['mcfly carlito', 'david coscas', 'raphael carlier'] }
+      { rank: 1, name: 'Squeezie', value: '18,5M abonnés', alternatives: ['lucas hauchard', 'squeezie gaming'] },
+      { rank: 2, name: 'Cyprien', value: '14,2M abonnés', alternatives: ['cyprien iov', 'monsieur dream'] },
+      { rank: 3, name: 'Norman', value: '12,1M abonnés', alternatives: ['norman fait des videos', 'norman thavaud'] },
+      { rank: 4, name: 'Tibo InShape', value: '8,9M abonnés', alternatives: ['tibo inshape', 'thibaud delapart'] },
+      { rank: 5, name: 'Amixem', value: '7,8M abonnés', alternatives: ['maxime chabroud'] },
+      { rank: 6, name: 'Rémi Gaillard', value: '7,2M abonnés', alternatives: ['remi gaillard', 'gaillard'] },
+      { rank: 7, name: 'Michou', value: '7,1M abonnés', alternatives: ['michou youtube'] },
+      { rank: 8, name: 'Inoxtag', value: '6,8M abonnés', alternatives: ['inox tag'] },
+      { rank: 9, name: 'McFly et Carlito', value: '6,5M abonnés', alternatives: ['mcfly carlito', 'david coscas', 'raphael carlier'] },
+      { rank: 10, name: 'Gotaga', value: '4,2M abonnés', alternatives: ['corentin houssein', 'gotaga twitch'] }
+    ]
+  },
+  {
+    id: 'artistes-spotify',
+    name: 'Artistes les Plus Streamés sur Spotify',
+    description: 'Les 10 artistes avec le plus d\'écoutes mensuelles (2024)',
+    items: [
+      { rank: 1, name: 'The Weeknd', value: '107M écoutes/mois', alternatives: ['weeknd', 'abel tesfaye'] },
+      { rank: 2, name: 'Taylor Swift', value: '95M écoutes/mois', alternatives: ['taylor', 'swift'] },
+      { rank: 3, name: 'Bad Bunny', value: '88M écoutes/mois', alternatives: ['bad bunny reggaeton'] },
+      { rank: 4, name: 'Drake', value: '85M écoutes/mois', alternatives: ['drake rapper'] },
+      { rank: 5, name: 'Ariana Grande', value: '82M écoutes/mois', alternatives: ['ariana', 'grande'] },
+      { rank: 6, name: 'Ed Sheeran', value: '79M écoutes/mois', alternatives: ['ed', 'sheeran'] },
+      { rank: 7, name: 'Justin Bieber', value: '77M écoutes/mois', alternatives: ['bieber', 'justin'] },
+      { rank: 8, name: 'Billie Eilish', value: '74M écoutes/mois', alternatives: ['billie', 'eilish'] },
+      { rank: 9, name: 'Dua Lipa', value: '72M écoutes/mois', alternatives: ['dua', 'lipa'] },
+      { rank: 10, name: 'Post Malone', value: '70M écoutes/mois', alternatives: ['post malone', 'malone'] }
+    ]
+  },
+  {
+    id: 'jeux-mobiles',
+    name: 'Jeux Mobiles les Plus Téléchargés',
+    description: 'Les 10 jeux mobiles avec le plus de téléchargements (2024)',
+    items: [
+      { rank: 1, name: 'Subway Surfers', value: '4 milliards', alternatives: ['subway surfer'] },
+      { rank: 2, name: 'PUBG Mobile', value: '1,3 milliard', alternatives: ['pubg mobile', 'battlegrounds mobile'] },
+      { rank: 3, name: 'Candy Crush Saga', value: '1,1 milliard', alternatives: ['candy crush', 'crush saga'] },
+      { rank: 4, name: 'Free Fire', value: '1 milliard', alternatives: ['garena free fire', 'free fire garena'] },
+      { rank: 5, name: 'Roblox', value: '900 millions', alternatives: ['roblox mobile'] },
+      { rank: 6, name: 'Among Us', value: '500 millions', alternatives: ['among us mobile'] },
+      { rank: 7, name: 'Temple Run 2', value: '500 millions', alternatives: ['temple run', 'temple run 2'] },
+      { rank: 8, name: 'Clash of Clans', value: '500 millions', alternatives: ['clash clans', 'coc'] },
+      { rank: 9, name: 'Pokémon GO', value: '500 millions', alternatives: ['pokemon go', 'pokemon mobile'] },
+      { rank: 10, name: 'Clash Royale', value: '500 millions', alternatives: ['clash royale', 'royale'] }
+    ]
+  },
+  {
+    id: 'rappeurs-francais',
+    name: 'Rappeurs Français les Plus Populaires',
+    description: 'Les 10 rappeurs français les plus écoutés (2024)',
+    items: [
+      { rank: 1, name: 'Jul', value: 'Marseille, 30+ albums', alternatives: ['jul marseille', 'jul rap'] },
+      { rank: 2, name: 'PNL', value: 'Duo, Ademo & N.O.S', alternatives: ['pnl rap', 'ademo nos'] },
+      { rank: 3, name: 'Ninho', value: 'Essonne, M.I.L.S', alternatives: ['ninho rap'] },
+      { rank: 4, name: 'SCH', value: 'Marseille, JVLIVS', alternatives: ['sch rap', 'sch marseille'] },
+      { rank: 5, name: 'Nekfeu', value: '1995, Feu', alternatives: ['nekfeu rap'] },
+      { rank: 6, name: 'Booba', value: 'B2O, Duc de Boulogne', alternatives: ['booba rap', 'b2o'] },
+      { rank: 7, name: 'Damso', value: 'Belgique, 92i', alternatives: ['damso rap', 'damso belge'] },
+      { rank: 8, name: 'Orelsan', value: 'Caen, OrelSan', alternatives: ['orelsan rap', 'orel san'] },
+      { rank: 9, name: 'Gazo', value: 'Drill français', alternatives: ['gazo drill', 'gazo rap'] },
+      { rank: 10, name: 'Freeze Corleone', value: 'LMF, 667', alternatives: ['freeze corleone', 'lmf'] }
     ]
   }
 ];
