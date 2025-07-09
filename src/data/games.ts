@@ -99,6 +99,81 @@ export const games: Game[] = [
     ]
   },
   {
+    id: 'qui-ment',
+    title: 'Qui Ment ?',
+    description: 'Un jeu d\'interaction sociale où vous devez identifier le menteur parmi les joueurs !',
+    shortDescription: 'Identifiez le menteur parmi vous',
+    players: '4-8 joueurs',
+    duration: '20-40 minutes',
+    difficulty: 'moyen',
+    category: 'ambiance',
+    interactive: true,
+    rules: [
+      'Un joueur est secrètement désigné comme menteur',
+      'Chaque joueur raconte une anecdote à voix haute',
+      'Le menteur doit inventer son histoire',
+      'Les autres racontent des anecdotes vraies',
+      'Tous votent pour identifier le menteur',
+      'L\'application révèle qui mentait vraiment'
+    ],
+    materials: ['Application', 'Boissons'],
+    variants: [
+      'Mode thématique : anecdotes sur un sujet précis',
+      'Mode double menteur : deux menteurs simultanés',
+      'Mode révélation : le menteur peut se dénoncer'
+    ]
+  },
+  {
+    id: 'devine-gif',
+    title: 'Devine le GIF',
+    description: 'Devinez le contenu de GIFs issus de la culture française en 30 secondes !',
+    shortDescription: 'Devinez les GIFs de la culture française',
+    players: '3-10 joueurs',
+    duration: '15-30 minutes',
+    difficulty: 'moyen',
+    category: 'reflexion',
+    interactive: true,
+    rules: [
+      'Un joueur est tiré au sort',
+      'L\'application affiche un GIF français',
+      'Le joueur a 30 secondes pour deviner',
+      'Les autres valident si la réponse est correcte',
+      'Cliquez sur "Bonne réponse" ou "Faux"',
+      'Passez au joueur suivant'
+    ],
+    materials: ['Application', 'Boissons'],
+    variants: [
+      'Mode films : uniquement des films français',
+      'Mode TV : émissions et séries françaises',
+      'Mode memes : culture internet française'
+    ]
+  },
+  {
+    id: 'shot-retardement',
+    title: 'Shot à Retardement',
+    description: 'Répondez aux questions avant que la bombe explose ! Tension garantie !',
+    shortDescription: 'Répondez avant l\'explosion',
+    players: '3-8 joueurs',
+    duration: '10-25 minutes',
+    difficulty: 'facile',
+    category: 'ambiance',
+    interactive: true,
+    rules: [
+      'Un joueur commence, tiré au sort',
+      'L\'application affiche une question',
+      'Répondez à voix haute rapidement',
+      'Cliquez "Suivant" pour passer au joueur suivant',
+      'La bombe explose aléatoirement (15-45s)',
+      'Celui qui joue au moment de l\'explosion boit !'
+    ],
+    materials: ['Application', 'Boissons'],
+    variants: [
+      'Mode rapide : explosions plus fréquentes',
+      'Mode thématique : questions sur un sujet',
+      'Mode escalade : questions de plus en plus difficiles'
+    ]
+  },
+  {
     id: 'top-10',
     title: 'Top 10',
     description: 'Devinez les éléments d\'un classement et buvez selon votre performance !',
