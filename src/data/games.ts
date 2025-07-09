@@ -145,7 +145,6 @@ export const games: Game[] = [
       'Version alphabet : ordre alphabétique',
       'Version opposé : trouvez l\'antonyme'
     ]
-  }
   },
   {
     id: 'top-10',
@@ -196,6 +195,7 @@ export const games: Game[] = [
       'Mode personnalisé : uniquement vos questions',
       'Mode escalade : questions de plus en plus osées'
     ]
+  }
 ];
 
 export const categories = [
