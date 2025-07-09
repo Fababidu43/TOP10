@@ -19,21 +19,3 @@ export interface GameFilter {
   players: string;
   difficulty: string;
 }
-
-export interface TelephoneRound {
-  id: string;
-  playerId: string;
-  playerName: string;
-  content: string;
-  type: 'phrase' | 'drawing';
-}
-
-export interface TelephoneGame {
-  id: string;
-  players: string[];
-  rounds: TelephoneRound[];
-  currentRound: number;
-  currentPlayer: number;
-  isComplete: boolean;
-  originalPhrase: string;
-}

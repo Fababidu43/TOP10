@@ -52,7 +52,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
               <ArrowRight size={20} />
             </button>
             <button
-              onClick={() => onPlayGame('telephone-arabe')}
+              onClick={() => onPlayGame('top-10')}
               className="border-2 border-purple-500 text-purple-600 py-4 px-8 rounded-full hover:bg-purple-50 transition-all font-medium text-lg flex items-center gap-2"
             >
               <Play size={20} />
@@ -86,48 +86,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
         </div>
       </section>
 
-      {/* Featured Game */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Jeu vedette
-          </h2>
-          <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
-                <div className="text-6xl mb-4">🎭</div>
-                <h3 className="text-2xl font-bold mb-4">Téléphone Arabe</h3>
-                <p className="text-purple-100 mb-6">
-                  Le jeu d'ambiance par excellence ! Découvrez comment une phrase simple peut 
-                  se transformer en message hilarant en passant de joueur en joueur.
-                </p>
-                <div className="flex items-center gap-4 text-purple-100 mb-6">
-                  <span>👥 4-10 joueurs</span>
-                  <span>⏱️ 15-30 min</span>
-                  <span>🎯 Facile</span>
-                </div>
-                <button
-                  onClick={() => onPlayGame('telephone-arabe')}
-                  className="bg-white text-purple-600 py-3 px-6 rounded-full hover:bg-purple-50 transition-all font-medium flex items-center gap-2"
-                >
-                  <Play size={20} />
-                  Jouer maintenant
-                </button>
-              </div>
-              <div className="text-center">
-                <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
-                  <div className="text-4xl mb-4">📱</div>
-                  <h4 className="text-lg font-semibold mb-2">Version Interactive</h4>
-                  <p className="text-purple-100 text-sm">
-                    Jouez directement en ligne avec interface guidée et 
-                    révélation automatique des résultats
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="text-center py-16">
@@ -149,5 +107,4 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
     </div>
   );
 };
-
 export default HomePage;
