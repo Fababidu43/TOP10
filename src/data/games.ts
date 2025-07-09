@@ -146,7 +146,6 @@ export const games: Game[] = [
       'Version opposé : trouvez l\'antonyme'
     ]
   },
-  {
     id: 'top-10',
     title: 'Top 10',
     description: 'Devinez les éléments d\'un classement et buvez selon votre performance !',
