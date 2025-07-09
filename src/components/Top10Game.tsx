@@ -95,6 +95,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       showResults: false,
       currentPlayerIndex: 0,
       hintsUsed: 0
+      hintsUsed: 0,
       excludedSagaItems: [],
       showingSagaChoice: null
     });
