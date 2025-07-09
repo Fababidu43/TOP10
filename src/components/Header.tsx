@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           >
             <Gamepad2 size={32} className="text-yellow-300" />
             <div>
-              <h1 className="text-2xl font-bold">Jeux2Soirée</h1>
+              <h1 className="text-2xl font-bold">FABABIBOIRE</h1>
               <p className="text-purple-200 text-sm">Animez vos soirées !</p>
             </div>
           </div>
@@ -47,5 +47,4 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
     </header>
   );
 };
-
 export default Header;
