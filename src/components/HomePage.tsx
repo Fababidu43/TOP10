@@ -66,7 +66,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
       <section className="py-16 bg-gray-50 rounded-2xl">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Pourquoi choisir Jeux2Soirée ?
+            Pourquoi choisir FABABIBOIRE ?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
