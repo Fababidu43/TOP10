@@ -51,30 +51,6 @@ export const games: Game[] = [
     ]
   },
   {
-    id: 'pictionary',
-    title: 'Pictionary',
-    description: 'Dessinez et devinez dans ce classique indémodable !',
-    shortDescription: 'Dessinez pour faire deviner',
-    players: '4-12 joueurs',
-    duration: '30-60 minutes',
-    difficulty: 'moyen',
-    category: 'creativite',
-    interactive: false,
-    rules: [
-      'Formez des équipes',
-      'Un joueur dessine le mot donné',
-      'Son équipe doit deviner en temps limité',
-      'Pas de lettres, chiffres ou paroles',
-      'L\'équipe qui devine le plus gagne !'
-    ],
-    materials: ['Papier', 'Crayons', 'Cartes de mots', 'Chronomètre'],
-    variants: [
-      'Version sculpture : modelez avec de la pâte',
-      'Version mime : pas de dessin, que des gestes',
-      'Version speed : dessins ultra-rapides'
-    ]
-  },
-  {
     id: 'story-building',
     title: 'Histoire Collaborative',
     description: 'Créez ensemble une histoire loufoque et imprévisible !',
@@ -120,30 +96,6 @@ export const games: Game[] = [
       'Version sons : ajoutez des bruitages',
       'Version objets : utilisez des accessoires',
       'Version thème : spécialisez les cartes'
-    ]
-  },
-  {
-    id: 'word-association',
-    title: 'Association d\'Idées',
-    description: 'Enchaînez les mots le plus rapidement possible !',
-    shortDescription: 'Enchaînez les associations d\'idées',
-    players: '3-10 joueurs',
-    duration: '10-20 minutes',
-    difficulty: 'facile',
-    category: 'reflexion',
-    interactive: false,
-    rules: [
-      'Le premier joueur dit un mot',
-      'Le suivant dit un mot associé',
-      'Continuez l\'enchaînement rapidement',
-      'Pas de répétition autorisée',
-      'Élimination si vous hésitez trop'
-    ],
-    materials: ['Rien !'],
-    variants: [
-      'Version thème : restez dans un domaine',
-      'Version alphabet : ordre alphabétique',
-      'Version opposé : trouvez l\'antonyme'
     ]
   },
   {
