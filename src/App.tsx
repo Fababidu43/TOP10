@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SEOHead from './components/SEOHead';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
 import GamesPage from './components/GamesPage';
@@ -47,8 +48,73 @@ function App() {
 
   const selectedGame = selectedGameId ? games.find(g => g.id === selectedGameId) : null;
 
+  // Configuration SEO dynamique selon la page
+  const getSEOConfig = () => {
+    switch (currentPage) {
+      case 'games':
+        return {
+          title: "Tous nos Jeux d'Alcool Interactifs | FABABIBOIRE",
+          description: "Découvrez notre collection complète de jeux d'alcool pour animer vos soirées : Top 10, Je n'ai jamais, Devine le GIF et bien plus encore !",
+          keywords: "jeux d'alcool, collection jeux soirée, top 10, je n'ai jamais, devine gif, jeux multijoueurs",
+          canonical: "https://fababicuite.fr/jeux"
+        };
+      case 'about':
+        return {
+          title: "À Propos de FABABIBOIRE - Notre Mission et Valeurs",
+          description: "Découvrez l'histoire de FABABIBOIRE, notre mission d'animer vos soirées et nos valeurs de convivialité et de partage entre amis.",
+          keywords: "à propos fababiboire, mission, valeurs, équipe, histoire",
+          canonical: "https://fababicuite.fr/a-propos"
+        };
+      case 'top10-game':
+        return {
+          title: "Jeu Top 10 Interactif - Devinez les Classements | FABABIBOIRE",
+          description: "Jouez au Top 10 interactif ! Devinez les éléments des classements mondiaux et faites boire vos amis selon vos performances.",
+          keywords: "top 10, jeu classement, quiz interactif, jeu multijoueur, deviner classement",
+          canonical: "https://fababicuite.fr/top-10"
+        };
+      case 'never-have-i-game':
+        return {
+          title: "Je N'ai Jamais Interactif - Révélez vos Secrets | FABABIBOIRE",
+          description: "Jouez à Je n'ai jamais avec vos amis ! Questions personnalisables, catégories variées, révélations garanties pour animer vos soirées.",
+          keywords: "je n'ai jamais, jeu révélation, questions personnalisées, jeu intime, secrets amis",
+          canonical: "https://fababicuite.fr/je-nai-jamais"
+        };
+      case 'devine-gif-game':
+        return {
+          title: "Devine le GIF - Culture Française Interactive | FABABIBOIRE",
+          description: "Testez votre culture française avec Devine le GIF ! Films, séries, memes... 30 secondes pour deviner et faire boire vos amis.",
+          keywords: "devine gif, culture française, quiz culture, memes français, jeu culture",
+          canonical: "https://fababicuite.fr/devine-gif"
+        };
+      case 'game-detail':
+        if (selectedGame) {
+          return {
+            title: `${selectedGame.title} - Règles et Guide Complet | FABABIBOIRE`,
+            description: `Découvrez les règles complètes de ${selectedGame.title} : ${selectedGame.description}`,
+            keywords: `${selectedGame.title.toLowerCase()}, règles jeu, guide complet, ${selectedGame.category}`,
+            canonical: `https://fababicuite.fr/jeu/${selectedGame.id}`
+          };
+        }
+        break;
+      default:
+        return {
+          title: "FABABIBOIRE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
+          description: "Découvrez FABABIBOIRE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
+          keywords: "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs, fababiboire",
+          canonical: "https://fababicuite.fr/"
+        };
+    }
+    
+    return {
+      title: "FABABIBOIRE - Jeux d'Alcool Interactifs pour Animer vos Soirées",
+      description: "Découvrez FABABIBOIRE, la plateforme de jeux d'alcool interactifs pour animer vos soirées entre amis. Top 10, Je n'ai jamais, Devine le GIF et plus encore !",
+      keywords: "jeux d'alcool, jeux de soirée, jeux entre amis, animation soirée, jeux interactifs, fababiboire",
+      canonical: "https://fababicuite.fr/"
+    };
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      <SEOHead {...getSEOConfig()} />
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
       
       <main className="container mx-auto px-4 py-8">

@@ -61,13 +61,13 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
   return (
     <div className="space-y-16">
       {/* Hero Section */}
-      <section className="text-center py-8 md:py-16">
+      <section className="text-center py-8 md:py-16" role="banner">
         <div className="max-w-4xl mx-auto">
           <div className="text-4xl md:text-8xl mb-4 md:mb-6 animate-bounce">🎉</div>
-          <h1 className="text-3xl md:text-6xl font-bold mb-4 md:mb-6">
+          <h1 className="text-3xl md:text-6xl font-bold mb-4 md:mb-6" itemProp="name">
             Animez vos <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600">soirées</span>
           </h1>
-          <p className="text-base md:text-xl text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
+          <p className="text-base md:text-xl text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto px-4" itemProp="description">
             Découvrez une collection de jeux interactifs pour animer vos soirées entre amis. 
             Fou rire garanti avec nos jeux d'ambiance colorés et délirants !
           </p>
@@ -92,22 +92,26 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
       </section>
 
       {/* Quick Games Section */}
-      <section className="py-8 md:py-16">
+      <section className="py-8 md:py-16" role="main">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12" id="jeux-populaires">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
               Jeux Populaires
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8" role="list">
             {quickGames.map((game, index) => (
               <div
                 key={game.id}
                 onClick={() => onPlayGame(game.id)}
                 className={`bg-gradient-to-br ${game.color} p-4 md:p-6 rounded-2xl text-white cursor-pointer transform hover:scale-105 transition-all shadow-lg hover:shadow-xl`}
+                role="listitem"
+                tabIndex={0}
+                onKeyPress={(e) => e.key === 'Enter' && onPlayGame(game.id)}
+                aria-label={`Jouer à ${game.title} - ${game.description}`}
               >
                 <div className="text-3xl md:text-4xl mb-3 md:mb-4">{game.emoji}</div>
-                <h3 className="text-lg md:text-xl font-bold mb-2">{game.title}</h3>
+                <h3 className="text-lg md:text-xl font-bold mb-2" itemProp="name">{game.title}</h3>
                 <p className="text-white/90 mb-3 md:mb-4 text-sm md:text-base">{game.description}</p>
                 <div className="flex items-center gap-2 text-white/80">
                   <Play size={16} />
@@ -120,23 +124,23 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-8 md:py-16">
+      <section className="py-8 md:py-16" role="complementary">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12" id="pourquoi-choisir">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
               Pourquoi choisir FABABIBOIRE ?
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8" role="list">
             {features.map((feature, index) => (
-              <div key={index} className="text-center group">
+              <div key={index} className="text-center group" role="listitem">
                 <div className={`bg-gradient-to-r ${feature.color} w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
                   <feature.icon size={24} className="text-white" />
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2">
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-2" itemProp="name">
                   {feature.title}
                 </h3>
-                <p className="text-sm md:text-base text-gray-600">
+                <p className="text-sm md:text-base text-gray-600" itemProp="description">
                   {feature.description}
                 </p>
               </div>
@@ -146,23 +150,23 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-8 md:py-16 bg-gradient-to-r from-purple-100 via-pink-100 to-blue-100 rounded-2xl md:rounded-3xl mx-4">
+      <section className="py-8 md:py-16 bg-gradient-to-r from-purple-100 via-pink-100 to-blue-100 rounded-2xl md:rounded-3xl mx-4" role="complementary">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8" id="statistiques">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
               Rejoignez la fête !
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8" role="list">
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20" role="listitem">
               <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">13</div>
               <div className="text-sm md:text-base text-gray-700">Top 10 Disponibles</div>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20">
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20" role="listitem">
               <div className="text-2xl md:text-3xl font-bold text-pink-600 mb-2">∞</div>
               <div className="text-sm md:text-base text-gray-700">Parties Possibles</div>
             </div>
-            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20">
+            <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-white/20" role="listitem">
               <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">100%</div>
               <div className="text-sm md:text-base text-gray-700">Fun Garanti</div>
             </div>
@@ -171,9 +175,9 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
       </section>
 
       {/* CTA Section */}
-      <section className="text-center py-8 md:py-16 px-4">
+      <section className="text-center py-8 md:py-16 px-4" role="complementary">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4" id="appel-action">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
               Prêt à animer votre soirée ?
             </span>
@@ -184,6 +188,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
           <button
             onClick={() => onNavigate('games')}
             className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white py-3 md:py-4 px-6 md:px-8 rounded-full hover:from-purple-600 hover:via-pink-600 hover:to-blue-600 transition-all font-medium text-base md:text-lg shadow-lg transform hover:scale-105"
+            aria-label="Voir tous les jeux disponibles sur FABABIBOIRE"
           >
             🎮 Voir tous les jeux
           </button>
