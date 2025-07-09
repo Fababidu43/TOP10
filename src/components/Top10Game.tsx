@@ -428,6 +428,19 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 </div>
               )}
 
+              {showSagaWarning && (
+                <div className="mb-6 p-4 bg-gradient-to-r from-blue-100 to-cyan-100 border-2 border-blue-300 rounded-lg animate-pulse">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="text-2xl">ℹ️</div>
+                    <span className="font-semibold text-blue-800">Information importante :</span>
+                  </div>
+                  <p className="text-blue-700">
+                    Attention ! Cette catégorie peut contenir plusieurs films d'une même saga ou franchise. 
+                    Soyez précis dans vos réponses (ex: "Avatar 2009" plutôt que juste "Avatar").
+                  </p>
+                </div>
+              )}
+
               {showHint && (
                 <div className="mb-6 p-4 bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
