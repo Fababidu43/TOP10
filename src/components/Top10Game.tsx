@@ -46,6 +46,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const [currentGuess, setCurrentGuess] = useState('');
   const [showHint, setShowHint] = useState(false);
   const [feedback, setFeedback] = useState<string>('');
+  const [showSagaWarning, setShowSagaWarning] = useState(false);
 
   const addPlayer = () => {
     setPlayers([...players, '']);
@@ -73,6 +74,13 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   };
 
   const selectCategory = (category: Top10Category) => {
+    // Vérifier si c'est une catégorie avec des sagas/suites
+    const sagaCategories = ['films-box-office', 'jeux-video-vendus'];
+    if (sagaCategories.includes(category.id)) {
+      setShowSagaWarning(true);
+      setTimeout(() => setShowSagaWarning(false), 4000);
+    }
+    
     setGame({
       ...game,
       category,
@@ -137,7 +145,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
     setGame(newGame);
     setCurrentGuess('');
-    setShowHint(false);
+    setShowHint(false); // Cache l'indice après soumission
 
     // Feedback pour le joueur
     if (isCorrect && foundItem) {
@@ -165,9 +173,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     setGame({ ...game, hintsUsed: game.hintsUsed + 1 });
     setShowHint(true);
     
-    setTimeout(() => {
-      setShowHint(false);
-    }, 10000); // Indice visible 10 secondes
+    // L'indice reste visible jusqu'à ce que le joueur soumette une réponse
   };
 
   const getHint = () => {
@@ -443,6 +449,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                   onKeyPress={(e) => e.key === 'Enter' && submitGuess()}
                   placeholder="Tapez votre réponse..."
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                  onFocus={() => setShowHint(false)} // Cache l'indice quand on tape
                 />
               </div>
 

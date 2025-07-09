@@ -14,20 +14,54 @@ export interface Top10Item {
 
 export const top10Categories: Top10Category[] = [
   {
-    id: 'films-box-office',
-    name: 'Films au Box-Office Mondial',
-    description: 'Les 10 films ayant rapporté le plus d\'argent au cinéma',
+    id: 'films-cultes-francais',
+    name: 'Films Français Cultes',
+    description: 'Les 10 films français les plus emblématiques et populaires',
     items: [
-      { rank: 1, name: 'Avatar (2009)', value: '2,9 milliards $', alternatives: ['avatar 2009', 'avatar 1', 'avatar james cameron'] },
-      { rank: 2, name: 'Avengers: Endgame', value: '2,8 milliards $', alternatives: ['endgame', 'avengers endgame', 'avengers 4'] },
-      { rank: 3, name: 'Avatar: La Voie de l\'eau', value: '2,3 milliards $', alternatives: ['avatar 2', 'avatar la voie de l\'eau', 'avatar way of water'] },
-      { rank: 4, name: 'Titanic (1997)', value: '2,2 milliards $', alternatives: ['titanic 1997', 'titanic leonardo'] },
-      { rank: 5, name: 'Star Wars: Le Réveil de la Force', value: '2,1 milliards $', alternatives: ['star wars 7', 'le réveil de la force', 'force awakens', 'episode 7'] },
-      { rank: 6, name: 'Avengers: Infinity War', value: '2,0 milliards $', alternatives: ['infinity war', 'avengers infinity war', 'avengers 3'] },
-      { rank: 7, name: 'Spider-Man: No Way Home', value: '1,9 milliards $', alternatives: ['spiderman no way home', 'no way home', 'spider man 3 tom holland'] },
-      { rank: 8, name: 'Jurassic World (2015)', value: '1,7 milliards $', alternatives: ['jurassic world 1', 'jurassic world 2015'] },
-      { rank: 9, name: 'Le Roi Lion (2019)', value: '1,7 milliards $', alternatives: ['roi lion', 'le roi lion', 'lion king 2019', 'roi lion remake'] },
-      { rank: 10, name: 'The Avengers (2012)', value: '1,5 milliards $', alternatives: ['avengers', 'avengers 1', 'avengers 2012', 'premier avengers'] }
+      { rank: 1, name: 'Intouchables', value: '2011 - Nakache & Toledano', alternatives: ['intouchable', 'omar sy', 'francois cluzet'] },
+      { rank: 2, name: 'Amélie Poulain', value: '2001 - Jean-Pierre Jeunet', alternatives: ['amelie', 'fabuleux destin amelie poulain', 'audrey tautou'] },
+      { rank: 3, name: 'Bienvenue chez les Ch\'tis', value: '2008 - Dany Boon', alternatives: ['chtis', 'bienvenue chez les chtis', 'kad merad'] },
+      { rank: 4, name: 'Les Visiteurs', value: '1993 - Jean-Marie Poiré', alternatives: ['visiteurs', 'jean reno', 'christian clavier'] },
+      { rank: 5, name: 'Taxi', value: '1998 - Gérard Pirès', alternatives: ['taxi 1', 'samy naceri', 'freddy'] },
+      { rank: 6, name: 'Astérix et Obélix: Mission Cléopâtre', value: '2002 - Alain Chabat', alternatives: ['asterix cleopatre', 'mission cleopatre', 'jamel debbouze'] },
+      { rank: 7, name: 'La Grande Vadrouille', value: '1966 - Gérard Oury', alternatives: ['grande vadrouille', 'bourvil', 'louis de funes'] },
+      { rank: 8, name: 'OSS 117: Le Caire, nid d\'espions', value: '2006 - Michel Hazanavicius', alternatives: ['oss 117', 'jean dujardin', 'caire'] },
+      { rank: 9, name: 'Le Dîner de Cons', value: '1998 - Francis Veber', alternatives: ['diner de cons', 'thierry lhermitte', 'jacques villeret'] },
+      { rank: 10, name: 'La Cité de la Peur', value: '1994 - Alain Berbérian', alternatives: ['cite de la peur', 'les nuls', 'chantal lauby'] }
+    ]
+  },
+  {
+    id: 'acteurs-francais',
+    name: 'Acteurs Français les Plus Populaires',
+    description: 'Les 10 acteurs français les plus aimés du public',
+    items: [
+      { rank: 1, name: 'Jean Dujardin', value: 'OSS 117, The Artist', alternatives: ['dujardin', 'jean dujardin acteur'] },
+      { rank: 2, name: 'Omar Sy', value: 'Intouchables, Lupin', alternatives: ['omar sy acteur', 'sy'] },
+      { rank: 3, name: 'Marion Cotillard', value: 'La Vie en Rose, Inception', alternatives: ['cotillard', 'marion cotillard actrice'] },
+      { rank: 4, name: 'Jean Reno', value: 'Léon, Les Visiteurs', alternatives: ['reno', 'jean reno acteur'] },
+      { rank: 5, name: 'Gérard Depardieu', value: 'Cyrano, Astérix', alternatives: ['depardieu', 'gerard depardieu'] },
+      { rank: 6, name: 'Audrey Tautou', value: 'Amélie, Da Vinci Code', alternatives: ['tautou', 'audrey tautou actrice'] },
+      { rank: 7, name: 'Vincent Cassel', value: 'La Haine, Black Swan', alternatives: ['cassel', 'vincent cassel acteur'] },
+      { rank: 8, name: 'Léa Seydoux', value: 'James Bond, Blue is the Warmest Color', alternatives: ['seydoux', 'lea seydoux'] },
+      { rank: 9, name: 'François Cluzet', value: 'Intouchables, Ne le dis à personne', alternatives: ['cluzet', 'francois cluzet'] },
+      { rank: 10, name: 'Kad Merad', value: 'Bienvenue chez les Ch\'tis', alternatives: ['merad', 'kad merad acteur'] }
+    ]
+  },
+  {
+    id: 'realisateurs-francais',
+    name: 'Réalisateurs Français Célèbres',
+    description: 'Les 10 réalisateurs français les plus reconnus',
+    items: [
+      { rank: 1, name: 'François Truffaut', value: 'Nouvelle Vague, Les 400 Coups', alternatives: ['truffaut', 'francois truffaut'] },
+      { rank: 2, name: 'Jean-Luc Godard', value: 'À bout de souffle, Nouvelle Vague', alternatives: ['godard', 'jean luc godard'] },
+      { rank: 3, name: 'Luc Besson', value: 'Léon, Le Grand Bleu', alternatives: ['besson', 'luc besson realisateur'] },
+      { rank: 4, name: 'Claude Lelouch', value: 'Un homme et une femme', alternatives: ['lelouch', 'claude lelouch'] },
+      { rank: 5, name: 'Jean-Pierre Jeunet', value: 'Amélie, Delicatessen', alternatives: ['jeunet', 'jean pierre jeunet'] },
+      { rank: 6, name: 'Alain Chabat', value: 'Astérix Mission Cléopâtre', alternatives: ['chabat', 'alain chabat realisateur'] },
+      { rank: 7, name: 'Mathieu Kassovitz', value: 'La Haine', alternatives: ['kassovitz', 'mathieu kassovitz'] },
+      { rank: 8, name: 'Jacques Audiard', value: 'De battre mon cœur s\'est arrêté', alternatives: ['audiard', 'jacques audiard'] },
+      { rank: 9, name: 'Olivier Nakache', value: 'Intouchables, Nos jours heureux', alternatives: ['nakache', 'olivier nakache'] },
+      { rank: 10, name: 'Cédric Klapisch', value: 'L\'Auberge espagnole', alternatives: ['klapisch', 'cedric klapisch'] }
     ]
   },
   {
