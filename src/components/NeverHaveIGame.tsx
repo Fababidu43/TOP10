@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Users, RotateCcw, Plus, Flame, Heart, Zap } from 'lucide-react';
-import { neverHaveIQuestions, NeverHaveIQuestion, getCategoryColor, getCategoryName } from '../data/neverHaveIData';
+import { ArrowLeft, Users, RotateCcw, Plus, Flame, Heart, Zap, Shuffle, Settings, Info } from 'lucide-react';
+import { neverHaveIQuestions, NeverHaveIQuestion, getCategoryColor, getCategoryName, getCategoryDescription } from '../data/neverHaveIData';
 
 interface NeverHaveIGameProps {
   onBack: () => void;
@@ -10,6 +10,14 @@ interface GameSettings {
   players: string[];
   enabledCategories: string[];
   customQuestions: string[];
+  autoAdvance: boolean;
+  showStats: boolean;
+}
+
+interface GameStats {
+  questionsShown: number;
+  categoriesUsed: { [category: string]: number };
+  playersActive: string[];
 }
 
 const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
@@ -18,12 +26,20 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
   const [settings, setSettings] = useState<GameSettings>({
     players: [],
     enabledCategories: ['fun'],
-    customQuestions: []
+    customQuestions: [],
+    autoAdvance: false,
+    showStats: true
   });
   const [currentQuestion, setCurrentQuestion] = useState<NeverHaveIQuestion | null>(null);
   const [usedQuestions, setUsedQuestions] = useState<string[]>([]);
   const [customQuestionInput, setCustomQuestionInput] = useState('');
   const [showCustomInput, setShowCustomInput] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [stats, setStats] = useState<GameStats>({
+    questionsShown: 0,
+    categoriesUsed: {},
+    playersActive: []
+  });
 
   const addPlayer = () => {
     setPlayers([...players, '']);
@@ -49,9 +65,13 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
 
   const addCustomQuestion = () => {
     if (customQuestionInput.trim()) {
+      const questionText = customQuestionInput.trim().startsWith('Je n\'ai jamais') 
+        ? customQuestionInput.trim()
+        : `Je n'ai jamais ${customQuestionInput.trim()}`;
+      
       setSettings({
         ...settings,
-        customQuestions: [...settings.customQuestions, customQuestionInput.trim()]
+        customQuestions: [...settings.customQuestions, questionText]
       });
       setCustomQuestionInput('');
       setShowCustomInput(false);
@@ -71,6 +91,11 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
 
     setSettings({ ...settings, players: validPlayers });
     setUsedQuestions([]);
+    setStats({
+      questionsShown: 0,
+      categoriesUsed: {},
+      playersActive: validPlayers
+    });
     setGameState('playing');
     getNextQuestion();
   };
@@ -96,13 +121,29 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
     if (allAvailable.length === 0) {
       // Réinitialiser si toutes les questions ont été utilisées
       setUsedQuestions([]);
-      setCurrentQuestion(neverHaveIQuestions[0]);
+      const firstQuestion = neverHaveIQuestions.find(q => 
+        settings.enabledCategories.includes(q.category)
+      ) || neverHaveIQuestions[0];
+      setCurrentQuestion(firstQuestion);
+      updateStats(firstQuestion);
       return;
     }
 
     const randomQuestion = allAvailable[Math.floor(Math.random() * allAvailable.length)];
     setCurrentQuestion(randomQuestion);
     setUsedQuestions([...usedQuestions, randomQuestion.id]);
+    updateStats(randomQuestion);
+  };
+
+  const updateStats = (question: NeverHaveIQuestion) => {
+    setStats(prev => ({
+      ...prev,
+      questionsShown: prev.questionsShown + 1,
+      categoriesUsed: {
+        ...prev.categoriesUsed,
+        [question.category]: (prev.categoriesUsed[question.category] || 0) + 1
+      }
+    }));
   };
 
   const resetGame = () => {
@@ -111,12 +152,20 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
     setSettings({
       players: [],
       enabledCategories: ['fun'],
-      customQuestions: []
+      customQuestions: [],
+      autoAdvance: false,
+      showStats: true
     });
     setCurrentQuestion(null);
     setUsedQuestions([]);
     setCustomQuestionInput('');
     setShowCustomInput(false);
+    setShowSettings(false);
+    setStats({
+      questionsShown: 0,
+      categoriesUsed: {},
+      playersActive: []
+    });
   };
 
   const getCategoryIcon = (category: string) => {
@@ -126,6 +175,13 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
       case 'extreme': return <Zap size={16} />;
       default: return <Heart size={16} />;
     }
+  };
+
+  const getAvailableQuestionsCount = () => {
+    const categoryQuestions = neverHaveIQuestions.filter(q => 
+      settings.enabledCategories.includes(q.category)
+    ).length;
+    return categoryQuestions + settings.customQuestions.length;
   };
 
   if (gameState === 'setup') {
@@ -190,9 +246,9 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
             <h3 className="text-lg font-semibold mb-4">Catégories de questions</h3>
             <div className="space-y-3">
               {[
-                { id: 'fun', name: 'Fun', description: 'Questions amusantes et légères' },
-                { id: 'trash', name: 'Trash', description: 'Questions plus osées' },
-                { id: 'extreme', name: 'Extrême', description: 'Questions très intimes (18+)' }
+                { id: 'fun', name: 'Fun', description: getCategoryDescription('fun') },
+                { id: 'trash', name: 'Trash', description: getCategoryDescription('trash') },
+                { id: 'extreme', name: 'Extrême', description: getCategoryDescription('extreme') }
               ].map((category) => (
                 <div key={category.id} className="flex items-center gap-3">
                   <input
@@ -206,11 +262,17 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
                     <div className="flex items-center gap-2">
                       {getCategoryIcon(category.id)}
                       <span className="font-medium">{category.name}</span>
+                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        {neverHaveIQuestions.filter(q => q.category === category.id).length} questions
+                      </span>
                     </div>
                     <p className="text-sm text-gray-500">{category.description}</p>
                   </label>
                 </div>
               ))}
+            </div>
+            <div className="mt-2 text-sm text-gray-600">
+              Total disponible : {getAvailableQuestionsCount()} questions
             </div>
           </div>
 
@@ -233,13 +295,14 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
                   type="text"
                   value={customQuestionInput}
                   onChange={(e) => setCustomQuestionInput(e.target.value)}
-                  placeholder="Je n'ai jamais..."
+                  placeholder="Ex: mangé de la nourriture périmée"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-2"
                 />
                 <div className="flex gap-2">
                   <button
                     onClick={addCustomQuestion}
-                    className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors text-sm"
+                    disabled={!customQuestionInput.trim()}
+                    className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                   >
                     Ajouter
                   </button>
@@ -254,7 +317,7 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
             )}
 
             {settings.customQuestions.length > 0 && (
-              <div className="space-y-2">
+              <div className="space-y-2 max-h-32 overflow-y-auto">
                 {settings.customQuestions.map((question, index) => (
                   <div key={index} className="flex items-center gap-2 p-2 bg-purple-50 rounded">
                     <span className="flex-1 text-sm">{question}</span>
@@ -270,8 +333,51 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
             )}
           </div>
 
+          {/* Paramètres avancés */}
+          <div className="mb-6">
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-800 text-sm mb-3"
+            >
+              <Settings size={16} />
+              Paramètres avancés
+            </button>
+            
+            {showSettings && (
+              <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="autoAdvance"
+                    checked={settings.autoAdvance}
+                    onChange={(e) => setSettings({ ...settings, autoAdvance: e.target.checked })}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
+                  <label htmlFor="autoAdvance" className="text-sm">
+                    Passage automatique (toutes les 10 secondes)
+                  </label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="showStats"
+                    checked={settings.showStats}
+                    onChange={(e) => setSettings({ ...settings, showStats: e.target.checked })}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
+                  <label htmlFor="showStats" className="text-sm">
+                    Afficher les statistiques pendant le jeu
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <h4 className="font-semibold text-blue-800 mb-2">Comment jouer :</h4>
+            <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+              <Info size={16} />
+              Comment jouer :
+            </h4>
             <ul className="text-sm text-blue-700 space-y-1">
               <li>• Une question "Je n'ai jamais..." s'affiche</li>
               <li>• Tous ceux qui ont déjà fait l'action boivent une gorgée</li>
@@ -294,58 +400,110 @@ const NeverHaveIGame: React.FC<NeverHaveIGameProps> = ({ onBack }) => {
 
   if (gameState === 'playing' && currentQuestion) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-4">🍻</div>
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className={`px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r ${getCategoryColor(currentQuestion.category)}`}>
-                {getCategoryIcon(currentQuestion.category)}
-                <span className="ml-1">{getCategoryName(currentQuestion.category)}</span>
-              </span>
+      <div className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Zone de jeu principale */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="text-center mb-8">
+                <div className="text-6xl mb-4">🍻</div>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <span className={`px-3 py-1 rounded-full text-white text-sm font-medium bg-gradient-to-r ${getCategoryColor(currentQuestion.category)}`}>
+                    {getCategoryIcon(currentQuestion.category)}
+                    <span className="ml-1">{getCategoryName(currentQuestion.category)}</span>
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl p-8 mb-8">
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+                  {currentQuestion.text}
+                </h2>
+                <p className="text-center text-purple-700 font-medium">
+                  Si vous avez déjà fait ça, buvez une gorgée ! 🍺
+                </p>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  onClick={getNextQuestion}
+                  className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-teal-600 transition-all font-medium text-lg flex items-center justify-center gap-2"
+                >
+                  <Shuffle size={20} />
+                  Question suivante
+                </button>
+                <button
+                  onClick={resetGame}
+                  className="bg-gray-500 text-white py-4 px-6 rounded-lg hover:bg-gray-600 transition-all font-medium flex items-center gap-2"
+                >
+                  <RotateCcw size={20} />
+                  Nouvelle partie
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
-              {currentQuestion.text}
-            </h2>
-            <p className="text-center text-purple-700 font-medium">
-              Si vous avez déjà fait ça, buvez une gorgée ! 🍺
-            </p>
-          </div>
-
-          <div className="bg-yellow-50 rounded-lg p-4 mb-6">
-            <h3 className="font-semibold text-yellow-800 mb-2">Joueurs présents :</h3>
-            <div className="flex flex-wrap gap-2">
-              {settings.players.map((player, index) => (
-                <span key={index} className="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm">
-                  {player}
-                </span>
-              ))}
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Joueurs */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Users size={20} />
+                Joueurs présents
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {settings.players.map((player, index) => (
+                  <span key={index} className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+                    {player}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="flex gap-4">
-            <button
-              onClick={getNextQuestion}
-              className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-teal-600 transition-all font-medium text-lg"
-            >
-              Question suivante
-            </button>
-            <button
-              onClick={resetGame}
-              className="bg-gray-500 text-white py-4 px-6 rounded-lg hover:bg-gray-600 transition-all font-medium flex items-center gap-2"
-            >
-              <RotateCcw size={20} />
-              Nouvelle partie
-            </button>
-          </div>
+            {/* Statistiques */}
+            {settings.showStats && (
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-semibold mb-4">📊 Statistiques</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Questions vues :</span>
+                    <span className="font-medium">{stats.questionsShown}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Questions restantes :</span>
+                    <span className="font-medium">{getAvailableQuestionsCount() - usedQuestions.length}</span>
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-gray-600 text-sm">Catégories utilisées :</span>
+                    {Object.entries(stats.categoriesUsed).map(([category, count]) => (
+                      <div key={category} className="flex justify-between text-sm">
+                        <span className="flex items-center gap-1">
+                          {getCategoryIcon(category)}
+                          {getCategoryName(category)}
+                        </span>
+                        <span>{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
-              Questions utilisées : {usedQuestions.length}
-            </p>
+            {/* Règles */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-6">
+              <h3 className="font-semibold text-purple-800 mb-3">🍺 Règles d'alcool</h3>
+              <div className="space-y-2 text-sm">
+                <p className="text-purple-700">
+                  • Si tu as déjà fait l'action : <strong>bois 1 gorgée</strong>
+                </p>
+                <p className="text-purple-700">
+                  • Si tu n'as jamais fait : <strong>ne bois pas</strong>
+                </p>
+                <p className="text-purple-600 text-xs mt-3">
+                  💡 Conseil : Soyez honnêtes pour plus de fun !
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

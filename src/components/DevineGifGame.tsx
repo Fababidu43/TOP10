@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Play } from 'lucide-react';
+import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Trophy, Target } from 'lucide-react';
 
 interface DevineGifGameProps {
   onBack: () => void;
@@ -12,6 +12,7 @@ interface GifItem {
   category: 'film' | 'tv' | 'meme';
   imageUrl: string;
   alternatives?: string[];
+  hint?: string;
 }
 
 interface GameState {
@@ -20,19 +21,23 @@ interface GameState {
   currentGif: GifItem | null;
   timeLeft: number;
   isTimerRunning: boolean;
-  scores: { [playerName: string]: number };
-  gamePhase: 'setup' | 'playing' | 'waiting-answer';
+  scores: { [playerName: string]: { correct: number; wrong: number; timeout: number } };
+  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result';
+  roundsPlayed: number;
+  maxRounds: number;
 }
 
-// Base de données de GIFs français (simulée avec des descriptions)
+// Base de données étendue de GIFs français
 const frenchGifs: GifItem[] = [
+  // Films français cultes
   {
     id: '1',
     title: 'Les Visiteurs',
     description: 'Scène culte : "C\'est quoi ce bordel ?"',
     category: 'film',
     imageUrl: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg',
-    alternatives: ['visiteurs', 'jean reno', 'christian clavier']
+    alternatives: ['visiteurs', 'jean reno', 'christian clavier', 'godefroy'],
+    hint: 'Film avec Jean Reno et Christian Clavier'
   },
   {
     id: '2',
@@ -40,15 +45,17 @@ const frenchGifs: GifItem[] = [
     description: 'Jean Dujardin qui fait son arrogant',
     category: 'film',
     imageUrl: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg',
-    alternatives: ['oss', 'jean dujardin', 'hubert bonisseur']
+    alternatives: ['oss', 'jean dujardin', 'hubert bonisseur', 'agent secret'],
+    hint: 'Agent secret français très arrogant'
   },
   {
     id: '3',
-    title: 'Kaamelott',
-    description: 'Arthur qui soupire face à ses chevaliers',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg',
-    alternatives: ['kaamelott', 'arthur', 'alexandre astier']
+    title: 'Astérix Mission Cléopâtre',
+    description: 'Jamel qui dit "C\'est du brutal !"',
+    category: 'film',
+    imageUrl: 'https://images.pexels.com/photos/1181292/pexels-photo-1181292.jpeg',
+    alternatives: ['astérix', 'cléopâtre', 'jamel', 'brutal', 'mission cleopatre'],
+    hint: 'Film avec Jamel Debbouze en Égypte'
   },
   {
     id: '4',
@@ -56,55 +63,156 @@ const frenchGifs: GifItem[] = [
     description: 'Omar Sy qui rigole avec François Cluzet',
     category: 'film',
     imageUrl: 'https://images.pexels.com/photos/1181319/pexels-photo-1181319.jpeg',
-    alternatives: ['intouchables', 'omar sy', 'françois cluzet']
+    alternatives: ['intouchables', 'omar sy', 'françois cluzet', 'driss'],
+    hint: 'Film sur l\'amitié entre un tétraplégique et son aide-soignant'
   },
   {
     id: '5',
-    title: 'Burger Quiz',
-    description: 'Alain Chabat qui fait "Miam miam miam"',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg',
-    alternatives: ['burger quiz', 'alain chabat', 'miam']
-  },
-  {
-    id: '6',
     title: 'La Cité de la Peur',
     description: 'Les Nuls : "Ça va couper chérie !"',
     category: 'film',
     imageUrl: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg',
-    alternatives: ['cité de la peur', 'les nuls', 'couper chérie']
+    alternatives: ['cité de la peur', 'les nuls', 'couper chérie', 'cannes'],
+    hint: 'Film des Nuls au Festival de Cannes'
   },
   {
-    id: '7',
-    title: 'Koh-Lanta',
-    description: 'Denis Brogniart qui annonce une épreuve',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg',
-    alternatives: ['koh lanta', 'denis brogniart', 'épreuve']
-  },
-  {
-    id: '8',
-    title: 'Astérix Mission Cléopâtre',
-    description: 'Jamel qui dit "C\'est du brutal !"',
-    category: 'film',
-    imageUrl: 'https://images.pexels.com/photos/1181292/pexels-photo-1181292.jpeg',
-    alternatives: ['astérix', 'cléopâtre', 'jamel', 'brutal']
-  },
-  {
-    id: '9',
-    title: 'TPMP',
-    description: 'Cyril Hanouna qui fait le fou',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181425/pexels-photo-1181425.jpeg',
-    alternatives: ['tpmp', 'cyril hanouna', 'baba']
-  },
-  {
-    id: '10',
+    id: '6',
     title: 'Le Dîner de Cons',
     description: 'Jacques Villeret qui fait l\'innocent',
     category: 'film',
     imageUrl: 'https://images.pexels.com/photos/1181351/pexels-photo-1181351.jpeg',
-    alternatives: ['dîner de cons', 'jacques villeret', 'cons']
+    alternatives: ['dîner de cons', 'jacques villeret', 'cons', 'pignon'],
+    hint: 'Film avec Jacques Villeret et Thierry Lhermitte'
+  },
+  {
+    id: '7',
+    title: 'Bienvenue chez les Ch\'tis',
+    description: 'Dany Boon et son accent du Nord',
+    category: 'film',
+    imageUrl: 'https://images.pexels.com/photos/1181234/pexels-photo-1181234.jpeg',
+    alternatives: ['chtis', 'ch\'tis', 'dany boon', 'nord', 'bienvenue'],
+    hint: 'Film sur les préjugés entre le Nord et le Sud'
+  },
+  {
+    id: '8',
+    title: 'Qu\'est-ce qu\'on a fait au Bon Dieu',
+    description: 'Christian Clavier face à ses gendres',
+    category: 'film',
+    imageUrl: 'https://images.pexels.com/photos/1181445/pexels-photo-1181445.jpeg',
+    alternatives: ['bon dieu', 'christian clavier', 'gendres', 'mariage'],
+    hint: 'Comédie sur les mariages mixtes'
+  },
+
+  // Séries et émissions TV
+  {
+    id: '9',
+    title: 'Kaamelott',
+    description: 'Arthur qui soupire face à ses chevaliers',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg',
+    alternatives: ['kaamelott', 'arthur', 'alexandre astier', 'chevaliers'],
+    hint: 'Série sur le Roi Arthur et ses chevaliers'
+  },
+  {
+    id: '10',
+    title: 'Burger Quiz',
+    description: 'Alain Chabat qui fait "Miam miam miam"',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg',
+    alternatives: ['burger quiz', 'alain chabat', 'miam', 'quiz'],
+    hint: 'Émission de quiz déjantée avec Alain Chabat'
+  },
+  {
+    id: '11',
+    title: 'Koh-Lanta',
+    description: 'Denis Brogniart qui annonce une épreuve',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg',
+    alternatives: ['koh lanta', 'denis brogniart', 'épreuve', 'survie'],
+    hint: 'Émission de survie présentée par Denis Brogniart'
+  },
+  {
+    id: '12',
+    title: 'TPMP',
+    description: 'Cyril Hanouna qui fait le fou',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181425/pexels-photo-1181425.jpeg',
+    alternatives: ['tpmp', 'cyril hanouna', 'baba', 'touche pas'],
+    hint: 'Émission de Cyril Hanouna sur C8'
+  },
+  {
+    id: '13',
+    title: 'Fort Boyard',
+    description: 'Père Fouras et ses énigmes',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181523/pexels-photo-1181523.jpeg',
+    alternatives: ['fort boyard', 'père fouras', 'énigmes', 'fort'],
+    hint: 'Jeu dans un fort avec des épreuves et énigmes'
+  },
+  {
+    id: '14',
+    title: 'Questions pour un Champion',
+    description: 'Julien Lepers et son "Bonne réponse !"',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181367/pexels-photo-1181367.jpeg',
+    alternatives: ['questions champion', 'julien lepers', 'bonne réponse', 'quiz'],
+    hint: 'Quiz de culture générale avec Julien Lepers'
+  },
+  {
+    id: '15',
+    title: 'Les Guignols',
+    description: 'Marionnettes satiriques de Canal+',
+    category: 'tv',
+    imageUrl: 'https://images.pexels.com/photos/1181489/pexels-photo-1181489.jpeg',
+    alternatives: ['guignols', 'marionnettes', 'canal+', 'ppda'],
+    hint: 'Émission satirique avec des marionnettes'
+  },
+
+  // Memes et culture internet
+  {
+    id: '16',
+    title: 'Risitas',
+    description: 'L\'homme qui rit aux éclats',
+    category: 'meme',
+    imageUrl: 'https://images.pexels.com/photos/1181578/pexels-photo-1181578.jpeg',
+    alternatives: ['risitas', 'rire', 'espagnol', 'kekw'],
+    hint: 'Meme de l\'homme qui rit de manière contagieuse'
+  },
+  {
+    id: '17',
+    title: 'Mais t\'es qui toi ?',
+    description: 'Meme français viral',
+    category: 'meme',
+    imageUrl: 'https://images.pexels.com/photos/1181634/pexels-photo-1181634.jpeg',
+    alternatives: ['mais t\'es qui', 'toi', 'meme français'],
+    hint: 'Phrase devenue meme sur internet'
+  },
+  {
+    id: '18',
+    title: 'C\'est pas faux',
+    description: 'Réplique culte de Kaamelott',
+    category: 'meme',
+    imageUrl: 'https://images.pexels.com/photos/1181712/pexels-photo-1181712.jpeg',
+    alternatives: ['c\'est pas faux', 'kaamelott', 'perceval'],
+    hint: 'Réplique de Perceval dans Kaamelott'
+  },
+  {
+    id: '19',
+    title: 'Oui oui oui',
+    description: 'Meme de validation enthousiaste',
+    category: 'meme',
+    imageUrl: 'https://images.pexels.com/photos/1181756/pexels-photo-1181756.jpeg',
+    alternatives: ['oui oui oui', 'validation', 'enthousiaste'],
+    hint: 'Expression d\'approbation enthousiaste'
+  },
+  {
+    id: '20',
+    title: 'Ah non mais là',
+    description: 'Expression d\'indignation française',
+    category: 'meme',
+    imageUrl: 'https://images.pexels.com/photos/1181823/pexels-photo-1181823.jpeg',
+    alternatives: ['ah non mais là', 'indignation', 'français'],
+    hint: 'Expression typiquement française d\'indignation'
   }
 ];
 
@@ -117,8 +225,11 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     timeLeft: 30,
     isTimerRunning: false,
     scores: {},
-    gamePhase: 'setup'
+    gamePhase: 'setup',
+    roundsPlayed: 0,
+    maxRounds: 10
   });
+  const [lastResult, setLastResult] = useState<'correct' | 'wrong' | 'timeout' | null>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -150,9 +261,9 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     const validPlayers = players.filter(p => p.trim());
     if (validPlayers.length < 3) return;
 
-    const initialScores: { [key: string]: number } = {};
+    const initialScores: { [key: string]: { correct: number; wrong: number; timeout: number } } = {};
     validPlayers.forEach(player => {
-      initialScores[player] = 0;
+      initialScores[player] = { correct: 0, wrong: 0, timeout: 0 };
     });
 
     setGame({
@@ -162,14 +273,25 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       timeLeft: 30,
       isTimerRunning: false,
       scores: initialScores,
-      gamePhase: 'playing'
+      gamePhase: 'playing',
+      roundsPlayed: 0,
+      maxRounds: Math.min(frenchGifs.length, validPlayers.length * 3)
     });
 
     startNewRound();
   };
 
   const startNewRound = () => {
-    const randomGif = frenchGifs[Math.floor(Math.random() * frenchGifs.length)];
+    if (game.roundsPlayed >= game.maxRounds) {
+      endGame();
+      return;
+    }
+
+    const availableGifs = frenchGifs.filter(gif => 
+      !game.currentGif || gif.id !== game.currentGif.id
+    );
+    const randomGif = availableGifs[Math.floor(Math.random() * availableGifs.length)];
+    
     setGame(prev => ({
       ...prev,
       currentGif: randomGif,
@@ -177,56 +299,86 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       isTimerRunning: true,
       gamePhase: 'waiting-answer'
     }));
+    setLastResult(null);
   };
 
   const handleCorrectAnswer = () => {
     const currentPlayer = game.players[game.currentPlayerIndex];
     const newScores = { ...game.scores };
-    newScores[currentPlayer] += 1;
+    newScores[currentPlayer].correct += 1;
 
     setGame(prev => ({
       ...prev,
       scores: newScores,
       isTimerRunning: false,
-      gamePhase: 'playing'
+      gamePhase: 'round-result',
+      roundsPlayed: prev.roundsPlayed + 1
     }));
 
+    setLastResult('correct');
     setTimeout(() => {
       nextPlayer();
-    }, 2000);
+    }, 3000);
   };
 
   const handleWrongAnswer = () => {
+    const currentPlayer = game.players[game.currentPlayerIndex];
+    const newScores = { ...game.scores };
+    newScores[currentPlayer].wrong += 1;
+
     setGame(prev => ({
       ...prev,
+      scores: newScores,
       isTimerRunning: false,
-      gamePhase: 'playing'
+      gamePhase: 'round-result',
+      roundsPlayed: prev.roundsPlayed + 1
     }));
 
+    setLastResult('wrong');
     setTimeout(() => {
       nextPlayer();
-    }, 2000);
+    }, 3000);
   };
 
   const handleTimeUp = () => {
+    const currentPlayer = game.players[game.currentPlayerIndex];
+    const newScores = { ...game.scores };
+    newScores[currentPlayer].timeout += 1;
+
     setGame(prev => ({
       ...prev,
+      scores: newScores,
       isTimerRunning: false,
-      gamePhase: 'playing'
+      gamePhase: 'round-result',
+      roundsPlayed: prev.roundsPlayed + 1
     }));
 
+    setLastResult('timeout');
     setTimeout(() => {
       nextPlayer();
-    }, 2000);
+    }, 3000);
   };
 
   const nextPlayer = () => {
+    if (game.roundsPlayed >= game.maxRounds) {
+      endGame();
+      return;
+    }
+
     const nextIndex = (game.currentPlayerIndex + 1) % game.players.length;
     setGame(prev => ({
       ...prev,
-      currentPlayerIndex: nextIndex
+      currentPlayerIndex: nextIndex,
+      gamePhase: 'playing'
     }));
-    startNewRound();
+    
+    setTimeout(() => {
+      startNewRound();
+    }, 1000);
+  };
+
+  const endGame = () => {
+    setGame(prev => ({ ...prev, gamePhase: 'setup' }));
   };
 
   const resetGame = () => {
@@ -237,9 +389,12 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       timeLeft: 30,
       isTimerRunning: false,
       scores: {},
-      gamePhase: 'setup'
+      gamePhase: 'setup',
+      roundsPlayed: 0,
+      maxRounds: 10
     });
     setPlayers(['']);
+    setLastResult(null);
   };
 
   const getCategoryIcon = (category: string) => {
@@ -260,7 +415,21 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     }
   };
 
+  const getTopPlayers = () => {
+    return Object.entries(game.scores)
+      .map(([name, scores]) => ({
+        name,
+        total: scores.correct * 3 - scores.wrong - scores.timeout * 2,
+        correct: scores.correct,
+        wrong: scores.wrong,
+        timeout: scores.timeout
+      }))
+      .sort((a, b) => b.total - a.total);
+  };
+
   if (game.gamePhase === 'setup') {
+    const topPlayers = Object.keys(game.scores).length > 0 ? getTopPlayers() : [];
+
     return (
       <div className="max-w-2xl mx-auto">
         <button
@@ -279,6 +448,32 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
               Devinez le contenu de GIFs issus de la culture française !
             </p>
           </div>
+
+          {topPlayers.length > 0 && (
+            <div className="mb-8 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-yellow-800">
+                <Trophy size={20} />
+                Résultats de la partie précédente
+              </h3>
+              <div className="space-y-2">
+                {topPlayers.slice(0, 3).map((player, index) => (
+                  <div key={player.name} className={`flex items-center justify-between p-2 rounded ${
+                    index === 0 ? 'bg-yellow-100' : index === 1 ? 'bg-gray-100' : 'bg-orange-100'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">
+                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                      </span>
+                      <span className="font-medium">{player.name}</span>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {player.correct} ✅ | {player.wrong} ❌ | {player.timeout} ⏰
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="mb-6">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -363,7 +558,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 </div>
                 
                 <div className={`text-3xl font-bold mb-4 ${
-                  game.timeLeft <= 10 ? 'text-red-600' : 'text-purple-600'
+                  game.timeLeft <= 10 ? 'text-red-600 animate-pulse' : 'text-purple-600'
                 }`}>
                   <Timer size={24} className="inline mr-2" />
                   {game.timeLeft}s
@@ -377,12 +572,16 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                   alt="GIF à deviner" 
                   className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
                 />
-                <p className="text-gray-600 text-sm">
-                  🎬 GIF en cours de lecture...
-                </p>
-                <p className="text-xs text-gray-500 mt-2">
-                  (Description pour la démo : {game.currentGif.description})
-                </p>
+                <div className="bg-black bg-opacity-75 text-white p-4 rounded-lg">
+                  <p className="text-lg font-medium mb-2">
+                    🎬 {game.currentGif.description}
+                  </p>
+                  {game.timeLeft <= 15 && game.currentGif.hint && (
+                    <p className="text-yellow-300 text-sm">
+                      💡 Indice : {game.currentGif.hint}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="text-center mb-6">
@@ -417,28 +616,50 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Target size={20} />
+                Progression
+              </h3>
+              <div className="mb-4">
+                <div className="flex justify-between text-sm text-gray-600 mb-1">
+                  <span>Manche {game.roundsPlayed + 1}</span>
+                  <span>{game.roundsPlayed + 1}/{game.maxRounds}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${((game.roundsPlayed + 1) / game.maxRounds) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 🏆 Scores
               </h3>
               <div className="space-y-3">
-                {Object.entries(game.scores)
-                  .sort(([,a], [,b]) => b - a)
-                  .map(([player, score], index) => (
-                    <div key={player} className={`flex items-center justify-between p-2 rounded ${
-                      player === currentPlayer ? 'bg-purple-100 border border-purple-300' : 'bg-gray-50'
-                    }`}>
-                      <div className="flex items-center gap-2">
-                        {index === 0 && score > 0 && <span className="text-yellow-500">👑</span>}
-                        <span className={`font-medium ${
-                          player === currentPlayer ? 'text-purple-800' : 'text-gray-800'
-                        }`}>
-                          {player}
-                        </span>
-                      </div>
-                      <span className="bg-purple-500 text-white px-2 py-1 rounded text-sm font-bold">
-                        {score}
+                {getTopPlayers().map((player, index) => (
+                  <div key={player.name} className={`flex items-center justify-between p-2 rounded ${
+                    player.name === currentPlayer ? 'bg-purple-100 border border-purple-300' : 'bg-gray-50'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      {index === 0 && player.total > 0 && <span className="text-yellow-500">👑</span>}
+                      <span className={`font-medium ${
+                        player.name === currentPlayer ? 'text-purple-800' : 'text-gray-800'
+                      }`}>
+                        {player.name}
                       </span>
                     </div>
-                  ))}
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-purple-600">
+                        {player.total} pts
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {player.correct}✅ {player.wrong}❌ {player.timeout}⏰
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -456,35 +677,52 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     );
   }
 
-  if (game.gamePhase === 'playing') {
+  if (game.gamePhase === 'round-result' && game.currentGif) {
+    const currentPlayer = game.players[game.currentPlayerIndex];
+
     return (
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
-            <div className="text-4xl mb-4">⏳</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              Préparation du prochain tour
+            <div className="text-6xl mb-4">
+              {lastResult === 'correct' ? '🎉' : lastResult === 'wrong' ? '😅' : '⏰'}
+            </div>
+            <h2 className={`text-2xl font-bold mb-2 ${
+              lastResult === 'correct' ? 'text-green-600' : 
+              lastResult === 'wrong' ? 'text-red-600' : 'text-orange-600'
+            }`}>
+              {lastResult === 'correct' ? 'Bonne réponse !' : 
+               lastResult === 'wrong' ? 'Mauvaise réponse !' : 'Temps écoulé !'}
             </h2>
             <p className="text-gray-600">
-              Passez l'appareil au joueur suivant...
+              La réponse était : <strong>{game.currentGif.title}</strong>
             </p>
           </div>
 
-          <div className="flex gap-4">
-            <button
-              onClick={resetGame}
-              className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-6 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all font-medium flex items-center justify-center gap-2"
-            >
-              <RotateCcw size={20} />
-              Nouvelle partie
-            </button>
-            <button
-              onClick={onBack}
-              className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 transition-all font-medium flex items-center justify-center gap-2"
-            >
-              <ArrowLeft size={20} />
-              Retour aux jeux
-            </button>
+          <div className={`rounded-lg p-6 mb-6 text-center ${
+            lastResult === 'correct' ? 'bg-green-100 border border-green-300' : 
+            lastResult === 'wrong' ? 'bg-red-100 border border-red-300' : 'bg-orange-100 border border-orange-300'
+          }`}>
+            <h3 className={`text-lg font-bold mb-2 ${
+              lastResult === 'correct' ? 'text-green-800' : 
+              lastResult === 'wrong' ? 'text-red-800' : 'text-orange-800'
+            }`}>
+              {currentPlayer}
+            </h3>
+            <p className={`${
+              lastResult === 'correct' ? 'text-green-700' : 
+              lastResult === 'wrong' ? 'text-red-700' : 'text-orange-700'
+            }`}>
+              {lastResult === 'correct' ? 'Distribue 4 gorgées aux autres joueurs !' : 
+               lastResult === 'wrong' ? 'Boit 3 gorgées !' : 'Boit 5 gorgées !'}
+            </p>
+          </div>
+
+          <div className="text-center text-gray-500">
+            <p>Passage au joueur suivant...</p>
+            <div className="mt-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+            </div>
           </div>
         </div>
       </div>

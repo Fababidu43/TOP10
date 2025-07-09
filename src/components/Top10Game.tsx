@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Trophy, Users, RotateCcw, CheckCircle, XCircle, Crown } from 'lucide-react';
+import { ArrowLeft, Trophy, Users, RotateCcw, CheckCircle, XCircle, Crown, Target, Lightbulb } from 'lucide-react';
 import { top10Categories, Top10Category, Top10Item, getDrinksForRank, fuzzyMatch } from '../data/top10Data';
 
 interface Top10GameProps {
@@ -23,6 +23,9 @@ interface GameState {
   foundItems: number[];
   gameComplete: boolean;
   showResults: boolean;
+  currentPlayerIndex: number;
+  hintsUsed: number;
+  maxHints: number;
 }
 
 const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
@@ -35,10 +38,14 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     guesses: [],
     foundItems: [],
     gameComplete: false,
-    showResults: false
+    showResults: false,
+    currentPlayerIndex: 0,
+    hintsUsed: 0,
+    maxHints: 3
   });
   const [currentGuess, setCurrentGuess] = useState('');
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [showHint, setShowHint] = useState(false);
+  const [feedback, setFeedback] = useState<string>('');
 
   const addPlayer = () => {
     setPlayers([...players, '']);
@@ -73,16 +80,20 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       guesses: [],
       currentRound: 0,
       gameComplete: false,
-      showResults: false
+      showResults: false,
+      currentPlayerIndex: 0,
+      hintsUsed: 0
     });
-    setCurrentPlayerIndex(0);
+    setCurrentGuess('');
+    setShowHint(false);
+    setFeedback('');
     setGameState('playing');
   };
 
   const submitGuess = () => {
     if (!game.category || !currentGuess.trim()) return;
 
-    const currentPlayer = game.players[currentPlayerIndex];
+    const currentPlayer = game.players[game.currentPlayerIndex];
     let foundItem: Top10Item | undefined;
     let isCorrect = false;
     let drinks = 0;
@@ -115,21 +126,65 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       ...game,
       guesses: [...game.guesses, newGuess],
       foundItems: newFoundItems,
-      gameComplete: newFoundItems.length === 10
+      gameComplete: newFoundItems.length === 10,
+      currentPlayerIndex: (game.currentPlayerIndex + 1) % game.players.length
     };
 
     setGame(newGame);
     setCurrentGuess('');
+    setShowHint(false);
 
-    // Passer au joueur suivant
-    setCurrentPlayerIndex((currentPlayerIndex + 1) % game.players.length);
+    // Feedback pour le joueur
+    if (isCorrect && foundItem) {
+      setFeedback(`🎉 Excellent ! ${foundItem.name} était #${foundItem.rank} ! Tu distribues ${drinks} gorgées !`);
+    } else {
+      setFeedback(`❌ "${currentGuess}" n'est pas dans le top 10. Essaie encore !`);
+    }
 
     // Si tous les éléments sont trouvés, afficher les résultats
     if (newGame.gameComplete) {
       setTimeout(() => {
         setGameState('results');
-      }, 1500);
+      }, 2000);
+    } else {
+      // Effacer le feedback après 3 secondes
+      setTimeout(() => {
+        setFeedback('');
+      }, 3000);
     }
+  };
+
+  const useHint = () => {
+    if (game.hintsUsed >= game.maxHints || !game.category) return;
+    
+    setGame({ ...game, hintsUsed: game.hintsUsed + 1 });
+    setShowHint(true);
+    
+    setTimeout(() => {
+      setShowHint(false);
+    }, 10000); // Indice visible 10 secondes
+  };
+
+  const getHint = () => {
+    if (!game.category) return '';
+    
+    const remainingItems = game.category.items.filter(item => 
+      !game.foundItems.includes(item.rank)
+    );
+    
+    if (remainingItems.length === 0) return '';
+    
+    const randomItem = remainingItems[Math.floor(Math.random() * remainingItems.length)];
+    
+    // Différents types d'indices
+    const hintTypes = [
+      `Un élément commence par "${randomItem.name.charAt(0)}"`,
+      `Il y a un élément avec ${randomItem.name.length} lettres`,
+      randomItem.value ? `Un élément a pour valeur : ${randomItem.value}` : `Un élément contient le mot "${randomItem.name.split(' ')[0]}"`,
+      `Le rang #${randomItem.rank} n'a pas encore été trouvé`
+    ];
+    
+    return hintTypes[Math.floor(Math.random() * hintTypes.length)];
   };
 
   const resetGame = () => {
@@ -140,11 +195,15 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       guesses: [],
       foundItems: [],
       gameComplete: false,
-      showResults: false
+      showResults: false,
+      currentPlayerIndex: 0,
+      hintsUsed: 0,
+      maxHints: 3
     });
     setPlayers(['']);
-    setCurrentPlayerIndex(0);
     setCurrentGuess('');
+    setShowHint(false);
+    setFeedback('');
     setGameState('setup');
   };
 
@@ -166,11 +225,12 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
         totalDrinks,
         bestRank: correctGuesses.length > 0 
           ? Math.min(...correctGuesses.map(g => g.foundItem?.rank || 11))
-          : null
+          : null,
+        accuracy: playerGuesses.length > 0 ? Math.round((correctGuesses.length / playerGuesses.length) * 100) : 0
       };
     });
 
-    return stats.sort((a, b) => b.correctGuesses - a.correctGuesses);
+    return stats.sort((a, b) => b.totalDrinks - a.totalDrinks);
   };
 
   if (gameState === 'setup') {
@@ -236,6 +296,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               <li>• À tour de rôle, devinez un élément du top 10</li>
               <li>• Plus votre réponse est bien classée, plus vous faites boire !</li>
               <li>• Top 1 = 15 gorgées, Top 2-5 = 5-10 gorgées, Top 6-10 = 2-4 gorgées</li>
+              <li>• Utilisez les indices si vous êtes bloqués (3 maximum)</li>
             </ul>
           </div>
 
@@ -270,14 +331,17 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               <div
                 key={category.id}
                 onClick={() => selectCategory(category)}
-                className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 cursor-pointer hover:from-purple-100 hover:to-blue-100 transition-all"
+                className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 cursor-pointer hover:from-purple-100 hover:to-blue-100 transition-all transform hover:scale-105"
               >
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {category.name}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm mb-3">
                   {category.description}
                 </p>
+                <div className="text-xs text-purple-600">
+                  Cliquez pour jouer →
+                </div>
               </div>
             ))}
           </div>
@@ -287,7 +351,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   }
 
   if (gameState === 'playing' && game.category) {
-    const currentPlayer = game.players[currentPlayerIndex];
+    const currentPlayer = game.players[game.currentPlayerIndex];
     const remainingItems = getRemainingItems();
 
     return (
@@ -311,6 +375,24 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 </div>
               </div>
 
+              {feedback && (
+                <div className={`mb-6 p-4 rounded-lg text-center ${
+                  feedback.includes('🎉') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  {feedback}
+                </div>
+              )}
+
+              {showHint && (
+                <div className="mb-6 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb size={20} className="text-yellow-600" />
+                    <span className="font-semibold text-yellow-800">Indice :</span>
+                  </div>
+                  <p className="text-yellow-700">{getHint()}</p>
+                </div>
+              )}
+
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Votre réponse :
@@ -325,13 +407,23 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 />
               </div>
 
-              <button
-                onClick={submitGuess}
-                disabled={!currentGuess.trim()}
-                className="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white py-3 px-6 rounded-lg hover:from-green-600 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
-              >
-                Valider la réponse
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={submitGuess}
+                  disabled={!currentGuess.trim()}
+                  className="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white py-3 px-6 rounded-lg hover:from-green-600 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
+                >
+                  Valider la réponse
+                </button>
+                <button
+                  onClick={useHint}
+                  disabled={game.hintsUsed >= game.maxHints}
+                  className="bg-yellow-500 text-white py-3 px-6 rounded-lg hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center gap-2"
+                >
+                  <Lightbulb size={20} />
+                  Indice ({game.maxHints - game.hintsUsed})
+                </button>
+              </div>
 
               <div className="mt-6 text-center text-sm text-gray-500">
                 {game.foundItems.length}/10 éléments trouvés
@@ -341,13 +433,33 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
           {/* Sidebar avec les résultats */}
           <div className="space-y-6">
+            {/* Progression */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Target size={20} />
+                Progression
+              </h3>
+              <div className="mb-4">
+                <div className="flex justify-between text-sm text-gray-600 mb-1">
+                  <span>Trouvés</span>
+                  <span>{game.foundItems.length}/10</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${(game.foundItems.length / 10) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+
             {/* Éléments trouvés */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <Trophy size={20} className="text-yellow-500" />
                 Éléments trouvés
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-2 max-h-64 overflow-y-auto">
                 {game.category.items
                   .filter(item => game.foundItems.includes(item.rank))
                   .sort((a, b) => a.rank - b.rank)
@@ -356,38 +468,45 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                       <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
                         {item.rank}
                       </span>
-                      <span className="text-sm font-medium">{item.name}</span>
+                      <div className="flex-1">
+                        <span className="text-sm font-medium">{item.name}</span>
+                        {item.value && (
+                          <div className="text-xs text-gray-500">{item.value}</div>
+                        )}
+                      </div>
                     </div>
                   ))}
               </div>
             </div>
 
-            {/* Dernières tentatives */}
-            {game.guesses.length > 0 && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-semibold mb-4">Dernières tentatives</h3>
-                <div className="space-y-2">
-                  {game.guesses.slice(-5).reverse().map((guess, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 rounded">
-                      {guess.isCorrect ? (
-                        <CheckCircle size={16} className="text-green-500" />
-                      ) : (
-                        <XCircle size={16} className="text-red-500" />
-                      )}
-                      <div className="flex-1">
-                        <div className="text-sm font-medium">{guess.playerName}</div>
-                        <div className="text-xs text-gray-500">{guess.guess}</div>
-                      </div>
-                      {guess.isCorrect && (
-                        <div className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-                          {guess.drinks} 🍺
-                        </div>
-                      )}
+            {/* Scores des joueurs */}
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-lg font-semibold mb-4">🏆 Scores</h3>
+              <div className="space-y-2">
+                {getPlayerStats().map((player, index) => (
+                  <div key={player.name} className={`flex items-center justify-between p-2 rounded ${
+                    player.name === currentPlayer ? 'bg-purple-100 border border-purple-300' : 'bg-gray-50'
+                  }`}>
+                    <div className="flex items-center gap-2">
+                      {index === 0 && player.totalDrinks > 0 && <Crown size={16} className="text-yellow-500" />}
+                      <span className={`font-medium ${
+                        player.name === currentPlayer ? 'text-purple-800' : 'text-gray-800'
+                      }`}>
+                        {player.name}
+                      </span>
                     </div>
-                  ))}
-                </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-purple-600">
+                        {player.totalDrinks} 🍺
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {player.correctGuesses}/{player.totalGuesses} ({player.accuracy}%)
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -432,6 +551,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                       <div className="text-sm text-gray-600">
                         {player.correctGuesses} bonnes réponses sur {player.totalGuesses} tentatives
                         {player.bestRank && ` • Meilleur rang: ${player.bestRank}`}
+                        {` • Précision: ${player.accuracy}%`}
                       </div>
                     </div>
                     <div className="text-right">

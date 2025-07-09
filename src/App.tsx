@@ -6,12 +6,10 @@ import AboutPage from './components/AboutPage';
 import GameDetail from './components/GameDetail';
 import Top10Game from './components/Top10Game';
 import NeverHaveIGame from './components/NeverHaveIGame';
-import QuiMentGame from './components/QuiMentGame';
 import DevineGifGame from './components/DevineGifGame';
-import ShotRetardementGame from './components/ShotRetardementGame';
 import { games } from './data/games';
 
-type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'top10-game' | 'never-have-i-game' | 'qui-ment-game' | 'devine-gif-game' | 'shot-retardement-game';
+type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'top10-game' | 'never-have-i-game' | 'devine-gif-game';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
@@ -34,12 +32,8 @@ function App() {
       setCurrentPage('top10-game');
     } else if (gameId === 'never-have-i') {
       setCurrentPage('never-have-i-game');
-    } else if (gameId === 'qui-ment') {
-      setCurrentPage('qui-ment-game');
     } else if (gameId === 'devine-gif') {
       setCurrentPage('devine-gif-game');
-    } else if (gameId === 'shot-retardement') {
-      setCurrentPage('shot-retardement-game');
     } else {
       // For non-interactive games, show the game detail
       handleGameSelect(gameId);
@@ -76,7 +70,6 @@ function App() {
           />
         )}
         
-        
         {currentPage === 'top10-game' && (
           <Top10Game onBack={handleBack} />
         )}
@@ -85,16 +78,8 @@ function App() {
           <NeverHaveIGame onBack={handleBack} />
         )}
         
-        {currentPage === 'qui-ment-game' && (
-          <QuiMentGame onBack={handleBack} />
-        )}
-        
         {currentPage === 'devine-gif-game' && (
           <DevineGifGame onBack={handleBack} />
-        )}
-        
-        {currentPage === 'shot-retardement-game' && (
-          <ShotRetardementGame onBack={handleBack} />
         )}
       </main>
       
@@ -108,4 +93,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
