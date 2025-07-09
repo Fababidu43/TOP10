@@ -146,6 +146,56 @@ export const games: Game[] = [
       'Version opposé : trouvez l\'antonyme'
     ]
   }
+  },
+  {
+    id: 'top-10',
+    title: 'Top 10',
+    description: 'Devinez les éléments d\'un classement et buvez selon votre performance !',
+    shortDescription: 'Devinez les éléments d\'un top 10',
+    players: '2-8 joueurs',
+    duration: '20-40 minutes',
+    difficulty: 'moyen',
+    category: 'reflexion',
+    interactive: true,
+    rules: [
+      'Choisissez une catégorie de classement',
+      'À tour de rôle, devinez un élément du top 10',
+      'Les réponses sont validées automatiquement',
+      'Plus votre réponse est bien classée, plus vous faites boire',
+      'Top 1 = 15 gorgées, Top 2-5 = 5-10 gorgées, Top 6-10 = 2-4 gorgées',
+      'Continuez jusqu\'à trouver tous les éléments'
+    ],
+    materials: ['Application', 'Boissons'],
+    variants: [
+      'Mode prolongé : même classement plusieurs manches',
+      'Mode rapide : changement de catégorie à chaque manche',
+      'Mode équipe : jouez en équipes'
+    ]
+  },
+  {
+    id: 'never-have-i',
+    title: 'Je n\'ai jamais',
+    description: 'Révélez vos secrets et faites boire vos amis avec ce classique des soirées !',
+    shortDescription: 'Révélez vos expériences secrètes',
+    players: '3-12 joueurs',
+    duration: '15-45 minutes',
+    difficulty: 'facile',
+    category: 'ambiance',
+    interactive: true,
+    rules: [
+      'Une phrase "Je n\'ai jamais..." s\'affiche',
+      'Tous ceux qui ont déjà fait l\'action boivent',
+      'Choisissez vos catégories : fun, trash, extrême',
+      'Ajoutez vos propres questions personnalisées',
+      'Découvrez les secrets de vos amis',
+      'Aucun gagnant, juste du fun !'
+    ],
+    materials: ['Application', 'Boissons'],
+    variants: [
+      'Mode thématique : questions sur un sujet précis',
+      'Mode personnalisé : uniquement vos questions',
+      'Mode escalade : questions de plus en plus osées'
+    ]
 ];
 
 export const categories = [

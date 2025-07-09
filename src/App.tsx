@@ -5,9 +5,11 @@ import GamesPage from './components/GamesPage';
 import AboutPage from './components/AboutPage';
 import GameDetail from './components/GameDetail';
 import TelephoneGame from './components/TelephoneGame';
+import Top10Game from './components/Top10Game';
+import NeverHaveIGame from './components/NeverHaveIGame';
 import { games } from './data/games';
 
-type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'telephone-game';
+type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'telephone-game' | 'top10-game' | 'never-have-i-game';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
@@ -28,6 +30,10 @@ function App() {
   const handlePlayGame = (gameId: string) => {
     if (gameId === 'telephone-arabe') {
       setCurrentPage('telephone-game');
+    } else if (gameId === 'top-10') {
+      setCurrentPage('top10-game');
+    } else if (gameId === 'never-have-i') {
+      setCurrentPage('never-have-i-game');
     } else {
       // For non-interactive games, show the game detail
       handleGameSelect(gameId);
@@ -66,6 +72,14 @@ function App() {
         
         {currentPage === 'telephone-game' && (
           <TelephoneGame onBack={handleBack} />
+        )}
+        
+        {currentPage === 'top10-game' && (
+          <Top10Game onBack={handleBack} />
+        )}
+        
+        {currentPage === 'never-have-i-game' && (
+          <NeverHaveIGame onBack={handleBack} />
         )}
       </main>
       
