@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Trophy, Users, RotateCcw, CheckCircle, XCircle, Crown, Target, Lightbulb, Shuffle } from 'lucide-react';
-import { top10Categories, Top10Category, Top10Item, getDrinksForRank, fuzzyMatch, getRandomCategory } from '../data/top10Data';
+import { top10Categories, Top10Category, Top10Item, SagaChoice, getDrinksForRank, fuzzyMatch, getRandomCategory, detectSaga, isSagaInput } from '../data/top10Data';
 
 interface Top10GameProps {
   onBack: () => void;
@@ -26,6 +26,8 @@ interface GameState {
   currentPlayerIndex: number;
   hintsUsed: number;
   maxHints: number;
+  excludedSagaItems: string[];
+  showingSagaChoice: SagaChoice | null;
 }
 
 const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
@@ -41,7 +43,9 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     showResults: false,
     currentPlayerIndex: 0,
     hintsUsed: 0,
-    maxHints: 3
+    maxHints: 3,
+    excludedSagaItems: [],
+    showingSagaChoice: null
   });
   const [currentGuess, setCurrentGuess] = useState('');
   const [showHint, setShowHint] = useState(false);
@@ -91,6 +95,8 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       showResults: false,
       currentPlayerIndex: 0,
       hintsUsed: 0
+      excludedSagaItems: [],
+      showingSagaChoice: null
     });
     setCurrentGuess('');
     setShowHint(false);
@@ -106,6 +112,22 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const submitGuess = () => {
     if (!game.category || !currentGuess.trim()) return;
 
+    // D'abord, vérifier si c'est une saga
+    const sagaChoice = detectSaga(currentGuess.trim(), [game.category]);
+    if (sagaChoice && isSagaInput(currentGuess.trim())) {
+      // Filtrer les éléments déjà exclus
+      const availableItems = sagaChoice.availableItems.filter(item => 
+        !game.excludedSagaItems.includes(item.name) && 
+        !game.foundItems.includes(item.rank)
+      );
+      
+      if (availableItems.length > 0) {
+        setGame({ ...game, showingSagaChoice: { ...sagaChoice, availableItems } });
+        setFeedback(`🎬 Plusieurs films ${sagaChoice.sagaName} sont dans le classement ! Choisissez lequel :`);
+        return;
+      }
+    }
+
     const currentPlayer = game.players[game.currentPlayerIndex];
     let foundItem: Top10Item | undefined;
     let isCorrect = false;
@@ -114,6 +136,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     // Vérifier si la réponse correspond à un élément du top 10
     for (const item of game.category.items) {
       if (!game.foundItems.includes(item.rank) && 
+          !game.excludedSagaItems.includes(item.name) &&
           fuzzyMatch(currentGuess.trim(), item.name, item.alternatives)) {
         foundItem = item;
         isCorrect = true;
@@ -146,12 +169,80 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     setGame(newGame);
     setCurrentGuess('');
     setShowHint(false); // Cache l'indice après soumission
+    
+    // Réinitialiser le choix de saga
+    if (game.showingSagaChoice) {
+      setGame(prev => ({ ...prev, showingSagaChoice: null }));
+    }
 
     // Feedback pour le joueur
     if (isCorrect && foundItem) {
       setFeedback(`🎉 Excellent ! ${foundItem.name} était #${foundItem.rank} ! Tu distribues ${drinks} gorgées !`);
     } else {
       setFeedback(`❌ "${currentGuess}" n'est pas dans le top 10. Essaie encore !`);
+    }
+
+    // Si tous les éléments sont trouvés, afficher les résultats
+    if (newGame.gameComplete) {
+      setTimeout(() => {
+        setGameState('results');
+      }, 2000);
+    } else {
+      // Effacer le feedback après 3 secondes
+      setTimeout(() => {
+        setFeedback('');
+      }, 3000);
+    }
+  };
+
+  const selectSagaItem = (selectedItem: Top10Item) => {
+    const currentPlayer = game.players[game.currentPlayerIndex];
+    let isCorrect = false;
+    let drinks = 0;
+
+    // Vérifier si l'élément sélectionné est dans le top 10 et pas encore trouvé
+    if (!game.foundItems.includes(selectedItem.rank)) {
+      isCorrect = true;
+      drinks = getDrinksForRank(selectedItem.rank);
+    }
+
+    const newGuess: PlayerGuess = {
+      playerId: currentPlayer,
+      playerName: currentPlayer,
+      guess: selectedItem.name,
+      isCorrect,
+      foundItem: selectedItem,
+      drinks
+    };
+
+    const newFoundItems = isCorrect 
+      ? [...game.foundItems, selectedItem.rank]
+      : game.foundItems;
+
+    // Ajouter l'élément aux exclusions si c'est faux
+    const newExcludedItems = !isCorrect 
+      ? [...game.excludedSagaItems, selectedItem.name]
+      : game.excludedSagaItems;
+
+    const newGame = {
+      ...game,
+      guesses: [...game.guesses, newGuess],
+      foundItems: newFoundItems,
+      excludedSagaItems: newExcludedItems,
+      gameComplete: newFoundItems.length === 10,
+      currentPlayerIndex: (game.currentPlayerIndex + 1) % game.players.length,
+      showingSagaChoice: null
+    };
+
+    setGame(newGame);
+    setCurrentGuess('');
+    setShowHint(false);
+
+    // Feedback pour le joueur
+    if (isCorrect) {
+      setFeedback(`🎉 Excellent ! ${selectedItem.name} était #${selectedItem.rank} ! Tu distribues ${drinks} gorgées !`);
+    } else {
+      setFeedback(`❌ "${selectedItem.name}" n'est pas dans le top 10. Ce film est maintenant exclu pour les prochains tours. Tu bois 2 gorgées !`);
     }
 
     // Si tous les éléments sont trouvés, afficher les résultats
@@ -209,7 +300,9 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       showResults: false,
       currentPlayerIndex: 0,
       hintsUsed: 0,
-      maxHints: 3
+      maxHints: 3,
+      excludedSagaItems: [],
+      showingSagaChoice: null
     });
     setPlayers(['']);
     setCurrentGuess('');
@@ -452,6 +545,35 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 </div>
               )}
 
+              {game.showingSagaChoice && (
+                <div className="mb-6 p-3 md:p-4 bg-gradient-to-r from-purple-100 to-blue-100 border-2 border-purple-300 rounded-lg">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="text-xl md:text-2xl">🎬</div>
+                    <span className="font-semibold text-purple-800 text-sm md:text-base">Choisissez le film {game.showingSagaChoice.sagaName} :</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2">
+                    {game.showingSagaChoice.availableItems.map((item) => (
+                      <button
+                        key={item.rank}
+                        onClick={() => selectSagaItem(item)}
+                        className="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 transition-all text-left"
+                      >
+                        <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                          ?
+                        </span>
+                        <div className="flex-1">
+                          <div className="font-medium text-sm md:text-base text-purple-800">{item.name}</div>
+                          <div className="text-xs text-purple-600">{item.value}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-3 text-xs text-purple-600">
+                    💡 Attention : Si vous choisissez le mauvais film, il sera exclu pour les prochains tours et vous boirez 2 gorgées !
+                  </div>
+                </div>
+              )}
+
               <div className="mb-6">
                 <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
                   Votre réponse :
@@ -470,14 +592,14 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <button
                   onClick={submitGuess}
-                  disabled={!currentGuess.trim()}
+                  disabled={!currentGuess.trim() || game.showingSagaChoice !== null}
                   className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 md:py-3 px-4 md:px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium shadow-lg text-sm md:text-base"
                 >
                   ✅ Valider la réponse
                 </button>
                 <button
                   onClick={useHint}
-                  disabled={game.hintsUsed >= game.maxHints}
+                  disabled={game.hintsUsed >= game.maxHints || game.showingSagaChoice !== null}
                   className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 md:py-3 px-4 md:px-6 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2 shadow-lg text-sm md:text-base"
                 >
                   <Lightbulb size={20} />

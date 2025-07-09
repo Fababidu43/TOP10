@@ -10,6 +10,13 @@ export interface Top10Item {
   name: string;
   value?: string;
   alternatives?: string[];
+  saga?: string;
+  sagaItems?: string[];
+}
+
+export interface SagaChoice {
+  sagaName: string;
+  availableItems: Top10Item[];
 }
 
 export const top10Categories: Top10Category[] = [
@@ -18,16 +25,58 @@ export const top10Categories: Top10Category[] = [
     name: 'Films au Box-Office Mondial',
     description: 'Les 10 films ayant rapporté le plus d\'argent au cinéma (2024)',
     items: [
-      { rank: 1, name: 'Avatar (2009)', value: '2,9 milliards $', alternatives: ['avatar 2009', 'avatar 1', 'avatar james cameron', 'premier avatar'] },
+      { 
+        rank: 1, 
+        name: 'Avatar (2009)', 
+        value: '2,9 milliards $', 
+        alternatives: ['avatar 2009', 'avatar 1', 'avatar james cameron', 'premier avatar'],
+        saga: 'Avatar',
+        sagaItems: ['Avatar (2009)', 'Avatar: La Voie de l\'eau']
+      },
       { rank: 2, name: 'Avengers: Endgame', value: '2,8 milliards $', alternatives: ['endgame', 'avengers endgame', 'avengers 4'] },
-      { rank: 3, name: 'Avatar: La Voie de l\'eau', value: '2,3 milliards $', alternatives: ['avatar 2', 'avatar la voie de l\'eau', 'avatar way of water', 'avatar 2022'] },
+      { 
+        rank: 3, 
+        name: 'Avatar: La Voie de l\'eau', 
+        value: '2,3 milliards $', 
+        alternatives: ['avatar 2', 'avatar la voie de l\'eau', 'avatar way of water', 'avatar 2022'],
+        saga: 'Avatar',
+        sagaItems: ['Avatar (2009)', 'Avatar: La Voie de l\'eau']
+      },
       { rank: 4, name: 'Titanic (1997)', value: '2,2 milliards $', alternatives: ['titanic 1997', 'titanic leonardo', 'titanic dicaprio'] },
-      { rank: 5, name: 'Star Wars: Le Réveil de la Force', value: '2,1 milliards $', alternatives: ['star wars 7', 'le réveil de la force', 'force awakens', 'episode 7', 'star wars episode 7'] },
-      { rank: 6, name: 'Avengers: Infinity War', value: '2,0 milliards $', alternatives: ['infinity war', 'avengers infinity war', 'avengers 3'] },
+      { 
+        rank: 5, 
+        name: 'Star Wars: Le Réveil de la Force', 
+        value: '2,1 milliards $', 
+        alternatives: ['star wars 7', 'le réveil de la force', 'force awakens', 'episode 7', 'star wars episode 7'],
+        saga: 'Star Wars',
+        sagaItems: ['Star Wars: Le Réveil de la Force']
+      },
+      { 
+        rank: 6, 
+        name: 'Avengers: Infinity War', 
+        value: '2,0 milliards $', 
+        alternatives: ['infinity war', 'avengers infinity war', 'avengers 3'],
+        saga: 'Avengers',
+        sagaItems: ['Avengers: Endgame', 'Avengers: Infinity War', 'The Avengers (2012)']
+      },
       { rank: 7, name: 'Spider-Man: No Way Home', value: '1,9 milliards $', alternatives: ['spiderman no way home', 'no way home', 'spider man 3 tom holland', 'spiderman 3'] },
-      { rank: 8, name: 'Jurassic World (2015)', value: '1,7 milliards $', alternatives: ['jurassic world 1', 'jurassic world 2015', 'premier jurassic world'] },
+      { 
+        rank: 8, 
+        name: 'Jurassic World (2015)', 
+        value: '1,7 milliards $', 
+        alternatives: ['jurassic world 1', 'jurassic world 2015', 'premier jurassic world'],
+        saga: 'Jurassic',
+        sagaItems: ['Jurassic World (2015)']
+      },
       { rank: 9, name: 'Le Roi Lion (2019)', value: '1,7 milliards $', alternatives: ['roi lion', 'le roi lion', 'lion king 2019', 'roi lion remake', 'roi lion cgi'] },
-      { rank: 10, name: 'The Avengers (2012)', value: '1,5 milliards $', alternatives: ['avengers', 'avengers 1', 'avengers 2012', 'premier avengers'] }
+      { 
+        rank: 10, 
+        name: 'The Avengers (2012)', 
+        value: '1,5 milliards $', 
+        alternatives: ['avengers', 'avengers 1', 'avengers 2012', 'premier avengers'],
+        saga: 'Avengers',
+        sagaItems: ['Avengers: Endgame', 'Avengers: Infinity War', 'The Avengers (2012)']
+      }
     ]
   },
   {
@@ -319,3 +368,58 @@ function levenshteinDistance(str1: string, str2: string): number {
   
   return matrix[str2.length][str1.length];
 }
+
+// Fonction pour détecter si l'input correspond à une saga
+export const detectSaga = (input: string, categories: Top10Category[]): SagaChoice | null => {
+  const normalize = (str: string) => 
+    str.toLowerCase()
+       .trim()
+       .replace(/[^\w\s]/g, '')
+       .replace(/\s+/g, ' ');
+  
+  const normalizedInput = normalize(input);
+  
+  // Chercher dans toutes les catégories
+  for (const category of categories) {
+    for (const item of category.items) {
+      if (item.saga && item.sagaItems) {
+        const sagaName = normalize(item.saga);
+        
+        // Vérifier si l'input correspond au nom de la saga
+        if (normalizedInput.includes(sagaName) || sagaName.includes(normalizedInput)) {
+          // Retourner tous les films de cette saga qui sont dans le top 10
+          const availableItems = category.items.filter(categoryItem => 
+            categoryItem.saga === item.saga && 
+            item.sagaItems!.includes(categoryItem.name)
+          );
+          
+          if (availableItems.length > 1) {
+            return {
+              sagaName: item.saga,
+              availableItems
+            };
+          }
+        }
+      }
+    }
+  }
+  
+  return null;
+};
+
+// Fonction pour vérifier si l'input correspond à un nom de saga générique
+export const isSagaInput = (input: string): boolean => {
+  const normalize = (str: string) => 
+    str.toLowerCase()
+       .trim()
+       .replace(/[^\w\s]/g, '')
+       .replace(/\s+/g, ' ');
+  
+  const normalizedInput = normalize(input);
+  const sagaKeywords = ['avatar', 'avengers', 'star wars', 'jurassic'];
+  
+  return sagaKeywords.some(keyword => 
+    normalizedInput === keyword || 
+    (normalizedInput.includes(keyword) && normalizedInput.split(' ').length <= 2)
+  );
+};
