@@ -252,7 +252,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
   };
 
   if (game.gamePhase === 'setup') {
-    const topPlayers = Object.keys(game.scores).length > 0 ? getTopPlayers() : [];
 
     return (
       <div className="max-w-2xl mx-auto">
@@ -275,33 +274,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             </p>
           </div>
 
-          {topPlayers.length > 0 && (
-            <div className="mb-8 p-6 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-lg border border-yellow-300">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-yellow-800">
-                <Trophy size={20} />
-                Résultats de la partie précédente
-              </h3>
-              <div className="space-y-2">
-                {topPlayers.slice(0, 3).map((player, index) => (
-                  <div key={player.name} className={`flex items-center justify-between p-3 rounded-lg ${
-                    index === 0 ? 'bg-gradient-to-r from-yellow-200 to-yellow-300' : 
-                    index === 1 ? 'bg-gradient-to-r from-gray-200 to-gray-300' : 
-                    'bg-gradient-to-r from-orange-200 to-orange-300'
-                  }`}>
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">
-                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
-                      </span>
-                      <span className="font-medium">{player.name}</span>
-                    </div>
-                    <div className="text-sm text-gray-700">
-                      {player.correct} ✅ | {player.wrong} ❌ | {player.timeout} ⏰
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           <div className="mb-6">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-purple-700">
