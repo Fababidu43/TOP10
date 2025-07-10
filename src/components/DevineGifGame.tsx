@@ -343,24 +343,18 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             <h2 className="text-2xl font-bold text-green-800 mb-2">
               Bonne réponse !
             </h2>
-            <p className="text-green-700">
-              Voici la vidéo complète : <strong>{game.currentGif.title}</strong>
-            </p>
           </div>
 
-          <div className="bg-black rounded-lg mb-6 overflow-hidden">
+          <div className="bg-black rounded-lg mb-6 overflow-hidden shadow-xl">
             <div className="aspect-video">
               <iframe
-                src={`https://www.youtube.com/embed/${game.currentGif.videoUrl}?autoplay=1&rel=0&modestbranding=1`}
+                src={`https://www.youtube.com/embed/${game.currentGif.videoUrl}?autoplay=1&rel=0&modestbranding=1&controls=1&showinfo=0&fs=1&cc_load_policy=0&iv_load_policy=3&autohide=1`}
                 title={game.currentGif.title}
                 className="w-full h-full"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                 allowFullScreen
               ></iframe>
-            </div>
-            <div className="bg-green-600 text-white px-4 py-2 text-center">
-              ✅ {game.currentGif.title}
             </div>
           </div>
 
@@ -427,13 +421,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 </div>
                 <div className="bg-gradient-to-r from-gray-800 to-black text-white p-4">
                   <p className="text-lg font-medium mb-2">
-                    🎬 {game.currentGif.description}
+                    {game.currentGif.description}
                   </p>
-                  {game.timeLeft <= 15 && game.currentGif.hint && (
-                    <p className="text-yellow-300 text-sm animate-pulse">
-                      💡 Indice : {game.currentGif.hint}
-                    </p>
-                  )}
                 </div>
               </div>
 
