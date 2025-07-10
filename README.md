@@ -146,6 +146,5 @@ L'application dispose d'un système de code d'invitation pour contrôler l'accè
 
 ---
 
-**Contact SEO** : contact@fababicuite.fr
 **Domaine** : https://fababicuite.fr
 **Hébergement** : Netlify avec optimisations Git
