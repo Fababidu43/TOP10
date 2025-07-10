@@ -277,17 +277,198 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     
     if (remainingItems.length === 0) return '';
     
+    // Choisir un élément aléatoire parmi ceux non trouvés
     const randomItem = remainingItems[Math.floor(Math.random() * remainingItems.length)];
     
-    // Différents types d'indices
-    const hintTypes = [
-      `Un élément commence par "${randomItem.name.charAt(0)}"`,
-      `Il y a un élément avec ${randomItem.name.length} lettres`,
-      randomItem.value ? `Un élément a pour valeur : ${randomItem.value}` : `Un élément contient le mot "${randomItem.name.split(' ')[0]}"`,
-      `Le rang #${randomItem.rank} n'a pas encore été trouvé`
-    ];
+    // Indices vraiment utiles selon la catégorie
+    const getSpecificHints = (item: Top10Item, category: Top10Category) => {
+      const hints: string[] = [];
+      
+      // Indices génériques utiles
+      hints.push(`💡 Un élément commence par "${item.name.charAt(0).toUpperCase()}"`);
+      hints.push(`🔤 Il y a un élément de ${item.name.length} caractères (espaces inclus)`);
+      
+      // Indices spécifiques selon la catégorie
+      switch (category.id) {
+        case 'films-oscars':
+          if (item.value?.includes('1959')) hints.push(`🎬 Un film épique de 1959 avec Charlton Heston`);
+          if (item.value?.includes('1997')) hints.push(`🚢 Un film catastrophe de 1997 avec Leonardo DiCaprio`);
+          if (item.value?.includes('Seigneur')) hints.push(`⚔️ Un film fantasy de Peter Jackson`);
+          if (item.value?.includes('1961')) hints.push(`🎭 Une comédie musicale de 1961`);
+          if (item.value?.includes('1958')) hints.push(`👑 Un film musical français de 1958`);
+          if (item.value?.includes('Empereur')) hints.push(`🏯 Un film sur la Chine impériale`);
+          if (item.value?.includes('1964')) hints.push(`🎩 Un film avec Audrey Hepburn de 1964`);
+          if (item.value?.includes('1972')) hints.push(`🎪 Un film musical avec Liza Minnelli`);
+          if (item.value?.includes('1982')) hints.push(`🕊️ Un film biographique sur un leader indien`);
+          if (item.value?.includes('1984')) hints.push(`🎼 Un film sur un compositeur célèbre`);
+          break;
+          
+        case 'films-cultes-francais':
+          if (item.name.includes('Intouchables')) hints.push(`♿ Film avec Omar Sy et François Cluzet`);
+          if (item.name.includes('Amélie')) hints.push(`🥄 Film de Jean-Pierre Jeunet avec Audrey Tautou`);
+          if (item.name.includes('Ch\'tis')) hints.push(`🏠 Comédie de Dany Boon dans le Nord`);
+          if (item.name.includes('Visiteurs')) hints.push(`⚔️ "La casse du siècle !" avec Jean Reno`);
+          if (item.name.includes('Taxi')) hints.push(`🚗 Film avec Samy Naceri et une Peugeot`);
+          if (item.name.includes('Astérix')) hints.push(`🏺 "C'est une bonne situation ça, scribe ?"`);
+          if (item.name.includes('Vadrouille')) hints.push(`✈️ Film de guerre avec Bourvil et De Funès`);
+          if (item.name.includes('OSS 117')) hints.push(`🕴️ Parodie d'espion avec Jean Dujardin`);
+          if (item.name.includes('Dîner')) hints.push(`🍽️ "Il s'appelle Juste Leblanc"`);
+          if (item.name.includes('Cité')) hints.push(`😱 "Ça va couper chérie !"`);
+          break;
+          
+        case 'series-netflix':
+          if (item.name.includes('Squid')) hints.push(`🔴 Série coréenne avec des jeux d'enfants mortels`);
+          if (item.name.includes('Wednesday')) hints.push(`🖤 Série sur la fille de la famille Addams`);
+          if (item.name.includes('Stranger Things 4')) hints.push(`🙃 Saison 4 de la série avec Eleven`);
+          if (item.name.includes('Dahmer')) hints.push(`🔪 Série sur un tueur en série américain`);
+          if (item.name.includes('Bridgerton')) hints.push(`👗 Série d'époque romantique britannique`);
+          if (item.name.includes('Night Agent')) hints.push(`📞 Thriller avec un agent du FBI`);
+          if (item.name.includes('Ginny')) hints.push(`👩‍👧 Série sur une mère et sa fille`);
+          if (item.name.includes('Lucifer')) hints.push(`😈 Série sur le diable qui aide la police`);
+          if (item.name.includes('All of Us')) hints.push(`🧟 Série de zombies dans un lycée coréen`);
+          if (item.name.includes('Witcher')) hints.push(`⚔️ Série fantasy avec Geralt de Riv`);
+          break;
+          
+        case 'pays-population':
+          if (item.name.includes('Inde')) hints.push(`🇮🇳 Pays de Bollywood et du curry`);
+          if (item.name.includes('Chine')) hints.push(`🇨🇳 Pays de la Grande Muraille`);
+          if (item.name.includes('États-Unis')) hints.push(`🇺🇸 Pays de Hollywood et de la Statue de la Liberté`);
+          if (item.name.includes('Indonésie')) hints.push(`🏝️ Plus grand archipel du monde`);
+          if (item.name.includes('Pakistan')) hints.push(`🇵🇰 Pays voisin de l'Inde`);
+          if (item.name.includes('Nigéria')) hints.push(`🇳🇬 Plus grand pays d'Afrique par population`);
+          if (item.name.includes('Brésil')) hints.push(`🇧🇷 Pays du carnaval de Rio`);
+          if (item.name.includes('Bangladesh')) hints.push(`🇧🇩 Pays du delta du Gange`);
+          if (item.name.includes('Russie')) hints.push(`🇷🇺 Plus grand pays du monde par superficie`);
+          if (item.name.includes('Mexique')) hints.push(`🇲🇽 Pays des tacos et de la tequila`);
+          break;
+          
+        case 'jeux-video-vendus':
+          if (item.name.includes('Minecraft')) hints.push(`⛏️ Jeu de construction avec des blocs`);
+          if (item.name.includes('GTA V')) hints.push(`🚗 Jeu de crime dans une ville fictive`);
+          if (item.name.includes('Tetris')) hints.push(`🧩 Jeu de puzzle avec des formes qui tombent`);
+          if (item.name.includes('Wii Sports')) hints.push(`🎾 Jeu de sport inclus avec la console Nintendo`);
+          if (item.name.includes('PUBG')) hints.push(`🔫 Battle royale sur une île`);
+          if (item.name.includes('Mario Kart')) hints.push(`🏎️ Course avec des personnages Nintendo`);
+          if (item.name.includes('Super Mario Bros')) hints.push(`🍄 Jeu de plateforme avec un plombier`);
+          if (item.name.includes('Red Dead')) hints.push(`🤠 Jeu de western avec des cowboys`);
+          if (item.name.includes('Overwatch')) hints.push(`🎯 Jeu de tir en équipe de Blizzard`);
+          if (item.name.includes('Witcher 3')) hints.push(`🐺 RPG avec Geralt de Riv`);
+          break;
+          
+        case 'langues-parlees':
+          if (item.name.includes('Mandarin')) hints.push(`🇨🇳 Langue officielle de la Chine`);
+          if (item.name.includes('Espagnol')) hints.push(`🇪🇸 Langue de l'Espagne et de l'Amérique latine`);
+          if (item.name.includes('Anglais')) hints.push(`🇬🇧 Langue de Shakespeare`);
+          if (item.name.includes('Hindi')) hints.push(`🇮🇳 Langue principale de l'Inde`);
+          if (item.name.includes('Arabe')) hints.push(`🕌 Langue du Coran`);
+          if (item.name.includes('Bengalî')) hints.push(`🇧🇩 Langue du Bangladesh`);
+          if (item.name.includes('Portugais')) hints.push(`🇵🇹 Langue du Brésil et du Portugal`);
+          if (item.name.includes('Russe')) hints.push(`🇷🇺 Langue de Tolstoï`);
+          if (item.name.includes('Japonais')) hints.push(`🇯🇵 Langue des mangas`);
+          if (item.name.includes('Pendjabi')) hints.push(`🇮🇳 Langue du Punjab`);
+          break;
+          
+        case 'marques-valorisees':
+          if (item.name.includes('Apple')) hints.push(`🍎 Marque de l'iPhone et du Mac`);
+          if (item.name.includes('Microsoft')) hints.push(`💻 Créateur de Windows et Xbox`);
+          if (item.name.includes('Amazon')) hints.push(`📦 Géant du e-commerce de Jeff Bezos`);
+          if (item.name.includes('Google')) hints.push(`🔍 Moteur de recherche le plus utilisé`);
+          if (item.name.includes('Samsung')) hints.push(`📱 Rival coréen d'Apple`);
+          if (item.name.includes('Tesla')) hints.push(`⚡ Voitures électriques d'Elon Musk`);
+          if (item.name.includes('Meta')) hints.push(`👥 Ancien nom : Facebook`);
+          if (item.name.includes('NVIDIA')) hints.push(`🎮 Cartes graphiques pour gamers`);
+          if (item.name.includes('Toyota')) hints.push(`🚗 Constructeur automobile japonais`);
+          if (item.name.includes('Coca-Cola')) hints.push(`🥤 Boisson gazeuse rouge et blanche`);
+          break;
+          
+        case 'sports-populaires':
+          if (item.name.includes('Football')) hints.push(`⚽ Sport avec 11 joueurs et un ballon rond`);
+          if (item.name.includes('Cricket')) hints.push(`🏏 Sport très populaire en Inde et Angleterre`);
+          if (item.name.includes('Hockey')) hints.push(`🏑 Sport avec des crosses sur gazon`);
+          if (item.name.includes('Tennis')) hints.push(`🎾 Sport de raquette avec Federer et Nadal`);
+          if (item.name.includes('Volleyball')) hints.push(`🏐 Sport avec un filet et 6 joueurs par équipe`);
+          if (item.name.includes('Tennis de table')) hints.push(`🏓 Version miniature du tennis`);
+          if (item.name.includes('Basketball')) hints.push(`🏀 Sport avec des paniers à 3m05`);
+          if (item.name.includes('Baseball')) hints.push(`⚾ Sport américain avec une batte`);
+          if (item.name.includes('Rugby')) hints.push(`🏉 Sport avec un ballon ovale`);
+          if (item.name.includes('Golf')) hints.push(`⛳ Sport avec des clubs et des trous`);
+          break;
+          
+        case 'youtubers-francais':
+          if (item.name.includes('Squeezie')) hints.push(`🎮 YouTubeur gaming, Lucas de son prénom`);
+          if (item.name.includes('Cyprien')) hints.push(`😂 YouTubeur humoriste, Cyprien Iov`);
+          if (item.name.includes('Norman')) hints.push(`🎭 "Norman fait des vidéos"`);
+          if (item.name.includes('Tibo')) hints.push(`💪 YouTubeur fitness et musculation`);
+          if (item.name.includes('Amixem')) hints.push(`🎬 YouTubeur lifestyle, Maxime de son prénom`);
+          if (item.name.includes('Rémi Gaillard')) hints.push(`🤡 YouTubeur de canulars de Montpellier`);
+          if (item.name.includes('Michou')) hints.push(`🌈 YouTubeur aux cheveux colorés`);
+          if (item.name.includes('Inoxtag')) hints.push(`🎪 YouTubeur aventure et défis`);
+          if (item.name.includes('McFly')) hints.push(`🎵 Duo de YouTubeurs musiciens`);
+          if (item.name.includes('Gotaga')) hints.push(`🎮 Streameur et YouTubeur gaming`);
+          break;
+          
+        case 'artistes-spotify':
+          if (item.name.includes('Weeknd')) hints.push(`🌙 Chanteur de "Blinding Lights"`);
+          if (item.name.includes('Taylor Swift')) hints.push(`💄 Chanteuse de "Shake It Off"`);
+          if (item.name.includes('Bad Bunny')) hints.push(`🐰 Rappeur portoricain de reggaeton`);
+          if (item.name.includes('Drake')) hints.push(`🦉 Rappeur canadien de "God's Plan"`);
+          if (item.name.includes('Ariana Grande')) hints.push(`🎀 Chanteuse de "Thank U, Next"`);
+          if (item.name.includes('Ed Sheeran')) hints.push(`🎸 Chanteur roux de "Shape of You"`);
+          if (item.name.includes('Justin Bieber')) hints.push(`🎤 Chanteur canadien de "Baby"`);
+          if (item.name.includes('Billie Eilish')) hints.push(`💚 Chanteuse de "Bad Guy"`);
+          if (item.name.includes('Dua Lipa')) hints.push(`💃 Chanteuse de "Levitating"`);
+          if (item.name.includes('Post Malone')) hints.push(`🎵 Rappeur de "Circles"`);
+          break;
+          
+        case 'jeux-mobiles':
+          if (item.name.includes('Subway Surfers')) hints.push(`🚇 Jeu de course dans le métro`);
+          if (item.name.includes('PUBG Mobile')) hints.push(`📱 Version mobile du battle royale`);
+          if (item.name.includes('Candy Crush')) hints.push(`🍭 Jeu de match-3 avec des bonbons`);
+          if (item.name.includes('Free Fire')) hints.push(`🔥 Battle royale de Garena`);
+          if (item.name.includes('Roblox')) hints.push(`🧱 Plateforme de jeux créés par les joueurs`);
+          if (item.name.includes('Among Us')) hints.push(`👨‍🚀 Jeu de déduction avec des imposteurs`);
+          if (item.name.includes('Temple Run')) hints.push(`🏃 Jeu de course infinie dans un temple`);
+          if (item.name.includes('Clash of Clans')) hints.push(`⚔️ Jeu de stratégie avec des villages`);
+          if (item.name.includes('Pokémon GO')) hints.push(`📍 Jeu Pokémon en réalité augmentée`);
+          if (item.name.includes('Clash Royale')) hints.push(`👑 Jeu de cartes en temps réel`);
+          break;
+          
+        case 'rappeurs-francais':
+          if (item.name.includes('Jul')) hints.push(`🎤 Rappeur marseillais très prolifique`);
+          if (item.name.includes('PNL')) hints.push(`👥 Duo de rap, Ademo et N.O.S`);
+          if (item.name.includes('Ninho')) hints.push(`🎵 Rappeur de l'Essonne`);
+          if (item.name.includes('SCH')) hints.push(`🌊 Rappeur marseillais, "JVLIVS"`);
+          if (item.name.includes('Nekfeu')) hints.push(`🔥 Rappeur du 1995, "Feu"`);
+          if (item.name.includes('Booba')) hints.push(`👑 "Duc de Boulogne", B2O`);
+          if (item.name.includes('Damso')) hints.push(`🇧🇪 Rappeur belge du 92i`);
+          if (item.name.includes('Orelsan')) hints.push(`🎭 Rappeur de Caen, "San"`);
+          if (item.name.includes('Gazo')) hints.push(`🔥 Rappeur drill français`);
+          if (item.name.includes('Freeze Corleone')) hints.push(`❄️ Rappeur du LMF, 667`);
+          break;
+      }
+      
+      // Ajouter des indices sur la position si c'est dans le top 3
+      if (item.rank <= 3) {
+        hints.push(`🏆 Cet élément est dans le TOP 3 !`);
+      } else if (item.rank <= 5) {
+        hints.push(`🥉 Cet élément est dans le TOP 5 !`);
+      } else {
+        hints.push(`📊 Cet élément est dans la seconde moitié du classement`);
+      }
+      
+      // Indice sur la valeur si disponible
+      if (item.value) {
+        const words = item.value.split(' ');
+        if (words.length > 1) {
+          hints.push(`📈 Sa valeur contient le mot "${words[0]}"`);
+        }
+      }
+      
+      return hints;
+    };
     
-    return hintTypes[Math.floor(Math.random() * hintTypes.length)];
+    const availableHints = getSpecificHints(randomItem, game.category);
+    return availableHints[Math.floor(Math.random() * availableHints.length)];
   };
 
   const resetGame = () => {
