@@ -518,7 +518,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 <div className={`mb-6 p-4 rounded-lg text-center border-2 ${
                   feedback.includes('🎉') ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-green-300' : 
                   'bg-gradient-to-r from-red-100 to-pink-100 text-red-800 border-red-300'
-                } text-sm md:text-base`}>
+                } text-base md:text-lg font-medium`}>
                   {feedback}
                 </div>
               )}
@@ -576,7 +576,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               )}
 
               <div className="mb-6">
-                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm md:text-base font-bold text-gray-800 mb-3">
                   Votre réponse :
                 </label>
                 <input
@@ -585,7 +585,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                   onChange={(e) => setCurrentGuess(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && submitGuess()}
                   placeholder="Tapez votre réponse..."
-                  className="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white text-sm md:text-base"
+                  className="w-full px-4 md:px-6 py-3 md:py-4 border-2 border-orange-300 rounded-xl focus:ring-4 focus:ring-orange-500/50 focus:border-orange-500 bg-white text-base md:text-lg font-medium shadow-lg"
                   onFocus={() => setShowHint(false)} // Cache l'indice quand on tape
                 />
               </div>
@@ -594,7 +594,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 <button
                   onClick={submitGuess}
                   disabled={!currentGuess.trim() || game.showingSagaChoice !== null}
-                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 md:py-3 px-4 md:px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium shadow-lg text-sm md:text-base"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold shadow-xl text-base md:text-lg transform hover:scale-105"
                 >
                   ✅ Valider la réponse
                 </button>
@@ -602,6 +602,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                   onClick={useHint}
                   disabled={game.hintsUsed >= game.maxHints || game.showingSagaChoice !== null}
                   className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 md:py-3 px-4 md:px-6 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2 shadow-lg text-sm md:text-base"
+                  className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold flex items-center justify-center gap-2 shadow-xl text-base md:text-lg transform hover:scale-105"
                 >
                   <Lightbulb size={20} />
                   Indice ({game.maxHints - game.hintsUsed})
@@ -610,7 +611,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
               <div className="mt-6 text-center">
                 <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-2 md:p-3 border border-purple-200">
-                  <span className="text-purple-700 font-medium text-sm md:text-base">
+                  <span className="text-purple-800 font-bold text-base md:text-lg">
                     {game.foundItems.length}/10 éléments trouvés
                   </span>
                 </div>
