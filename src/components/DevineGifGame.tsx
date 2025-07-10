@@ -351,7 +351,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           <div className="bg-black rounded-lg mb-6 overflow-hidden">
             <div className="aspect-video">
               <iframe
-                src={`https://www.youtube.com/embed/${game.currentGif.videoUrl.split('/').pop()?.split('?v=')[1] || game.currentGif.videoUrl.split('/').pop()}?autoplay=1&rel=0`}
+                src={`https://www.youtube.com/embed/${game.currentGif.videoUrl}?autoplay=1&rel=0&modestbranding=1`}
                 title={game.currentGif.title}
                 className="w-full h-full"
                 frameBorder="0"
@@ -409,6 +409,10 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                     src={game.currentGif.thumbnailUrl} 
                     alt="Miniature à deviner" 
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://img.youtube.com/vi/${game.currentGif.videoUrl}/default.jpg`;
+                    }}
                   />
                   {/* Overlay avec bouton play désactivé */}
                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
