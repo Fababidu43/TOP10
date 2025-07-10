@@ -431,7 +431,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                     </p>
                   )}
                 </div>
-                </div>
               </div>
 
               <div className="text-center mb-6">
