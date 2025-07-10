@@ -351,11 +351,11 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           <div className="bg-black rounded-lg mb-6 overflow-hidden">
             <div className="aspect-video">
               <iframe
-                src={game.currentGif.videoUrl}
+                src={`https://www.youtube.com/embed/${game.currentGif.videoUrl.split('/').pop()?.split('?v=')[1] || game.currentGif.videoUrl.split('/').pop()}?autoplay=1&rel=0`}
                 title={game.currentGif.title}
                 className="w-full h-full"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               ></iframe>
             </div>
