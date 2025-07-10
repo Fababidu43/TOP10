@@ -12,11 +12,14 @@ interface GameState {
   currentGif: GifItem | null;
   timeLeft: number;
   isTimerRunning: boolean;
+  isPaused: boolean;
   scores: { [playerName: string]: { correct: number; wrong: number; timeout: number } };
   gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result' | 'video-playing';
   roundsPlayed: number;
   maxRounds: number;
   showVideo: boolean;
+  usedGifIds: string[];
+  shuffledGifs: GifItem[];
 }
 
 const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
@@ -27,25 +30,28 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     currentGif: null,
     timeLeft: 30,
     isTimerRunning: false,
+    isPaused: false,
     scores: {},
     gamePhase: 'setup',
     roundsPlayed: 0,
     maxRounds: 10,
-    showVideo: false
+    showVideo: false,
+    usedGifIds: [],
+    shuffledGifs: []
   });
   const [lastResult, setLastResult] = useState<'correct' | 'wrong' | 'timeout' | null>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (game.isTimerRunning && game.timeLeft > 0) {
+    if (game.isTimerRunning && !game.isPaused && game.timeLeft > 0) {
       interval = setInterval(() => {
         setGame(prev => ({ ...prev, timeLeft: prev.timeLeft - 1 }));
       }, 1000);
-    } else if (game.timeLeft === 0 && game.isTimerRunning) {
+    } else if (game.timeLeft === 0 && game.isTimerRunning && !game.isPaused) {
       handleTimeUp();
     }
     return () => clearInterval(interval);
-  }, [game.isTimerRunning, game.timeLeft]);
+  }, [game.isTimerRunning, game.isPaused, game.timeLeft]);
 
   const addPlayer = () => {
     setPlayers([...players, '']);
@@ -65,6 +71,9 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     const validPlayers = players.filter(p => p.trim());
     if (validPlayers.length < 3) return;
 
+    // Mélanger les GIFs au début du jeu
+    const shuffled = [...frenchGifs].sort(() => Math.random() - 0.5);
+
     const initialScores: { [key: string]: { correct: number; wrong: number; timeout: number } } = {};
     validPlayers.forEach(player => {
       initialScores[player] = { correct: 0, wrong: 0, timeout: 0 };
@@ -76,11 +85,14 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       currentGif: null,
       timeLeft: 30,
       isTimerRunning: false,
+      isPaused: false,
       scores: initialScores,
       gamePhase: 'playing',
       roundsPlayed: 0,
-      maxRounds: Math.min(frenchGifs.length, validPlayers.length * 3),
-      showVideo: false
+      maxRounds: Math.min(shuffled.length, validPlayers.length * 3),
+      showVideo: false,
+      usedGifIds: [],
+      shuffledGifs: shuffled
     });
 
     startNewRound();
@@ -92,20 +104,36 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       return;
     }
 
-    const availableGifs = frenchGifs.filter(gif => 
-      !game.currentGif || gif.id !== game.currentGif.id
+    // Prendre le prochain GIF dans la liste mélangée
+    const availableGifs = game.shuffledGifs.filter(gif => 
+      !game.usedGifIds.includes(gif.id)
     );
-    const randomGif = availableGifs[Math.floor(Math.random() * availableGifs.length)];
+    
+    if (availableGifs.length === 0) {
+      endGame();
+      return;
+    }
+    
+    const nextGif = availableGifs[0];
     
     setGame(prev => ({
       ...prev,
-      currentGif: randomGif,
+      currentGif: nextGif,
       timeLeft: 30,
       isTimerRunning: true,
+      isPaused: false,
       gamePhase: 'waiting-answer',
-      showVideo: false
+      showVideo: false,
+      usedGifIds: [...prev.usedGifIds, nextGif.id]
     }));
     setLastResult(null);
+  };
+
+  const togglePause = () => {
+    setGame(prev => ({
+      ...prev,
+      isPaused: !prev.isPaused
+    }));
   };
 
   const handleCorrectAnswer = () => {
@@ -117,20 +145,15 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       ...prev,
       scores: newScores,
       isTimerRunning: false,
-      gamePhase: 'video-playing',
-      showVideo: true,
+      isPaused: false,
+      gamePhase: 'round-result',
       roundsPlayed: prev.roundsPlayed + 1
     }));
 
     setLastResult('correct');
-    
-    // Afficher la vidéo pendant 5 secondes puis passer au suivant
     setTimeout(() => {
-      setGame(prev => ({ ...prev, gamePhase: 'round-result', showVideo: false }));
-      setTimeout(() => {
-        nextPlayer();
-      }, 2000);
-    }, 8000); // Augmenté à 8 secondes pour voir la vidéo
+      nextPlayer();
+    }, 3000);
   };
 
   const handleWrongAnswer = () => {
@@ -142,6 +165,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       ...prev,
       scores: newScores,
       isTimerRunning: false,
+      isPaused: false,
       gamePhase: 'round-result',
       roundsPlayed: prev.roundsPlayed + 1
     }));
@@ -161,6 +185,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       ...prev,
       scores: newScores,
       isTimerRunning: false,
+      isPaused: false,
       gamePhase: 'round-result',
       roundsPlayed: prev.roundsPlayed + 1
     }));
@@ -181,6 +206,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     setGame(prev => ({
       ...prev,
       currentPlayerIndex: nextIndex,
+      isPaused: false,
       gamePhase: 'playing'
     }));
     
@@ -200,11 +226,14 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       currentGif: null,
       timeLeft: 30,
       isTimerRunning: false,
+      isPaused: false,
       scores: {},
       gamePhase: 'setup',
       roundsPlayed: 0,
       maxRounds: 10,
-      showVideo: false
+      showVideo: false,
+      usedGifIds: [],
+      shuffledGifs: []
     });
     setPlayers(['']);
     setLastResult(null);
@@ -389,12 +418,44 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                   </div>
                 </div>
                 
-                <div className={`text-4xl font-bold mb-4 ${
-                  game.timeLeft <= 10 ? 'text-red-600 animate-pulse' : 'text-purple-600'
-                }`}>
-                  <Timer size={32} className="inline mr-2" />
-                  {game.timeLeft}s
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <div className={`text-4xl font-bold ${
+                    game.timeLeft <= 10 ? 'text-red-600 animate-pulse' : 'text-purple-600'
+                  }`}>
+                    <Timer size={32} className="inline mr-2" />
+                    {game.timeLeft}s
+                  </div>
+                  
+                  <button
+                    onClick={togglePause}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
+                      game.isPaused 
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white' 
+                        : 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white'
+                    }`}
+                  >
+                    {game.isPaused ? (
+                      <>
+                        <Play size={16} />
+                        Reprendre
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-4 h-4 flex gap-1">
+                          <div className="w-1.5 h-4 bg-white rounded"></div>
+                          <div className="w-1.5 h-4 bg-white rounded"></div>
+                        </div>
+                        Pause
+                      </>
+                    )}
+                  </button>
                 </div>
+                
+                {game.isPaused && (
+                  <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-3 mb-4">
+                    <p className="text-yellow-800 font-medium">⏸️ Jeu en pause</p>
+                  </div>
+                )}
               </div>
 
               {/* Miniature YouTube avec overlay */}
@@ -416,21 +477,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 </div>
               </div>
 
-              {/* Lien YouTube toujours disponible */}
-              <div className="text-center mb-6">
-                <a 
-                  href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg font-bold"
-                >
-                  <div className="bg-white/20 p-2 rounded-full">
-                    <Play size={20} className="text-white" />
-                  </div>
-                  🎬 Voir la vidéo sur YouTube
-                </a>
-              </div>
-
               <div className="text-center mb-6">
                 <p className="text-lg font-medium text-gray-800 mb-4">
                   {currentPlayer}, devine ce GIF/vidéo à voix haute !
@@ -443,6 +489,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
               <div className="flex gap-4">
                 <button
                   onClick={handleCorrectAnswer}
+                  disabled={game.isPaused}
                   className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <CheckCircle size={20} />
@@ -450,6 +497,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 </button>
                 <button
                   onClick={handleWrongAnswer}
+                  disabled={game.isPaused}
                   className="flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-red-600 hover:to-pink-600 transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <XCircle size={20} />
@@ -516,7 +564,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 <p className="text-green-700 font-medium">✅ Bonne réponse : distribue 4 gorgées</p>
                 <p className="text-red-700 font-medium">❌ Mauvaise réponse : boit 3 gorgées</p>
                 <p className="text-orange-700 font-medium">⏰ Temps écoulé : boit 5 gorgées</p>
-                <p className="text-blue-700 font-medium">🎬 Lien YouTube toujours disponible !</p>
+                <p className="text-blue-700 font-medium">🎬 Vidéo visible après chaque réponse !</p>
               </div>
             </div>
           </div>
@@ -545,6 +593,21 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             <p className="text-gray-600">
               La réponse était : <strong>{game.currentGif.title}</strong>
             </p>
+          </div>
+
+          {/* Lien YouTube après la réponse */}
+          <div className="text-center mb-6">
+            <a 
+              href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg font-bold text-lg"
+            >
+              <div className="bg-white/20 p-2 rounded-full">
+                <Play size={24} className="text-white" />
+              </div>
+              🎬 Voir la vidéo complète
+            </a>
           </div>
 
           <div className={`rounded-lg p-6 mb-6 text-center border-2 ${
