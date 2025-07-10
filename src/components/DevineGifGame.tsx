@@ -347,14 +347,21 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
 
           <div className="bg-black rounded-lg mb-6 overflow-hidden shadow-xl">
             <div className="aspect-video">
-              <iframe
-                src={`https://www.youtube.com/embed/${game.currentGif.videoUrl}?autoplay=1&rel=0&modestbranding=1&controls=1&showinfo=0&fs=1&cc_load_policy=0&iv_load_policy=3&autohide=1`}
-                title={game.currentGif.title}
-                className="w-full h-full"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-                allowFullScreen
-              ></iframe>
+              <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎬</div>
+                  <p className="text-white text-lg mb-4">Vidéo en cours de chargement...</p>
+                  <a 
+                    href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors inline-flex items-center gap-2"
+                  >
+                    <Play size={20} />
+                    Voir sur YouTube
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -418,11 +425,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                   <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1 rounded-full font-bold">
                     {game.timeLeft}s
                   </div>
-                </div>
-                <div className="bg-gradient-to-r from-gray-800 to-black text-white p-4">
-                  <p className="text-lg font-medium mb-2">
-                    {game.currentGif.description}
-                  </p>
                 </div>
               </div>
 
