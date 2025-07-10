@@ -47,16 +47,16 @@ const AboutPage: React.FC = () => {
           À propos de FABABICUITE
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto" itemProp="description">
-          J'ai crée une expériences ludiques pour rassembler les gens et créer des moments inoubliables.
+          J'ai créé des expériences ludiques pour rassembler les gens et créer des moments inoubliables.
         </p>
       </header>
 
       <section className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white" role="main">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
-            <h2 className="text-2xl font-bold mb-4" id="notre-mission">Notre Mission</h2>
+            <h2 className="text-2xl font-bold mb-4" id="ma-mission">Ma Mission</h2>
             <p className="text-purple-100 mb-4">
-              FABABICUITE est né d'une passion simple : rassembler les gens autour de jeux
+              FABABICUITE est né de ma passion simple : rassembler les gens autour de jeux
               d'ambiance qui créent des souvenirs durables et des fous rires garantis.
             </p>
             <p className="text-purple-100">
@@ -67,7 +67,7 @@ const AboutPage: React.FC = () => {
           <div className="text-center">
             <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm">
               <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-lg font-semibold mb-2" id="notre-objectif">Notre Objectif</h3>
+              <h3 className="text-lg font-semibold mb-2" id="mon-objectif">Mon Objectif</h3>
               <p className="text-purple-100 text-sm">
                 Rendre les jeux d'ambiance accessibles à tous, partout et à tout moment
               </p>
@@ -85,7 +85,7 @@ const AboutPage: React.FC = () => {
             Fait avec ❤️
           </h3>
           <p className="text-gray-600" itemProp="description">
-            Chaque jeu est soigneusement sélectionné et testé pour garantir des moments de joie partagée.
+            Je sélectionne et teste soigneusement chaque jeu pour garantir des moments de joie partagée.
           </p>
         </div>
 
@@ -97,7 +97,7 @@ const AboutPage: React.FC = () => {
             Communauté
           </h3>
           <p className="text-gray-600" itemProp="description">
-            Rejoignez une communauté de passionnés qui partagent leurs expériences et suggestions.
+            Rejoignez la communauté de passionnés qui partagent leurs expériences et suggestions avec moi.
           </p>
         </div>
 
@@ -109,14 +109,14 @@ const AboutPage: React.FC = () => {
             Qualité
           </h3>
           <p className="text-gray-600" itemProp="description">
-            Interface soignée, jeux testés et expérience utilisateur optimisée pour tous les appareils.
+            J'ai créé une interface soignée, testé tous les jeux et optimisé l'expérience pour tous les appareils.
           </p>
         </div>
       </section>
 
       <section className="bg-gray-50 rounded-2xl p-8" role="complementary">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center" id="nos-valeurs">
-          Nos Valeurs
+          Mes Valeurs
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="list">
           <div className="flex items-start gap-4">
@@ -126,7 +126,7 @@ const AboutPage: React.FC = () => {
             <div>
               <h3 className="font-semibold text-gray-800 mb-1" itemProp="name">Simplicité</h3>
               <p className="text-gray-600 text-sm">
-                Des règles claires et une interface intuitive pour se concentrer sur l'essentiel : s'amuser !
+                J'ai conçu des règles claires et une interface intuitive pour se concentrer sur l'essentiel : s'amuser !
               </p>
             </div>
           </div>
@@ -137,7 +137,7 @@ const AboutPage: React.FC = () => {
             <div>
               <h3 className="font-semibold text-gray-800 mb-1" itemProp="name">Inclusion</h3>
               <p className="text-gray-600 text-sm">
-                Tous les jeux sont conçus pour être accessibles à tous, quel que soit l'âge ou le niveau.
+                J'ai conçu tous les jeux pour qu'ils soient accessibles à tous, quel que soit l'âge ou le niveau.
               </p>
             </div>
           </div>
@@ -148,7 +148,7 @@ const AboutPage: React.FC = () => {
             <div>
               <h3 className="font-semibold text-gray-800 mb-1" itemProp="name">Innovation</h3>
               <p className="text-gray-600 text-sm">
-                Nous modernisons les jeux traditionnels avec des versions interactives et numériques.
+                Je modernise les jeux traditionnels avec des versions interactives et numériques.
               </p>
             </div>
           </div>
@@ -159,7 +159,7 @@ const AboutPage: React.FC = () => {
             <div>
               <h3 className="font-semibold text-gray-800 mb-1" itemProp="name">Convivialité</h3>
               <p className="text-gray-600 text-sm">
-                Favoriser les échanges, les rires et les moments de complicité entre les joueurs.
+                Je favorise les échanges, les rires et les moments de complicité entre les joueurs.
               </p>
             </div>
           </div>
