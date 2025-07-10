@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Trophy, Target, Play, Video } from 'lucide-react';
+import { frenchGifs, GifItem, getCategoryIcon, getCategoryName, getCategoryColor } from '../data/devineGifData';
 
 interface DevineGifGameProps {
   onBack: () => void;
-}
-
-interface GifItem {
-  id: string;
-  title: string;
-  description: string;
-  category: 'tiktok' | 'youtube' | 'tv' | 'meme';
-  imageUrl: string;
-  videoUrl?: string;
-  alternatives?: string[];
-  hint?: string;
 }
 
 interface GameState {
@@ -28,197 +18,6 @@ interface GameState {
   maxRounds: number;
   showVideo: boolean;
 }
-
-// Base de données étendue de GIFs/vidéos virales françaises
-const frenchGifs: GifItem[] = [
-  // TikTok/Réseaux sociaux
-  {
-    id: '1',
-    title: 'Ah vous êtes sûrement pas français',
-    description: 'Vidéo TikTok virale d\'un homme qui teste les français',
-    category: 'tiktok',
-    imageUrl: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg',
-    alternatives: ['vous etes surement pas francais', 'pas francais', 'test francais'],
-    hint: 'Vidéo TikTok récente qui teste la nationalité'
-  },
-  {
-    id: '2',
-    title: 'Mais tu es grosse Mélissande',
-    description: 'Réplique culte devenue meme',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg',
-    alternatives: ['grosse melissande', 'melissande', 'tu es grosse'],
-    hint: 'Réplique devenue virale sur les réseaux'
-  },
-  {
-    id: '3',
-    title: 'Wesh alors',
-    description: 'Meme français populaire',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181292/pexels-photo-1181292.jpeg',
-    alternatives: ['wesh', 'wesh alors meme'],
-    hint: 'Expression française devenue meme'
-  },
-  {
-    id: '4',
-    title: 'Bonjour madame',
-    description: 'Vidéo TikTok du livreur poli',
-    category: 'tiktok',
-    imageUrl: 'https://images.pexels.com/photos/1181319/pexels-photo-1181319.jpeg',
-    alternatives: ['bonjour madame livreur', 'livreur poli', 'madame bonjour'],
-    hint: 'Livreur très poli devenu viral'
-  },
-  {
-    id: '5',
-    title: 'C\'est pas possible',
-    description: 'Réaction française classique',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg',
-    alternatives: ['pas possible', 'c est pas possible'],
-    hint: 'Expression française d\'incrédulité'
-  },
-  {
-    id: '6',
-    title: 'Oskour',
-    description: 'Expression internet française',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181351/pexels-photo-1181351.jpeg',
-    alternatives: ['oskour meme', 'au secours'],
-    hint: 'Déformation d\'une expression de détresse'
-  },
-  {
-    id: '7',
-    title: 'Ratio',
-    description: 'Terme des réseaux sociaux français',
-    category: 'tiktok',
-    imageUrl: 'https://images.pexels.com/photos/1181234/pexels-photo-1181234.jpeg',
-    alternatives: ['ratio twitter', 'ratio tiktok'],
-    hint: 'Terme utilisé pour surpasser un commentaire'
-  },
-  {
-    id: '8',
-    title: 'Ça va pas la tête',
-    description: 'Expression française populaire',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181445/pexels-photo-1181445.jpeg',
-    alternatives: ['ca va pas la tete', 'pas la tete'],
-    hint: 'Expression pour dire que quelqu\'un est fou'
-  },
-
-  // YouTube France
-  {
-    id: '9',
-    title: 'Salut les terriens',
-    description: 'Intro de Cyprien',
-    category: 'youtube',
-    imageUrl: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg',
-    alternatives: ['cyprien salut terriens', 'cyprien intro'],
-    hint: 'Phrase d\'intro d\'un YouTubeur français célèbre'
-  },
-  {
-    id: '10',
-    title: 'Coucou les amis',
-    description: 'Intro de Squeezie',
-    category: 'youtube',
-    imageUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg',
-    alternatives: ['squeezie coucou', 'squeezie intro'],
-    hint: 'Salutation d\'un YouTubeur gaming français'
-  },
-  {
-    id: '11',
-    title: 'Norman fait des vidéos',
-    description: 'Nom de chaîne YouTube culte',
-    category: 'youtube',
-    imageUrl: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg',
-    alternatives: ['norman videos', 'norman youtube'],
-    hint: 'Nom d\'une chaîne YouTube française très populaire'
-  },
-  {
-    id: '12',
-    title: 'Rémi Gaillard',
-    description: 'YouTubeur français de pranks',
-    category: 'youtube',
-    imageUrl: 'https://images.pexels.com/photos/1181425/pexels-photo-1181425.jpeg',
-    alternatives: ['remi gaillard', 'gaillard pranks'],
-    hint: 'YouTubeur français connu pour ses canulars'
-  },
-
-  // TV/Émissions
-  {
-    id: '13',
-    title: 'C\'est du jamais vu',
-    description: 'Expression de commentateur sportif',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181523/pexels-photo-1181523.jpeg',
-    alternatives: ['jamais vu', 'du jamais vu'],
-    hint: 'Expression utilisée par les commentateurs'
-  },
-  {
-    id: '14',
-    title: 'Bonne réponse',
-    description: 'Phrase de Julien Lepers',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181367/pexels-photo-1181367.jpeg',
-    alternatives: ['julien lepers bonne reponse', 'questions champion'],
-    hint: 'Phrase culte d\'un animateur de quiz'
-  },
-  {
-    id: '15',
-    title: 'Miam miam miam',
-    description: 'Alain Chabat dans Burger Quiz',
-    category: 'tv',
-    imageUrl: 'https://images.pexels.com/photos/1181489/pexels-photo-1181489.jpeg',
-    alternatives: ['burger quiz miam', 'alain chabat miam'],
-    hint: 'Son caractéristique d\'une émission de quiz'
-  },
-
-  // Memes internet français
-  {
-    id: '16',
-    title: 'Jean-Marie',
-    description: 'Meme du prénom français',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181578/pexels-photo-1181578.jpeg',
-    alternatives: ['jean marie meme', 'prenom francais'],
-    hint: 'Prénom français devenu meme'
-  },
-  {
-    id: '17',
-    title: 'Ça passe crème',
-    description: 'Expression française moderne',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181634/pexels-photo-1181634.jpeg',
-    alternatives: ['passe creme', 'ca passe creme'],
-    hint: 'Expression pour dire que ça va bien'
-  },
-  {
-    id: '18',
-    title: 'Tranquille',
-    description: 'Mot français populaire',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181712/pexels-photo-1181712.jpeg',
-    alternatives: ['tranquille meme', 'tranquille expression'],
-    hint: 'Mot français utilisé pour dire "cool"'
-  },
-  {
-    id: '19',
-    title: 'Cheh',
-    description: 'Expression française internet',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181756/pexels-photo-1181756.jpeg',
-    alternatives: ['cheh meme', 'cheh expression'],
-    hint: 'Expression pour se moquer gentiment'
-  },
-  {
-    id: '20',
-    title: 'Sah quel plaisir',
-    description: 'Expression française des jeunes',
-    category: 'meme',
-    imageUrl: 'https://images.pexels.com/photos/1181823/pexels-photo-1181823.jpeg',
-    alternatives: ['sah quel plaisir', 'quel plaisir'],
-    hint: 'Expression ironique française moderne'
-  }
-];
 
 const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
   const [players, setPlayers] = useState<string[]>(['']);
@@ -331,7 +130,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       setTimeout(() => {
         nextPlayer();
       }, 2000);
-    }, 5000);
+    }, 8000); // Augmenté à 8 secondes pour voir la vidéo
   };
 
   const handleWrongAnswer = () => {
@@ -409,36 +208,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     });
     setPlayers(['']);
     setLastResult(null);
-  };
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'tiktok': return '📱';
-      case 'youtube': return '📺';
-      case 'tv': return '📻';
-      case 'meme': return '😂';
-      default: return '🎭';
-    }
-  };
-
-  const getCategoryName = (category: string) => {
-    switch (category) {
-      case 'tiktok': return 'TikTok';
-      case 'youtube': return 'YouTube';
-      case 'tv': return 'TV';
-      case 'meme': return 'Meme';
-      default: return 'Autre';
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'tiktok': return 'from-pink-400 to-red-500';
-      case 'youtube': return 'from-red-500 to-red-600';
-      case 'tv': return 'from-blue-500 to-indigo-600';
-      case 'meme': return 'from-yellow-400 to-orange-500';
-      default: return 'from-purple-500 to-blue-500';
-    }
   };
 
   const getTopPlayers = () => {
@@ -579,13 +348,18 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             </p>
           </div>
 
-          <div className="bg-black rounded-lg p-8 mb-6 text-center">
-            <div className="text-white mb-4">
-              <Video size={48} className="mx-auto mb-4" />
-              <p className="text-lg">🎬 Vidéo en cours de lecture...</p>
-              <p className="text-sm opacity-75 mt-2">{game.currentGif.description}</p>
+          <div className="bg-black rounded-lg mb-6 overflow-hidden">
+            <div className="aspect-video">
+              <iframe
+                src={game.currentGif.videoUrl}
+                title={game.currentGif.title}
+                className="w-full h-full"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
-            <div className="bg-green-600 text-white px-4 py-2 rounded-lg inline-block">
+            <div className="bg-green-600 text-white px-4 py-2 text-center">
               ✅ {game.currentGif.title}
             </div>
           </div>
@@ -628,14 +402,26 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 </div>
               </div>
 
-              {/* Simulation du GIF avec une image */}
-              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg p-8 mb-6 text-center border-2 border-dashed border-gray-300">
-                <img 
-                  src={game.currentGif.imageUrl} 
-                  alt="GIF à deviner" 
-                  className="w-full max-w-md mx-auto rounded-lg shadow-md mb-4"
-                />
-                <div className="bg-gradient-to-r from-black to-gray-800 text-white p-4 rounded-lg">
+              {/* Miniature YouTube avec overlay */}
+              <div className="bg-black rounded-lg mb-6 overflow-hidden relative">
+                <div className="aspect-video relative">
+                  <img 
+                    src={game.currentGif.thumbnailUrl} 
+                    alt="Miniature à deviner" 
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Overlay avec bouton play désactivé */}
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="bg-red-600 rounded-full p-4 opacity-50">
+                      <Play size={32} className="text-white ml-1" />
+                    </div>
+                  </div>
+                  {/* Timer overlay */}
+                  <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1 rounded-full font-bold">
+                    {game.timeLeft}s
+                  </div>
+                </div>
+                <div className="bg-gradient-to-r from-gray-800 to-black text-white p-4">
                   <p className="text-lg font-medium mb-2">
                     🎬 {game.currentGif.description}
                   </p>
@@ -644,6 +430,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                       💡 Indice : {game.currentGif.hint}
                     </p>
                   )}
+                </div>
                 </div>
               </div>
 
@@ -732,6 +519,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 <p className="text-green-700 font-medium">✅ Bonne réponse : distribue 4 gorgées</p>
                 <p className="text-red-700 font-medium">❌ Mauvaise réponse : boit 3 gorgées</p>
                 <p className="text-orange-700 font-medium">⏰ Temps écoulé : boit 5 gorgées</p>
+                <p className="text-blue-700 font-medium">🎬 Vidéo complète si bonne réponse !</p>
               </div>
             </div>
           </div>
