@@ -21,61 +21,49 @@ export interface SagaChoice {
 
 export const top10Categories: Top10Category[] = [
   {
-    id: 'films-box-office',
-    name: 'Films au Box-Office Mondial',
-    description: 'Les 10 films ayant rapporté le plus d\'argent au cinéma (2024)',
+    id: 'films-oscars',
+    name: 'Films Primés aux Oscars',
+    description: 'Les 10 films ayant remporté le plus d\'Oscars dans l\'histoire',
     items: [
       { 
-        rank: 1, 
-        name: 'Avatar (2009)', 
-        value: '2,9 milliards $', 
-        alternatives: ['avatar 2009', 'avatar 1', 'avatar james cameron', 'premier avatar'],
-        saga: 'Avatar',
-        sagaItems: ['Avatar (2009)', 'Avatar: La Voie de l\'eau']
+        rank: 1,
+        name: 'Ben-Hur (1959)',
+        value: '11 Oscars',
+        alternatives: ['ben hur', 'ben-hur 1959', 'charlton heston']
       },
-      { rank: 2, name: 'Avengers: Endgame', value: '2,8 milliards $', alternatives: ['endgame', 'avengers endgame', 'avengers 4'] },
+      { rank: 2, name: 'Titanic (1997)', value: '11 Oscars', alternatives: ['titanic 1997', 'titanic leonardo', 'titanic dicaprio', 'james cameron'] },
       { 
-        rank: 3, 
-        name: 'Avatar: La Voie de l\'eau', 
-        value: '2,3 milliards $', 
-        alternatives: ['avatar 2', 'avatar la voie de l\'eau', 'avatar way of water', 'avatar 2022'],
-        saga: 'Avatar',
-        sagaItems: ['Avatar (2009)', 'Avatar: La Voie de l\'eau']
+        rank: 3,
+        name: 'Le Seigneur des Anneaux: Le Retour du Roi',
+        value: '11 Oscars',
+        alternatives: ['retour du roi', 'seigneur anneaux 3', 'lotr 3', 'return of the king']
       },
-      { rank: 4, name: 'Titanic (1997)', value: '2,2 milliards $', alternatives: ['titanic 1997', 'titanic leonardo', 'titanic dicaprio'] },
+      { rank: 4, name: 'West Side Story (1961)', value: '10 Oscars', alternatives: ['west side story', 'west side story 1961'] },
       { 
-        rank: 5, 
-        name: 'Star Wars: Le Réveil de la Force', 
-        value: '2,1 milliards $', 
-        alternatives: ['star wars 7', 'le réveil de la force', 'force awakens', 'episode 7', 'star wars episode 7'],
-        saga: 'Star Wars',
-        sagaItems: ['Star Wars: Le Réveil de la Force']
+        rank: 5,
+        name: 'Gigi (1958)',
+        value: '9 Oscars',
+        alternatives: ['gigi 1958', 'gigi film']
       },
       { 
-        rank: 6, 
-        name: 'Avengers: Infinity War', 
-        value: '2,0 milliards $', 
-        alternatives: ['infinity war', 'avengers infinity war', 'avengers 3'],
-        saga: 'Avengers',
-        sagaItems: ['Avengers: Endgame', 'Avengers: Infinity War', 'The Avengers (2012)']
+        rank: 6,
+        name: 'Le Dernier Empereur',
+        value: '9 Oscars',
+        alternatives: ['dernier empereur', 'last emperor', 'bernardo bertolucci']
       },
-      { rank: 7, name: 'Spider-Man: No Way Home', value: '1,9 milliards $', alternatives: ['spiderman no way home', 'no way home', 'spider man 3 tom holland', 'spiderman 3'] },
+      { rank: 7, name: 'My Fair Lady (1964)', value: '8 Oscars', alternatives: ['my fair lady', 'audrey hepburn'] },
       { 
-        rank: 8, 
-        name: 'Jurassic World (2015)', 
-        value: '1,7 milliards $', 
-        alternatives: ['jurassic world 1', 'jurassic world 2015', 'premier jurassic world'],
-        saga: 'Jurassic',
-        sagaItems: ['Jurassic World (2015)']
+        rank: 8,
+        name: 'Cabaret (1972)',
+        value: '8 Oscars',
+        alternatives: ['cabaret 1972', 'liza minnelli']
       },
-      { rank: 9, name: 'Le Roi Lion (2019)', value: '1,7 milliards $', alternatives: ['roi lion', 'le roi lion', 'lion king 2019', 'roi lion remake', 'roi lion cgi'] },
+      { rank: 9, name: 'Gandhi (1982)', value: '8 Oscars', alternatives: ['gandhi 1982', 'ben kingsley'] },
       { 
-        rank: 10, 
-        name: 'The Avengers (2012)', 
-        value: '1,5 milliards $', 
-        alternatives: ['avengers', 'avengers 1', 'avengers 2012', 'premier avengers'],
-        saga: 'Avengers',
-        sagaItems: ['Avengers: Endgame', 'Avengers: Infinity War', 'The Avengers (2012)']
+        rank: 10,
+        name: 'Amadeus (1984)',
+        value: '8 Oscars',
+        alternatives: ['amadeus 1984', 'mozart film']
       }
     ]
   },

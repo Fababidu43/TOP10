@@ -178,9 +178,9 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
     // Feedback pour le joueur
     if (isCorrect && foundItem) {
-      setFeedback(`🎉 Excellent ! ${foundItem.name} était #${foundItem.rank} ! Tu distribues ${drinks} gorgées !`);
+      setFeedback(`🎉 BRAVO ! "${foundItem.name}" était bien classé #${foundItem.rank} ! 🍺 Tu distribues ${drinks} gorgées aux autres joueurs !`);
     } else {
-      setFeedback(`❌ "${currentGuess}" n'est pas dans le top 10. Essaie encore !`);
+      setFeedback(`❌ Dommage ! "${currentGuess}" n'est pas dans ce top 10. 🍺 Tu bois 2 gorgées et on continue !`);
     }
 
     // Si tous les éléments sont trouvés, afficher les résultats

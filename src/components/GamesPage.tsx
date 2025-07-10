@@ -53,11 +53,9 @@ const GamesPage: React.FC<GamesPageProps> = ({ onGameSelect, onPlayGame }) => {
         </h1>
         <p className="text-gray-600 text-sm md:text-lg max-w-2xl mx-auto px-4" itemProp="description">
           Découvrez notre collection de jeux d'ambiance pour animer vos soirées. 
-          Filtrez par catégorie, difficulté ou nombre de joueurs pour trouver le jeu parfait !
+          Choisissez le jeu parfait pour votre soirée !
         </p>
       </header>
-
-      <GameFilters filters={filters} onFiltersChange={setFilters} />
 
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" role="main">
         {filteredGames.map(game => (

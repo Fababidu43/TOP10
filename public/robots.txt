@@ -5,7 +5,7 @@ Allow: /
 Sitemap: https://fababicuite.fr/sitemap.xml
 
 # Optimisations pour les moteurs de recherche
-Crawl-delay: 1
+Crawl-delay: 0.5
 
 # Bloquer les fichiers sensibles
 Disallow: /api/
@@ -20,3 +20,10 @@ Allow: /a-propos
 Allow: /top-10
 Allow: /je-nai-jamais
 Allow: /devine-gif
+Allow: /jeux-alcool-interactifs
+Allow: /animation-soiree-entre-amis
+
+# Optimisation pour Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.2

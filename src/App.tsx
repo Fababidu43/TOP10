@@ -17,8 +17,22 @@ function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
   const [hasAccess, setHasAccess] = useState(() => {
-    // Vérifier si l'utilisateur a déjà validé le code
-    return localStorage.getItem('fababicuite_access') === 'granted';
+    // Vérifier si l'utilisateur a déjà validé le code et si ce n'est pas expiré
+    try {
+      const accessData = localStorage.getItem('fababicuite_access');
+      if (accessData) {
+        const parsed = JSON.parse(accessData);
+        if (parsed.granted && parsed.expires > Date.now()) {
+          return true;
+        } else {
+          // Supprimer l'accès expiré
+          localStorage.removeItem('fababicuite_access');
+        }
+      }
+    } catch (error) {
+      localStorage.removeItem('fababicuite_access');
+    }
+    return false;
   });
 
   const handleValidCode = () => {

@@ -95,7 +95,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
       <section className="py-8 md:py-16" role="main">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12" id="jeux-populaires">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-600">
               Jeux Populaires
             </span>
           </h2>
@@ -104,18 +104,18 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onPlayGame }) => {
               <div
                 key={game.id}
                 onClick={() => onPlayGame(game.id)}
-                className={`bg-gradient-to-br ${game.color} p-4 md:p-6 rounded-2xl text-white cursor-pointer transform hover:scale-105 transition-all shadow-lg hover:shadow-xl`}
+                className={`bg-gradient-to-br ${game.color} p-6 md:p-8 rounded-3xl text-white cursor-pointer transform hover:scale-110 transition-all shadow-xl hover:shadow-2xl border border-white/20`}
                 role="listitem"
                 tabIndex={0}
                 onKeyPress={(e) => e.key === 'Enter' && onPlayGame(game.id)}
                 aria-label={`Jouer à ${game.title} - ${game.description}`}
               >
-                <div className="text-3xl md:text-4xl mb-3 md:mb-4">{game.emoji}</div>
-                <h3 className="text-lg md:text-xl font-bold mb-2" itemProp="name">{game.title}</h3>
-                <p className="text-white/90 mb-3 md:mb-4 text-sm md:text-base">{game.description}</p>
-                <div className="flex items-center gap-2 text-white/80">
-                  <Play size={16} />
-                  <span className="text-xs md:text-sm">Cliquez pour jouer</span>
+                <div className="text-4xl md:text-5xl mb-4 md:mb-6 animate-bounce-slow">{game.emoji}</div>
+                <h3 className="text-xl md:text-2xl font-bold mb-3" itemProp="name">{game.title}</h3>
+                <p className="text-white/95 mb-4 md:mb-6 text-base md:text-lg font-medium">{game.description}</p>
+                <div className="flex items-center gap-3 text-white/90 bg-white/10 rounded-full px-4 py-2">
+                  <Play size={20} />
+                  <span className="text-sm md:text-base font-semibold">Cliquez pour jouer</span>
                 </div>
               </div>
             ))}

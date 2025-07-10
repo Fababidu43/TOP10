@@ -32,8 +32,12 @@ const InvitationGate: React.FC<InvitationGateProps> = ({ onValidCode }) => {
       const isValid = await validateCode(code.trim());
       
       if (isValid) {
-        // Stocker la validation dans le localStorage pour éviter de redemander
-        localStorage.setItem('fababicuite_access', 'granted');
+        // Stocker la validation avec une expiration de 24h
+        const expirationTime = Date.now() + (24 * 60 * 60 * 1000); // 24 heures
+        localStorage.setItem('fababicuite_access', JSON.stringify({
+          granted: true,
+          expires: expirationTime
+        }));
         onValidCode();
       } else {
         setError('Code d\'invitation incorrect. Veuillez réessayer.');
