@@ -315,7 +315,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             <ul className="text-sm text-blue-700 space-y-1">
               <li>• Un joueur est tiré au sort pour chaque manche</li>
               <li>• Il a 30 secondes pour deviner le GIF/vidéo affiché</li>
-              <li>• Si c'est correct, la vidéo complète se lance !</li>
+              <li>• Le lien YouTube est toujours disponible pour voir la vidéo</li>
               <li>• Bonne réponse = distribue 4 gorgées</li>
               <li>• Mauvaise réponse = boit 3 gorgées</li>
               <li>• Temps écoulé = boit 5 gorgées</li>
@@ -398,7 +398,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
               </div>
 
               {/* Miniature YouTube avec overlay */}
-              <div className="bg-black rounded-lg mb-6 overflow-hidden relative">
+              <div className="bg-black rounded-lg mb-4 overflow-hidden relative">
                 <div className="aspect-video relative">
                   <img 
                     src={game.currentGif.thumbnailUrl} 
@@ -414,6 +414,21 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                     {game.timeLeft}s
                   </div>
                 </div>
+              </div>
+
+              {/* Lien YouTube toujours disponible */}
+              <div className="text-center mb-6">
+                <a 
+                  href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg font-bold"
+                >
+                  <div className="bg-white/20 p-2 rounded-full">
+                    <Play size={20} className="text-white" />
+                  </div>
+                  🎬 Voir la vidéo sur YouTube
+                </a>
               </div>
 
               <div className="text-center mb-6">
@@ -501,7 +516,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                 <p className="text-green-700 font-medium">✅ Bonne réponse : distribue 4 gorgées</p>
                 <p className="text-red-700 font-medium">❌ Mauvaise réponse : boit 3 gorgées</p>
                 <p className="text-orange-700 font-medium">⏰ Temps écoulé : boit 5 gorgées</p>
-                <p className="text-blue-700 font-medium">🎬 Vidéo complète si bonne réponse !</p>
+                <p className="text-blue-700 font-medium">🎬 Lien YouTube toujours disponible !</p>
               </div>
             </div>
           </div>
