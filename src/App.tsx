@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import InvitationGate from './components/InvitationGate';
-import InvitationGate from './components/InvitationGate';
 import SEOHead from './components/SEOHead';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
