@@ -139,12 +139,6 @@ const AboutPage: React.FC = () => {
             Une question ? Une suggestion ? Une idée de nouveau jeu ? 
             Nous serions ravis d'échanger avec vous !
           </p>
-          <div className="flex items-center justify-center gap-2 text-green-700">
-            <Mail size={20} />
-            <a href="mailto:contact@fababicuite.fr" className="font-medium hover:underline" itemProp="email">
-              contact@fababicuite.fr
-            </a>
-          </div>
         </div>
       </section>
     </div>
