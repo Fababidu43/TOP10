@@ -345,24 +345,18 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             </h2>
           </div>
 
-          <div className="bg-black rounded-lg mb-6 overflow-hidden shadow-xl">
-            <div className="aspect-video">
-              <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl mb-4">🎬</div>
-                  <p className="text-white text-lg mb-4">Vidéo en cours de chargement...</p>
-                  <a 
-                    href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors inline-flex items-center gap-2"
-                  >
-                    <Play size={20} />
-                    Voir sur YouTube
-                  </a>
-                </div>
+          <div className="text-center mb-6">
+            <a 
+              href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg font-bold text-lg"
+            >
+              <div className="bg-white/20 p-2 rounded-full">
+                <Play size={24} className="text-white" />
               </div>
-            </div>
+              🎬 Regarder la vidéo complète
+            </a>
           </div>
 
           <div className="text-center text-green-600">
