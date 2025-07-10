@@ -47,7 +47,7 @@ const AboutPage: React.FC = () => {
           À propos de FABABICUITE
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto" itemProp="description">
-          Nous créons des expériences ludiques pour rassembler les gens et créer des moments inoubliables.
+          J'ai crée une expériences ludiques pour rassembler les gens et créer des moments inoubliables.
         </p>
       </header>
 
@@ -60,7 +60,7 @@ const AboutPage: React.FC = () => {
               d'ambiance qui créent des souvenirs durables et des fous rires garantis.
             </p>
             <p className="text-purple-100">
-              Nous croyons que les meilleurs moments se créent quand on se retrouve entre amis, 
+              Je crois que les meilleurs moments se créent quand on se retrouve entre amis, 
               sans écran, juste avec de l'imagination et de la bonne humeur.
             </p>
           </div>
@@ -137,7 +137,7 @@ const AboutPage: React.FC = () => {
             <div>
               <h3 className="font-semibold text-gray-800 mb-1" itemProp="name">Inclusion</h3>
               <p className="text-gray-600 text-sm">
-                Tous nos jeux sont conçus pour être accessibles à tous, quel que soit l'âge ou le niveau.
+                Tous les jeux sont conçus pour être accessibles à tous, quel que soit l'âge ou le niveau.
               </p>
             </div>
           </div>
