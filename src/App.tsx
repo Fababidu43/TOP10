@@ -29,19 +29,6 @@ function App() {
   if (!hasAccess) {
     return <InvitationGate onValidCode={handleValidCode} />;
   }
-  const [hasAccess, setHasAccess] = useState(() => {
-    // Vérifier si l'utilisateur a déjà validé le code
-    return localStorage.getItem('fababicuite_access') === 'granted';
-  });
-
-  const handleValidCode = () => {
-    setHasAccess(true);
-  };
-
-  // Si l'utilisateur n'a pas accès, afficher la page de code d'invitation
-  if (!hasAccess) {
-    return <InvitationGate onValidCode={handleValidCode} />;
-  }
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page as AppPage);
