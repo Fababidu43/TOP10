@@ -409,12 +409,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                       target.src = `https://img.youtube.com/vi/${game.currentGif.videoUrl}/default.jpg`;
                     }}
                   />
-                  {/* Overlay avec bouton play désactivé */}
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <div className="bg-red-600 rounded-full p-4 opacity-50">
-                      <Play size={32} className="text-white ml-1" />
-                    </div>
-                  </div>
                   {/* Timer overlay */}
                   <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1 rounded-full font-bold">
                     {game.timeLeft}s
