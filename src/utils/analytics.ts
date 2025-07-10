@@ -50,6 +50,7 @@ export const trackPageView = (url: string, title: string) => {
 
 // Événements spécifiques pour FABABIBOIRE
 // Événements spécifiques pour FABABICUITE
+// Événements spécifiques pour FABABICUITE
 export const trackGameStart = (gameName: string, playerCount: number) => {
   trackEvent('game_start', 'Games', gameName, playerCount);
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import InvitationGate from './components/InvitationGate';
+import InvitationGate from './components/InvitationGate';
 import SEOHead from './components/SEOHead';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
@@ -16,6 +17,19 @@ type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'top10-game' | 'neve
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
+  const [hasAccess, setHasAccess] = useState(() => {
+    // Vérifier si l'utilisateur a déjà validé le code
+    return localStorage.getItem('fababicuite_access') === 'granted';
+  });
+
+  const handleValidCode = () => {
+    setHasAccess(true);
+  };
+
+  // Si l'utilisateur n'a pas accès, afficher la page de code d'invitation
+  if (!hasAccess) {
+    return <InvitationGate onValidCode={handleValidCode} />;
+  }
   const [hasAccess, setHasAccess] = useState(() => {
     // Vérifier si l'utilisateur a déjà validé le code
     return localStorage.getItem('fababicuite_access') === 'granted';
@@ -67,7 +81,7 @@ function App() {
     switch (currentPage) {
       case 'games':
         return {
-          title: "Tous nos Jeux d'Alcool Interactifs | FABABIBOIRE",
+          title: "Tous nos Jeux d'Alcool Interactifs | FABABICUITE",
           description: "Découvrez notre collection complète de jeux d'alcool pour animer vos soirées : Top 10, Je n'ai jamais, Devine le GIF et bien plus encore !",
           keywords: "jeux d'alcool, collection jeux soirée, top 10, je n'ai jamais, devine gif, jeux multijoueurs",
           canonical: "https://fababicuite.fr/jeux"
