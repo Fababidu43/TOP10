@@ -713,7 +713,6 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 <button
                   onClick={useHint}
                   disabled={game.hintsUsed >= game.maxHints || game.showingSagaChoice !== null}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-2 md:py-3 px-4 md:px-6 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2 shadow-lg text-sm md:text-base"
                   className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold flex items-center justify-center gap-2 shadow-xl text-base md:text-lg transform hover:scale-105"
                 >
                   <Lightbulb size={20} />
