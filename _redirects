@@ -1,0 +1,18 @@
+# Redirections pour Netlify - Optimisation SEO
+
+# Redirection des anciennes URLs vers les nouvelles (si applicable)
+/games /jeux 301
+/about /a-propos 301
+
+# Redirections pour les jeux spécifiques
+/top10 /top-10 301
+/never-have-i /je-nai-jamais 301
+/gif-game /devine-gif 301
+
+# Redirection pour les erreurs 404 vers la page d'accueil
+/* /index.html 200
+
+# Redirection HTTPS (si nécessaire)
+http://fababicuite.fr/* https://fababicuite.fr/:splat 301!
+http://www.fababicuite.fr/* https://fababicuite.fr/:splat 301!
+https://www.fababicuite.fr/* https://fababicuite.fr/:splat 301!

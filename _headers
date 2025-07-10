@@ -1,0 +1,40 @@
+# Headers pour Netlify - Optimisation SEO et Performance
+
+/*
+  # Sécurité
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  
+  # Performance et Cache
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache spécifique pour les assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache pour les images
+*.jpg
+  Cache-Control: public, max-age=31536000
+*.png
+  Cache-Control: public, max-age=31536000
+*.webp
+  Cache-Control: public, max-age=31536000
+*.svg
+  Cache-Control: public, max-age=31536000
+
+# Cache pour les fichiers CSS et JS
+*.css
+  Cache-Control: public, max-age=31536000, immutable
+*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# Pas de cache pour le HTML principal
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Compression
+/*
+  Content-Encoding: gzip
