@@ -106,16 +106,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Pays les Plus Peuplés (2024)',
     description: 'Les 10 pays avec le plus d\'habitants dans le monde selon les données 2024',
     items: [
-      { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan', 'hindou'] },
-      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc', 'chinois', 'pekin'] },
-      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique', 'america', 'us'] },
-      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia', 'indonesien', 'jakarta'] },
-      { rank: 5, name: 'Pakistan', value: '240 millions', alternatives: ['pakistanais', 'islamabad'] },
-      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria', 'nigerian', 'lagos'] },
-      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil', 'bresilien', 'sao paulo'] },
-      { rank: 8, name: 'Bangladesh', value: '172 millions', alternatives: ['bangladais', 'dhaka', 'bengale'] },
-      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie', 'russe', 'moscou'] },
-      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico', 'mexicain', 'mexico city'] }
+      { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan'] },
+      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc'] },
+      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique'] },
+      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia'] },
+      { rank: 5, name: 'Pakistan', value: '240 millions' },
+      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria'] },
+      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil'] },
+      { rank: 8, name: 'Bangladesh', value: '172 millions' },
+      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie'] },
+      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico'] }
     ]
   },
   {
@@ -157,16 +157,66 @@ export const top10Categories: Top10Category[] = [
     name: 'Marques les Plus Valorisées (2024)',
     description: 'Les 10 marques avec la plus grande valeur boursière mondiale selon Forbes 2024',
     items: [
-      { rank: 1, name: 'Apple', value: '516 milliards $', alternatives: ['apple inc', 'iphone'] },
-      { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows'] },
-      { rank: 3, name: 'Amazon', value: '308 milliards $', alternatives: ['amazon.com', 'bezos'] },
-      { rank: 4, name: 'Google', value: '297 milliards $', alternatives: ['alphabet', 'google inc'] },
-      { rank: 5, name: 'Samsung', value: '99 milliards $', alternatives: ['samsung electronics'] },
-      { rank: 6, name: 'Tesla', value: '97 milliards $', alternatives: ['tesla motors', 'elon musk'] },
-      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg'] },
-      { rank: 8, name: 'NVIDIA', value: '85 milliards $', alternatives: ['nvidia corporation'] },
-      { rank: 9, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor'] },
-      { rank: 10, name: 'Coca-Cola', value: '57 milliards $', alternatives: ['coca cola', 'coke'] }
+      { 
+        rank: 1,
+        name: 'Apple',
+        value: '516 milliards $',
+        alternatives: ['apple inc', 'iphone', 'mac', 'ios', 'tim cook']
+      },
+      { 
+        rank: 2,
+        name: 'Microsoft',
+        value: '340 milliards $',
+        alternatives: ['microsoft corporation', 'windows', 'xbox', 'office', 'bill gates']
+      },
+      { 
+        rank: 3,
+        name: 'Amazon',
+        value: '308 milliards $',
+        alternatives: ['amazon.com', 'bezos', 'jeff bezos', 'aws', 'prime']
+      },
+      { 
+        rank: 4,
+        name: 'Google',
+        value: '297 milliards $',
+        alternatives: ['alphabet', 'google inc', 'gmail', 'youtube', 'android']
+      },
+      { 
+        rank: 5,
+        name: 'Samsung',
+        value: '99 milliards $',
+        alternatives: ['samsung electronics', 'galaxy', 'coree', 'seoul']
+      },
+      { 
+        rank: 6,
+        name: 'Tesla',
+        value: '97 milliards $',
+        alternatives: ['tesla motors', 'elon musk', 'model s', 'model 3', 'spacex']
+      },
+      { 
+        rank: 7,
+        name: 'Meta (Facebook)',
+        value: '89 milliards $',
+        alternatives: ['facebook', 'meta', 'zuckerberg', 'instagram', 'whatsapp', 'mark zuckerberg']
+      },
+      { 
+        rank: 8,
+        name: 'NVIDIA',
+        value: '85 milliards $',
+        alternatives: ['nvidia corporation', 'geforce', 'rtx', 'gpu']
+      },
+      { 
+        rank: 9,
+        name: 'Toyota',
+        value: '59 milliards $',
+        alternatives: ['toyota motor', 'prius', 'camry', 'japon']
+      },
+      { 
+        rank: 10,
+        name: 'Coca-Cola',
+        value: '57 milliards $',
+        alternatives: ['coca cola', 'coke', 'cola', 'pepsi']
+      }
     ]
   },
   {
