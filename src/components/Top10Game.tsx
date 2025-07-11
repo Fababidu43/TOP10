@@ -1,12 +1,303 @@
-Here's the fixed version with all missing closing brackets added:
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Target, Lightbulb, XCircle, Trophy, Medal, Award } from 'lucide-react';
+import { top10Data } from '../data/top10Data';
 
-[Previous code remains the same until the playing section...]
+interface Top10GameProps {
+  onBack: () => void;
+}
+
+interface GameState {
+  currentSaga: any;
+  foundItems: string[];
+  currentGuess: string;
+  hintsUsed: number;
+  maxHints: number;
+  gameStatus: 'playing' | 'completed' | 'abandoned';
+  score: number;
+  timeLeft: number;
+}
+
+export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
+  const [game, setGame] = useState<GameState>({
+    currentSaga: null,
+    foundItems: [],
+    currentGuess: '',
+    hintsUsed: 0,
+    maxHints: 3,
+    gameStatus: 'playing',
+    score: 0,
+    timeLeft: 300 // 5 minutes
+  });
+
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (game.gameStatus === 'playing' && game.currentSaga && game.timeLeft > 0) {
+      const interval = setInterval(() => {
+        setGame(prev => {
+          if (prev.timeLeft <= 1) {
+            return { ...prev, timeLeft: 0, gameStatus: 'completed' };
+          }
+          return { ...prev, timeLeft: prev.timeLeft - 1 };
+        });
+      }, 1000);
+      setTimer(interval);
+      return () => clearInterval(interval);
+    }
+  }, [game.gameStatus, game.currentSaga, game.timeLeft]);
+
+  const startGame = (category: string) => {
+    const sagas = top10Data[category];
+    if (sagas && sagas.length > 0) {
+      const randomSaga = sagas[Math.floor(Math.random() * sagas.length)];
+      setGame({
+        currentSaga: randomSaga,
+        foundItems: [],
+        currentGuess: '',
+        hintsUsed: 0,
+        maxHints: 3,
+        gameStatus: 'playing',
+        score: 0,
+        timeLeft: 300
+      });
+    }
+  };
+
+  const submitGuess = () => {
+    if (!game.currentSaga || !game.currentGuess.trim()) return;
+
+    const guess = game.currentGuess.toLowerCase().trim();
+    const matchingItem = game.currentSaga.items.find((item: any) => 
+      item.name.toLowerCase().includes(guess) || 
+      (item.alternatives && item.alternatives.some((alt: string) => alt.toLowerCase().includes(guess)))
+    );
+
+    if (matchingItem && !game.foundItems.includes(matchingItem.name)) {
+      const newFoundItems = [...game.foundItems, matchingItem.name];
+      const newScore = game.score + (11 - matchingItem.rank) * 10;
+      
+      setGame(prev => ({
+        ...prev,
+        foundItems: newFoundItems,
+        currentGuess: '',
+        score: newScore,
+        gameStatus: newFoundItems.length === game.currentSaga.items.length ? 'completed' : 'playing'
+      }));
+    } else {
+      setGame(prev => ({ ...prev, currentGuess: '' }));
+    }
+  };
+
+  const useHint = () => {
+    if (game.hintsUsed >= game.maxHints || !game.currentSaga) return;
+
+    const unFoundItems = game.currentSaga.items.filter((item: any) => 
+      !game.foundItems.includes(item.name)
+    );
+    
+    if (unFoundItems.length > 0) {
+      const randomItem = unFoundItems[Math.floor(Math.random() * unFoundItems.length)];
+      const newFoundItems = [...game.foundItems, randomItem.name];
+      
+      setGame(prev => ({
+        ...prev,
+        foundItems: newFoundItems,
+        hintsUsed: prev.hintsUsed + 1,
+        score: prev.score + Math.max(1, (11 - randomItem.rank) * 5), // Moins de points pour les indices
+        gameStatus: newFoundItems.length === game.currentSaga.items.length ? 'completed' : 'playing'
+      }));
+    }
+  };
+
+  const abandonGame = () => {
+    setGame(prev => ({
+      ...prev,
+      gameStatus: 'abandoned'
+    }));
+    
+    // Transition vers les résultats après 2 secondes
+    setTimeout(() => {
+      setGame(prev => ({
+        ...prev,
+        gameStatus: 'completed'
+      }));
+    }, 2000);
+  };
+
+  const resetGame = () => {
+    setGame({
+      currentSaga: null,
+      foundItems: [],
+      currentGuess: '',
+      hintsUsed: 0,
+      maxHints: 3,
+      gameStatus: 'playing',
+      score: 0,
+      timeLeft: 300
+    });
+    setSelectedCategory('');
+    if (timer) clearInterval(timer);
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 800) return 'text-yellow-400';
+    if (score >= 600) return 'text-orange-400';
+    if (score >= 400) return 'text-blue-400';
+    return 'text-gray-400';
+  };
+
+  const getScoreIcon = (score: number) => {
+    if (score >= 800) return <Trophy className="w-6 h-6 text-yellow-400" />;
+    if (score >= 600) return <Medal className="w-6 h-6 text-orange-400" />;
+    if (score >= 400) return <Award className="w-6 h-6 text-blue-400" />;
+    return <Award className="w-6 h-6 text-gray-400" />;
+  };
+
+  // Écran de sélection de catégorie
+  if (!game.currentSaga) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 mb-8">
+            <button
+              onClick={onBack}
+              className="flex items-center gap-2 text-white hover:text-purple-300 transition-colors"
+            >
+              <ArrowLeft size={24} />
+              <span className="text-lg font-medium">Retour</span>
+            </button>
+          </div>
+
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+              🏆 TOP 10 🏆
+            </h1>
+            <p className="text-xl text-purple-200 max-w-2xl mx-auto">
+              Trouvez les 10 éléments du classement ! Plus vous trouvez rapidement, plus vous gagnez de points !
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.keys(top10Data).map((category) => (
+              <button
+                key={category}
+                onClick={() => startGame(category)}
+                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 group"
+              >
+                <div className="text-center">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                    {category === 'films' && '🎬'}
+                    {category === 'series' && '📺'}
+                    {category === 'musique' && '🎵'}
+                    {category === 'sport' && '⚽'}
+                    {category === 'general' && '🌟'}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2 capitalize">
+                    {category}
+                  </h3>
+                  <p className="text-purple-200 text-sm">
+                    {top10Data[category].length} classements disponibles
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Écran de jeu
+  if (game.gameStatus === 'playing') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={resetGame}
+              className="flex items-center gap-2 text-white hover:text-purple-300 transition-colors"
+            >
+              <ArrowLeft size={24} />
+              <span className="text-lg font-medium">Retour</span>
+            </button>
+            
+            <div className="flex items-center gap-6 text-white">
+              <div className="text-center">
+                <div className="text-2xl font-bold">{formatTime(game.timeLeft)}</div>
+                <div className="text-sm text-purple-200">Temps restant</div>
+              </div>
+              <div className="text-center">
+                <div className={`text-2xl font-bold ${getScoreColor(game.score)}`}>
+                  {game.score}
+                </div>
+                <div className="text-sm text-purple-200">Score</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 text-center">
+              {game.currentSaga.title}
+            </h2>
+            <p className="text-purple-200 text-center mb-6">
+              {game.currentSaga.description}
+            </p>
+            
+            <div className="text-center mb-6">
+              <span className="text-4xl font-bold text-white">
+                {game.foundItems.length}/10
+              </span>
+              <span className="text-purple-200 ml-2">trouvés</span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
+              {Array.from({ length: 10 }, (_, i) => {
+                const rank = i + 1;
+                const item = game.currentSaga.items.find((item: any) => item.rank === rank);
+                const isFound = item && game.foundItems.includes(item.name);
+                
+                return (
+                  <div
+                    key={rank}
+                    className={`p-3 rounded-lg text-center transition-all ${
+                      isFound 
+                        ? 'bg-green-500/20 border-2 border-green-400' 
+                        : 'bg-white/5 border border-white/20'
+                    }`}
+                  >
+                    <div className="text-lg font-bold text-white">#{rank}</div>
+                    {isFound && (
+                      <div className="text-xs text-green-300 mt-1 break-words">
+                        {item.name}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="space-y-4">
+              <input
+                type="text"
+                value={game.currentGuess}
+                onChange={(e) => setGame(prev => ({ ...prev, currentGuess: e.target.value }))}
+                onKeyPress={(e) => e.key === 'Enter' && submitGuess()}
+                placeholder="Tapez votre réponse..."
+                className="w-full p-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              />
 
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
                 <button
                   onClick={submitGuess}
-                  disabled={!currentGuess.trim()}
-                  className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 md:py-4 px-4 md:px-6 rounded-lg hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
+                  disabled={!game.currentGuess.trim()}
+                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 md:py-4 px-4 md:px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <Target size={20} />
                   Valider
@@ -21,7 +312,7 @@ Here's the fixed version with all missing closing brackets added:
                 </button>
                 <button
                   onClick={abandonGame}
-                  className="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white py-3 md:py-4 px-4 md:px-6 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
+                  className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-3 md:py-4 px-4 md:px-6 rounded-lg hover:from-red-600 hover:to-red-700 transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <XCircle size={20} />
                   Abandonner
@@ -29,7 +320,110 @@ Here's the fixed version with all missing closing brackets added:
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
 
-[Rest of the code remains the same]
+  // Écran abandonné
+  if (game.gameStatus === 'abandoned') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-900 via-orange-900 to-yellow-900 p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center py-20">
+            <div className="text-8xl mb-6">🏳️</div>
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Partie abandonnée !
+            </h2>
+            <p className="text-xl text-orange-200 mb-8">
+              Voici toutes les réponses :
+            </p>
+            <div className="text-lg text-orange-300">
+              Transition vers les résultats...
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-The main issue was in the playing section where several closing div tags were missing. I've added them to properly close all the nested elements.
+  // Écran de résultats
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            {getScoreIcon(game.score)}
+            <h2 className="text-4xl font-bold text-white">
+              {game.foundItems.length === 10 ? 'Parfait !' : 'Terminé !'}
+            </h2>
+          </div>
+          <div className={`text-6xl font-bold mb-4 ${getScoreColor(game.score)}`}>
+            {game.score} points
+          </div>
+          <p className="text-xl text-purple-200">
+            {game.foundItems.length}/10 réponses trouvées
+          </p>
+        </div>
+
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-6">
+          <h3 className="text-2xl font-bold text-white mb-6 text-center">
+            {game.currentSaga.title} - Classement complet
+          </h3>
+          
+          <div className="space-y-3 max-h-96 overflow-y-auto">
+            {game.currentSaga.items
+              .sort((a: any, b: any) => a.rank - b.rank)
+              .map((item: any) => {
+                const isFound = game.foundItems.includes(item.name);
+                return (
+                  <div
+                    key={item.rank}
+                    className={`flex items-center gap-4 p-4 rounded-lg transition-all ${
+                      isFound 
+                        ? 'bg-green-500/20 border-2 border-green-400' 
+                        : 'bg-gray-500/20 border border-gray-400'
+                    }`}
+                  >
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold ${
+                      isFound ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'
+                    }`}>
+                      {item.rank}
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-sm md:text-base font-medium text-white">
+                        {item.name}
+                      </span>
+                      {item.value && (
+                        <span className="text-xs text-purple-300 ml-2">
+                          ({item.value})
+                        </span>
+                      )}
+                    </div>
+                    {isFound && (
+                      <div className="text-green-400 font-bold">✓</div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={resetGame}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-8 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all font-medium shadow-lg"
+          >
+            Nouvelle partie
+          </button>
+          <button
+            onClick={onBack}
+            className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-3 px-8 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all font-medium shadow-lg"
+          >
+            Retour au menu
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
