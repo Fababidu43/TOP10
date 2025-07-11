@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Target, Lightbulb, XCircle, Trophy, Medal, Award } from 'lucide-react';
-import { top10Data } from '../data/top10Data';
+import { top10Categories, Top10Category, Top10Item, fuzzyMatch } from '../data/top10Data';
 
 interface Top10GameProps {
   onBack: () => void;
 }
 
 interface GameState {
-  currentSaga: any;
+  currentSaga: Top10Category | null;
   foundItems: string[];
   currentGuess: string;
   hintsUsed: number;
@@ -48,11 +48,10 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   }, [game.gameStatus, game.currentSaga, game.timeLeft]);
 
   const startGame = (category: string) => {
-    const sagas = top10Data[category];
-    if (sagas && sagas.length > 0) {
-      const randomSaga = sagas[Math.floor(Math.random() * sagas.length)];
+    const selectedCategory = top10Categories.find(cat => cat.id === category);
+    if (selectedCategory) {
       setGame({
-        currentSaga: randomSaga,
+        currentSaga: selectedCategory,
         foundItems: [],
         currentGuess: '',
         hintsUsed: 0,
@@ -68,9 +67,8 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     if (!game.currentSaga || !game.currentGuess.trim()) return;
 
     const guess = game.currentGuess.toLowerCase().trim();
-    const matchingItem = game.currentSaga.items.find((item: any) => 
-      item.name.toLowerCase().includes(guess) || 
-      (item.alternatives && item.alternatives.some((alt: string) => alt.toLowerCase().includes(guess)))
+    const matchingItem = game.currentSaga.items.find((item: Top10Item) => 
+      fuzzyMatch(guess, item.name, item.alternatives || [])
     );
 
     if (matchingItem && !game.foundItems.includes(matchingItem.name)) {
@@ -92,7 +90,7 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const useHint = () => {
     if (game.hintsUsed >= game.maxHints || !game.currentSaga) return;
 
-    const unFoundItems = game.currentSaga.items.filter((item: any) => 
+    const unFoundItems = game.currentSaga.items.filter((item: Top10Item) => 
       !game.foundItems.includes(item.name)
     );
     
@@ -185,25 +183,31 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.keys(top10Data).map((category) => (
+            {top10Categories.map((category) => (
               <button
-                key={category}
-                onClick={() => startGame(category)}
+                key={category.id}
+                onClick={() => startGame(category.id)}
                 className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 group"
               >
                 <div className="text-center">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
-                    {category === 'films' && '🎬'}
-                    {category === 'series' && '📺'}
-                    {category === 'musique' && '🎵'}
-                    {category === 'sport' && '⚽'}
-                    {category === 'general' && '🌟'}
+                    {category.id.includes('films') && '🎬'}
+                    {category.id.includes('series') && '📺'}
+                    {category.id.includes('artistes') && '🎵'}
+                    {category.id.includes('sports') && '⚽'}
+                    {category.id.includes('youtubers') && '📱'}
+                    {category.id.includes('jeux') && '🎮'}
+                    {category.id.includes('pays') && '🌍'}
+                    {category.id.includes('langues') && '🗣️'}
+                    {category.id.includes('marques') && '💼'}
+                    {category.id.includes('rappeurs') && '🎤'}
+                    {!category.id.includes('films') && !category.id.includes('series') && !category.id.includes('artistes') && !category.id.includes('sports') && !category.id.includes('youtubers') && !category.id.includes('jeux') && !category.id.includes('pays') && !category.id.includes('langues') && !category.id.includes('marques') && !category.id.includes('rappeurs') && '🌟'}
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2 capitalize">
-                    {category}
+                    {category.name}
                   </h3>
                   <p className="text-purple-200 text-sm">
-                    {top10Data[category].length} classements disponibles
+                    {category.description}
                   </p>
                 </div>
               </button>
@@ -244,7 +248,7 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
           <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-6">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 text-center">
-              {game.currentSaga.title}
+              {game.currentSaga.name}
             </h2>
             <p className="text-purple-200 text-center mb-6">
               {game.currentSaga.description}
@@ -260,7 +264,7 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
               {Array.from({ length: 10 }, (_, i) => {
                 const rank = i + 1;
-                const item = game.currentSaga.items.find((item: any) => item.rank === rank);
+                const item = game.currentSaga.items.find((item: Top10Item) => item.rank === rank);
                 const isFound = item && game.foundItems.includes(item.name);
                 
                 return (
@@ -368,13 +372,13 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
         <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-6">
           <h3 className="text-2xl font-bold text-white mb-6 text-center">
-            {game.currentSaga.title} - Classement complet
+            {game.currentSaga.name} - Classement complet
           </h3>
           
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {game.currentSaga.items
-              .sort((a: any, b: any) => a.rank - b.rank)
-              .map((item: any) => {
+              .sort((a: Top10Item, b: Top10Item) => a.rank - b.rank)
+              .map((item: Top10Item) => {
                 const isFound = game.foundItems.includes(item.name);
                 return (
                   <div
