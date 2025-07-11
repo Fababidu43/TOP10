@@ -260,6 +260,24 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     }
   };
 
+  const abandonGame = () => {
+    // Marquer tous les éléments comme "trouvés" pour afficher le résultat complet
+    const allRanks = game.category?.items.map(item => item.rank) || [];
+    
+    setGame(prev => ({
+      ...prev,
+      foundItems: allRanks,
+      gameComplete: true
+    }));
+    
+    setFeedback('🏳️ Partie abandonnée ! Voici toutes les réponses :');
+    
+    // Passer aux résultats après 2 secondes
+    setTimeout(() => {
+      setGameState('results');
+    }, 2000);
+  };
+
   const useHint = () => {
     if (game.hintsUsed >= game.maxHints || !game.category) return;
     
@@ -587,40 +605,6 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-                <button
-                  onClick={submitGuess}
-                  disabled={!currentGuess.trim() || game.showingSagaChoice !== null}
-                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold shadow-xl text-base md:text-lg transform hover:scale-105"
-                >
-                  ✅ Valider la réponse
-                </button>
-                <button
-                  onClick={useHint}
-                  disabled={game.hintsUsed >= game.maxHints || game.showingSagaChoice !== null}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-bold flex items-center justify-center gap-2 shadow-xl text-base md:text-lg transform hover:scale-105"
-                >
-                  <Lightbulb size={20} />
-                  Indice ({game.maxHints - game.hintsUsed})
-                </button>
-              </div>
-
-              <div className="mt-4 text-center">
-                <button
-                  onClick={() => setShowAllAnswers(!showAllAnswers)}
-                  className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-4 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all font-medium text-sm flex items-center justify-center gap-2 mx-auto"
-                >
-                  {showAllAnswers ? '🙈 Cacher les réponses' : '👀 Afficher toutes les réponses'}
-                </button>
-              </div>
-
-              <div className="mt-6 text-center">
-                <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-2 md:p-3 border border-purple-200">
-                  <span className="text-purple-800 font-bold text-base md:text-lg">
-                    {game.foundItems.length}/10 éléments trouvés
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Sidebar avec les résultats */}
