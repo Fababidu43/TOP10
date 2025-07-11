@@ -439,9 +439,8 @@ function levenshteinDistance(str1: string, str2: string): number {
           matrix[i - 1][j] + 1
         );
       }
-    })
+    }
   }
-  
 
   return matrix[str2.length][str1.length];
 }
