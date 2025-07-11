@@ -333,6 +333,7 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
     );
     
     const altMatchRatio = matchedAltWords.length / importantAltWords.length;
+    if (altMatchRatio >= 0.6) return true;
     if (altMatchRatio >= 0.7) return true;
   }
   
