@@ -140,16 +140,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Langues les Plus Parlées (Locuteurs Natifs)',
     description: 'Les 10 langues avec le plus de locuteurs natifs dans le monde (données 2024)',
     items: [
-      { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese'] },
-      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano'] },
-      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english'] },
-      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien'] },
-      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard'] },
-      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla'] },
-      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien'] },
-      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russe'] },
-      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon'] },
-      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi'] }
+      { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese', 'langue chinoise'] },
+      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano', 'espagne', 'castillan'] },
+      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english', 'langue anglaise', 'angleterre'] },
+      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien', 'inde', 'indien', 'hindou'] },
+      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard', 'langue arabe', 'arabique'] },
+      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla', 'bangladesh', 'bengale'] },
+      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien', 'portugal', 'bresil'] },
+      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russie', 'langue russe'] },
+      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon', 'japon', 'langue japonaise'] },
+      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi', 'punjab', 'pendjab'] }
     ]
   },
   {
