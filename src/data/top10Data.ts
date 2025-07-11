@@ -21,49 +21,49 @@ export interface SagaChoice {
 
 export const top10Categories: Top10Category[] = [
   {
-    id: 'films-oscars',
-    name: 'Films Primés aux Oscars',
-    description: 'Les 10 films ayant remporté le plus d\'Oscars dans l\'histoire',
+    id: 'films-nominations-oscars',
+    name: 'Films les Plus Nommés aux Oscars',
+    description: 'Les 10 films avec le plus de nominations aux Oscars dans l\'histoire',
     items: [
       { 
         rank: 1,
-        name: 'Ben-Hur (1959)',
-        value: '11 Oscars',
-        alternatives: ['ben hur', 'ben-hur 1959', 'charlton heston']
+        name: 'All About Eve',
+        value: '14 nominations',
+        alternatives: ['all about eve', 'eve', 'bette davis']
       },
-      { rank: 2, name: 'Titanic (1997)', value: '11 Oscars', alternatives: ['titanic 1997', 'titanic leonardo', 'titanic dicaprio', 'james cameron'] },
+      { rank: 2, name: 'Titanic', value: '14 nominations', alternatives: ['titanic 1997', 'leonardo dicaprio', 'james cameron'] },
       { 
         rank: 3,
-        name: 'Le Seigneur des Anneaux: Le Retour du Roi',
-        value: '11 Oscars',
-        alternatives: ['retour du roi', 'seigneur anneaux 3', 'lotr 3', 'return of the king']
+        name: 'La La Land',
+        value: '14 nominations',
+        alternatives: ['lalaland', 'la la land', 'ryan gosling', 'emma stone']
       },
-      { rank: 4, name: 'West Side Story (1961)', value: '10 Oscars', alternatives: ['west side story', 'west side story 1961'] },
+      { rank: 4, name: 'Roma', value: '10 nominations', alternatives: ['roma cuaron', 'alfonso cuaron'] },
       { 
         rank: 5,
-        name: 'Gigi (1958)',
-        value: '9 Oscars',
-        alternatives: ['gigi 1958', 'gigi film']
+        name: 'The Shape of Water',
+        value: '13 nominations',
+        alternatives: ['shape of water', 'guillermo del toro']
       },
       { 
         rank: 6,
-        name: 'Le Dernier Empereur',
-        value: '9 Oscars',
-        alternatives: ['dernier empereur', 'last emperor', 'bernardo bertolucci']
+        name: 'The Revenant',
+        value: '12 nominations',
+        alternatives: ['revenant', 'leonardo dicaprio', 'inarritu']
       },
-      { rank: 7, name: 'My Fair Lady (1964)', value: '8 Oscars', alternatives: ['my fair lady', 'audrey hepburn'] },
+      { rank: 7, name: 'Lincoln', value: '12 nominations', alternatives: ['lincoln spielberg', 'daniel day lewis'] },
       { 
         rank: 8,
-        name: 'Cabaret (1972)',
-        value: '8 Oscars',
-        alternatives: ['cabaret 1972', 'liza minnelli']
+        name: 'Life of Pi',
+        value: '11 nominations',
+        alternatives: ['life of pi', 'ang lee', 'pi']
       },
-      { rank: 9, name: 'Gandhi (1982)', value: '8 Oscars', alternatives: ['gandhi 1982', 'ben kingsley'] },
+      { rank: 9, name: 'Hugo', value: '11 nominations', alternatives: ['hugo scorsese', 'martin scorsese'] },
       { 
         rank: 10,
-        name: 'Amadeus (1984)',
-        value: '8 Oscars',
-        alternatives: ['amadeus 1984', 'mozart film']
+        name: 'The Curious Case of Benjamin Button',
+        value: '13 nominations',
+        alternatives: ['benjamin button', 'brad pitt', 'curious case']
       }
     ]
   },
@@ -74,7 +74,7 @@ export const top10Categories: Top10Category[] = [
     items: [
       { rank: 1, name: 'Intouchables', value: '2011 - Nakache & Toledano', alternatives: ['intouchable', 'omar sy', 'francois cluzet'] },
       { rank: 2, name: 'Amélie Poulain', value: '2001 - Jean-Pierre Jeunet', alternatives: ['amelie', 'fabuleux destin amelie poulain', 'audrey tautou'] },
-      { rank: 3, name: 'Bienvenue chez les Ch\'tis', value: '2008 - Dany Boon', alternatives: ['chtis', 'bienvenue chez les chtis', 'kad merad'] },
+      { rank: 3, name: 'Bienvenue chez les Ch\'tis', value: '2008 - Dany Boon', alternatives: ['chtis', 'bienvenue chez les chtis', 'kad merad', 'chtit', 'chtits', 'bienvenue chtis'] },
       { rank: 4, name: 'Les Visiteurs', value: '1993 - Jean-Marie Poiré', alternatives: ['visiteurs', 'jean reno', 'christian clavier'] },
       { rank: 5, name: 'Taxi', value: '1998 - Gérard Pirès', alternatives: ['taxi 1', 'samy naceri', 'freddy'] },
       { rank: 6, name: 'Astérix et Obélix: Mission Cléopâtre', value: '2002 - Alain Chabat', alternatives: ['asterix cleopatre', 'mission cleopatre', 'jamel debbouze'] },
