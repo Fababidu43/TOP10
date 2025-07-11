@@ -277,6 +277,9 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
   const normalize = (str: string) => 
     str.toLowerCase()
        .trim()
+       // Normaliser les accents
+       .normalize('NFD')
+       .replace(/[\u0300-\u036f]/g, '')
        .replace(/[^\w\s]/g, ' ')
        .replace(/\s+/g, ' ');
   
