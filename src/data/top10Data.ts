@@ -80,8 +80,8 @@ export const top10Categories: Top10Category[] = [
       { rank: 6, name: 'Astérix et Obélix: Mission Cléopâtre', value: '2002 - Alain Chabat', alternatives: ['asterix cleopatre', 'mission cleopatre', 'jamel debbouze'] },
       { rank: 7, name: 'La Grande Vadrouille', value: '1966 - Gérard Oury', alternatives: ['grande vadrouille', 'bourvil', 'louis de funes'] },
       { rank: 8, name: 'OSS 117: Le Caire, nid d\'espions', value: '2006 - Michel Hazanavicius', alternatives: ['oss 117', 'jean dujardin', 'caire'] },
-      { rank: 9, name: 'Le Dîner de Cons', value: '1998 - Francis Veber', alternatives: ['diner de cons', 'thierry lhermitte', 'jacques villeret'] },
-      { rank: 10, name: 'La Cité de la Peur', value: '1994 - Alain Berbérian', alternatives: ['cite de la peur', 'les nuls', 'chantal lauby'] }
+      { rank: 9, name: 'Le Dîner de Cons', value: '1998 - Francis Veber', alternatives: ['diner de cons', 'le diner de cons', 'diner cons', 'thierry lhermitte', 'jacques villeret'] },
+      { rank: 10, name: 'La Cité de la Peur', value: '1994 - Alain Berbérian', alternatives: ['cite de la peur', 'les nuls', 'chantal lauby', 'la cite de la peur'] }
     ]
   },
   {
@@ -280,41 +280,58 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
        // Normaliser les accents
        .normalize('NFD')
        .replace(/[\u0300-\u036f]/g, '')
+       // Remplacer la ponctuation par des espaces
        .replace(/[^\w\s]/g, ' ')
+       // Supprimer les articles courants
+       .replace(/\b(le|la|les|un|une|des|du|de|d|l)\b/g, ' ')
+       // Normaliser les espaces
        .replace(/\s+/g, ' ');
   
   const normalizedInput = normalize(input);
   const normalizedTarget = normalize(target);
+  
+  console.log('Matching:', { input, normalizedInput, target, normalizedTarget });
   
   // Correspondance exacte
   if (normalizedInput === normalizedTarget) return true;
   
   // Vérifier les alternatives
   for (const alt of alternatives) {
-    if (normalizedInput === normalize(alt)) return true;
+    const normalizedAlt = normalize(alt);
+    console.log('Checking alternative:', { alt, normalizedAlt });
+    if (normalizedInput === normalizedAlt) return true;
   }
   
-  // Correspondance partielle stricte - doit contenir les mots principaux
+  // Correspondance partielle avec tolérance aux fautes
   const inputWords = normalizedInput.split(' ');
   const targetWords = normalizedTarget.split(' ');
   
-  // Vérifier que l'input contient au moins 70% des mots importants du target
+  // Filtrer les mots importants (longueur > 2)
   const importantWords = targetWords.filter(word => word.length > 2);
   if (importantWords.length === 0) return false;
   
+  // Vérifier chaque mot important
   const matchedWords = importantWords.filter(word => 
     inputWords.some(inputWord => {
-      // Correspondance exacte ou très proche
+      // Correspondance exacte
       if (inputWord === word) return true;
-      if (word.length > 4 && inputWord.length > 4) {
-        return levenshteinDistance(inputWord, word) <= 1;
+      
+      // Tolérance aux fautes pour les mots de 4+ caractères
+      if (word.length >= 4 && inputWord.length >= 3) {
+        const maxDistance = Math.floor(word.length * 0.25); // 25% de tolérance
+        return levenshteinDistance(inputWord, word) <= maxDistance;
       }
+      
+      // Pour les mots courts, correspondance exacte requise
       return false;
     })
   );
   
+  console.log('Word matching:', { importantWords, matchedWords, inputWords });
+  
+  // Ratio de correspondance plus strict
   const matchRatio = matchedWords.length / importantWords.length;
-  if (matchRatio >= 0.7) return true;
+  if (matchRatio >= 0.8) return true; // 80% des mots doivent matcher
   
   // Vérifier les alternatives avec correspondance partielle
   for (const alt of alternatives) {
@@ -327,14 +344,13 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
     
     const matchedAltWords = importantAltWords.filter(word => 
       inputWords.some(inputWord => 
-        inputWord === word || 
-        (word.length > 4 && inputWord.length > 4 && levenshteinDistance(inputWord, word) <= 1)
+        inputWord === word ||
+        (word.length >= 4 && inputWord.length >= 3 && 
+         levenshteinDistance(inputWord, word) <= Math.floor(word.length * 0.25))
       )
     );
     
-    const altMatchRatio = matchedAltWords.length / importantAltWords.length;
-    if (altMatchRatio >= 0.6) return true;
-    if (altMatchRatio >= 0.7) return true;
+    if (altMatchRatio >= 0.8) return true;
   }
   
   return false;
