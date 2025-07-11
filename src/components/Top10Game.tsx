@@ -51,6 +51,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const [showHint, setShowHint] = useState(false);
   const [feedback, setFeedback] = useState<string>('');
   const [showSagaWarning, setShowSagaWarning] = useState(false);
+  const [showAllAnswers, setShowAllAnswers] = useState(false);
 
   const addPlayer = () => {
     setPlayers([...players, '']);
@@ -304,6 +305,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     setShowHint(false);
     setFeedback('');
     setGameState('setup');
+    setShowAllAnswers(false);
   };
 
   const getRemainingItems = () => {
@@ -602,6 +604,15 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 </button>
               </div>
 
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setShowAllAnswers(!showAllAnswers)}
+                  className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-4 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all font-medium text-sm flex items-center justify-center gap-2 mx-auto"
+                >
+                  {showAllAnswers ? '🙈 Cacher les réponses' : '👀 Afficher toutes les réponses'}
+                </button>
+              </div>
+
               <div className="mt-6 text-center">
                 <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-2 md:p-3 border border-purple-200">
                   <span className="text-purple-800 font-bold text-base md:text-lg">
@@ -635,18 +646,50 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
             </div>
 
             {/* Éléments trouvés */}
-            <div className="bg-gradient-to-br from-white to-green-50 rounded-xl shadow-lg p-4 md:p-6 border border-green-200">
+            <div className="bg-gradient-to-br from-white to-green-50 rounded-xl shadow-lg p-4 md:p-6 border border-green-200 max-h-96 overflow-y-auto">
               <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center gap-2 text-green-700">
                 <Trophy size={20} className="text-yellow-500" />
-                Éléments trouvés
+                {showAllAnswers ? 'Toutes les réponses' : 'Éléments trouvés'}
               </h3>
-              <div className="space-y-2 max-h-48 md:max-h-64 overflow-y-auto">
-                {game.category.items
-                  .filter(item => game.foundItems.includes(item.rank))
+              <div className="space-y-2">
+                {(showAllAnswers ? game.category.items : game.category.items.filter(item => game.foundItems.includes(item.rank)))
                   .sort((a, b) => a.rank - b.rank)
-                  .map((item) => (
-                    <div key={item.rank} className="flex items-center gap-2 p-2 md:p-3 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg border border-green-200">
-                      <span className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-xs md:text-sm font-bold flex-shrink-0">
+                  .map((item) => {
+                    const isFound = game.foundItems.includes(item.rank);
+                    return (
+                      <div key={item.rank} className={`flex items-center gap-2 p-2 md:p-3 rounded-lg border ${
+                        isFound 
+                          ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-200' 
+                          : 'bg-gradient-to-r from-gray-100 to-gray-200 border-gray-300'
+                      }`}>
+                        <span className={`text-white rounded-full w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-xs md:text-sm font-bold flex-shrink-0 ${
+                          isFound 
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+                            : 'bg-gradient-to-r from-gray-500 to-gray-600'
+                        }`}>
+                          {item.rank}
+                        </span>
+                        <div className="flex-1">
+                          <span className={`text-xs md:text-sm font-medium ${isFound ? 'text-gray-800' : 'text-gray-600'}`}>
+                            {item.name}
+                          </span>
+                          {item.value && (
+                            <div className="text-xs text-gray-500 hidden md:block">{item.value}</div>
+                          )}
+                        </div>
+                        {isFound && (
+                          <div className="text-green-500 text-lg">✓</div>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
+              {showAllAnswers && (
+                <div className="mt-3 text-xs text-gray-500 text-center">
+                  💡 Les éléments avec ✓ ont déjà été trouvés
+                </div>
+              )}
+            </div>
                         {item.rank}
                       </span>
                       <div className="flex-1">
