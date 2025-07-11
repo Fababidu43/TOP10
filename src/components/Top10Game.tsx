@@ -280,6 +280,19 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
           </div>
 
           <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-2xl">
+            {/* Description du top 10 */}
+            <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl p-4 mb-6 border border-blue-400/30">
+              <div className="text-center">
+                <h3 className="text-lg font-bold text-white mb-2 flex items-center justify-center gap-2">
+                  <span className="text-2xl">{getCategoryIcon(currentSaga.id)}</span>
+                  {currentSaga.name}
+                </h3>
+                <p className="text-blue-200 text-sm leading-relaxed">
+                  {currentSaga.description}
+                </p>
+              </div>
+            </div>
+
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div className="bg-purple-500/20 rounded-xl p-4 text-center border border-purple-400/30">
