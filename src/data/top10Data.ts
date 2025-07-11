@@ -107,15 +107,15 @@ export const top10Categories: Top10Category[] = [
     description: 'Les 10 pays avec le plus d\'habitants dans le monde selon les données 2024',
     items: [
       { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan'] },
-      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc'] },
-      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique'] },
-      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia'] },
-      { rank: 5, name: 'Pakistan', value: '240 millions' },
-      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria'] },
-      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil'] },
-      { rank: 8, name: 'Bangladesh', value: '172 millions' },
-      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie'] },
-      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico'] }
+      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc', 'chinois', 'pekin'] },
+      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique', 'america', 'us', 'washington'] },
+      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia', 'jakarta'] },
+      { rank: 5, name: 'Pakistan', value: '240 millions', alternatives: ['islamabad', 'pakistanais'] },
+      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria', 'lagos', 'nigerien'] },
+      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil', 'brasilia', 'bresilien'] },
+      { rank: 8, name: 'Bangladesh', value: '172 millions', alternatives: ['dhaka', 'bengladesh'] },
+      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie', 'moscou', 'russe'] },
+      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico', 'mexicain', 'mexico city'] }
     ]
   },
   {
@@ -127,61 +127,61 @@ export const top10Categories: Top10Category[] = [
         rank: 1,
         name: 'Minecraft',
         value: '300M copies',
-        alternatives: ['mine craft', 'minecraft mojang', 'mojang', 'steve', 'creeper']
+        alternatives: ['mine craft', 'minecraft mojang', 'mojang', 'steve', 'creeper', 'blocs', 'cubes']
       },
       { 
         rank: 2,
         name: 'Grand Theft Auto V',
         value: '195M copies',
-        alternatives: ['gta 5', 'gta v', 'grand theft auto 5', 'rockstar', 'los santos']
+        alternatives: ['gta 5', 'gta v', 'grand theft auto 5', 'rockstar', 'los santos', 'gta', 'vol auto']
       },
       { 
         rank: 3,
         name: 'Tetris (EA)',
         value: '100M copies',
-        alternatives: ['tetris classic', 'tetris original', 'tetris ea', 'tetris', 'blocs']
+        alternatives: ['tetris classic', 'tetris original', 'tetris ea', 'tetris', 'blocs', 'puzzle', 'russe']
       },
       { 
         rank: 4,
         name: 'Wii Sports',
         value: '83M copies',
-        alternatives: ['wii sport', 'nintendo wii sports', 'nintendo', 'bowling', 'tennis wii']
+        alternatives: ['wii sport', 'nintendo wii sports', 'nintendo', 'bowling', 'tennis wii', 'sport wii']
       },
       { 
         rank: 5,
         name: 'PUBG: Battlegrounds',
         value: '75M copies',
-        alternatives: ['pubg', 'playerunknown battlegrounds', 'battlegrounds', 'battle royale']
+        alternatives: ['pubg', 'playerunknown battlegrounds', 'battlegrounds', 'battle royale', 'br']
       },
       { 
         rank: 6,
         name: 'Mario Kart 8 Deluxe',
         value: '60M copies',
-        alternatives: ['mario kart 8', 'mk8', 'mario kart switch', 'mario kart', 'nintendo switch']
+        alternatives: ['mario kart 8', 'mk8', 'mario kart switch', 'mario kart', 'nintendo switch', 'mario', 'kart']
       },
       { 
         rank: 7,
         name: 'Super Mario Bros.',
         value: '58M copies',
-        alternatives: ['super mario brothers', 'mario bros', 'mario nes', 'mario', 'luigi', 'nintendo']
+        alternatives: ['super mario brothers', 'mario bros', 'mario nes', 'mario', 'luigi', 'nintendo', 'champignon']
       },
       { 
         rank: 8,
         name: 'Red Dead Redemption 2',
         value: '55M copies',
-        alternatives: ['rdr2', 'red dead 2', 'red dead redemption ii', 'arthur morgan', 'cowboy']
+        alternatives: ['rdr2', 'red dead 2', 'red dead redemption ii', 'arthur morgan', 'cowboy', 'western', 'far west']
       },
       { 
         rank: 9,
         name: 'Overwatch',
         value: '50M copies',
-        alternatives: ['overwatch 1', 'overwatch blizzard', 'blizzard', 'tracer', 'fps']
+        alternatives: ['overwatch 1', 'overwatch blizzard', 'blizzard', 'tracer', 'fps', 'heros']
       },
       { 
         rank: 10,
         name: 'The Witcher 3: Wild Hunt',
         value: '50M copies',
-        alternatives: ['witcher 3', 'the witcher 3', 'witcher wild hunt', 'geralt', 'cd projekt']
+        alternatives: ['witcher 3', 'the witcher 3', 'witcher wild hunt', 'geralt', 'cd projekt', 'sorceleur', 'rpg']
       }
     ]
   },
@@ -191,15 +191,15 @@ export const top10Categories: Top10Category[] = [
     description: 'Les 10 langues avec le plus de locuteurs natifs dans le monde (données 2024)',
     items: [
       { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese'] },
-      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano'] },
-      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english'] },
-      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien'] },
-      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard'] },
-      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla'] },
-      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien'] },
-      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russe'] },
-      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon'] },
-      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi'] }
+      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano', 'espagne', 'langue espagnole'] },
+      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english', 'angleterre', 'langue anglaise', 'britannique'] },
+      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien', 'inde', 'indien', 'langue indienne'] },
+      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard', 'langue arabe', 'arabie'] },
+      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla', 'bangladesh', 'bengale'] },
+      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien', 'portugal', 'bresil', 'langue portugaise'] },
+      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russie', 'langue russe', 'sovietique'] },
+      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon', 'japon', 'langue japonaise'] },
+      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi', 'pendjab', 'punjab'] }
     ]
   },
   {
@@ -208,15 +208,15 @@ export const top10Categories: Top10Category[] = [
     description: 'Les 10 marques avec la plus grande valeur boursière mondiale selon Forbes 2024',
     items: [
       { rank: 1, name: 'Apple', value: '516 milliards $', alternatives: ['apple inc', 'iphone'] },
-      { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows'] },
-      { rank: 3, name: 'Amazon', value: '308 milliards $', alternatives: ['amazon.com', 'bezos'] },
-      { rank: 4, name: 'Google', value: '297 milliards $', alternatives: ['alphabet', 'google inc'] },
-      { rank: 5, name: 'Samsung', value: '99 milliards $', alternatives: ['samsung electronics'] },
-      { rank: 6, name: 'Tesla', value: '97 milliards $', alternatives: ['tesla motors', 'elon musk'] },
-      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg'] },
-      { rank: 8, name: 'NVIDIA', value: '85 milliards $', alternatives: ['nvidia corporation'] },
-      { rank: 9, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor'] },
-      { rank: 10, name: 'Coca-Cola', value: '57 milliards $', alternatives: ['coca cola', 'coke'] }
+      { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows', 'xbox', 'office'] },
+      { rank: 3, name: 'Amazon', value: '308 milliards $', alternatives: ['amazon.com', 'bezos', 'aws', 'prime'] },
+      { rank: 4, name: 'Google', value: '297 milliards $', alternatives: ['alphabet', 'google inc', 'youtube', 'android'] },
+      { rank: 5, name: 'Samsung', value: '99 milliards $', alternatives: ['samsung electronics', 'galaxy', 'coreen'] },
+      { rank: 6, name: 'Tesla', value: '97 milliards $', alternatives: ['tesla motors', 'elon musk', 'voiture electrique'] },
+      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg', 'instagram', 'whatsapp'] },
+      { rank: 8, name: 'NVIDIA', value: '85 milliards $', alternatives: ['nvidia corporation', 'carte graphique', 'gpu'] },
+      { rank: 9, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor', 'japonais', 'voiture japonaise'] },
+      { rank: 10, name: 'Coca-Cola', value: '57 milliards $', alternatives: ['coca cola', 'coke', 'cola', 'soda'] }
     ]
   },
   {
@@ -225,15 +225,15 @@ export const top10Categories: Top10Category[] = [
     description: 'Les 10 sports avec le plus de fans et pratiquants dans le monde (estimation 2024)',
     items: [
       { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association'] },
-      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais'] },
-      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey'] },
-      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court'] },
-      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball'] },
-      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong'] },
-      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball'] },
-      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball'] },
-      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union'] },
-      { rank: 10, name: 'Golf', value: '450 millions de fans' }
+      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais', 'batte cricket'] },
+      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey', 'hockey gazon', 'hockey herbe'] },
+      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court', 'raquette', 'roland garros', 'wimbledon'] },
+      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball', 'beach volley'] },
+      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong', 'raquette ping pong'] },
+      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball', 'nba', 'panier basket'] },
+      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball', 'batte baseball', 'mlb'] },
+      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union', 'ovale', 'ballon ovale'] },
+      { rank: 10, name: 'Golf', value: '450 millions de fans', alternatives: ['club golf', 'balle golf', 'green'] }
     ]
   },
   {
