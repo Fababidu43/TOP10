@@ -645,64 +645,6 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               </div>
             </div>
 
-            {/* Éléments trouvés */}
-            <div className="bg-gradient-to-br from-white to-green-50 rounded-xl shadow-lg p-4 md:p-6 border border-green-200 max-h-96 overflow-y-auto">
-              <h3 className="text-base md:text-lg font-semibold mb-4 flex items-center gap-2 text-green-700">
-                <Trophy size={20} className="text-yellow-500" />
-                {showAllAnswers ? 'Toutes les réponses' : 'Éléments trouvés'}
-              </h3>
-              <div className="space-y-2">
-                {(showAllAnswers ? game.category.items : game.category.items.filter(item => game.foundItems.includes(item.rank)))
-                  .sort((a, b) => a.rank - b.rank)
-                  .map((item) => {
-                    const isFound = game.foundItems.includes(item.rank);
-                    return (
-                      <div key={item.rank} className={`flex items-center gap-2 p-2 md:p-3 rounded-lg border ${
-                        isFound 
-                          ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-200' 
-                          : 'bg-gradient-to-r from-gray-100 to-gray-200 border-gray-300'
-                      }`}>
-                        <span className={`text-white rounded-full w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-xs md:text-sm font-bold flex-shrink-0 ${
-                          isFound 
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
-                            : 'bg-gradient-to-r from-gray-500 to-gray-600'
-                        }`}>
-                          {item.rank}
-                        </span>
-                        <div className="flex-1">
-                          <span className={`text-xs md:text-sm font-medium ${isFound ? 'text-gray-800' : 'text-gray-600'}`}>
-                            {item.name}
-                          </span>
-                          {item.value && (
-                            <div className="text-xs text-gray-500 hidden md:block">{item.value}</div>
-                          )}
-                        </div>
-                        {isFound && (
-                          <div className="text-green-500 text-lg">✓</div>
-                        )}
-                      </div>
-                    );
-                  })}
-              </div>
-              {showAllAnswers && (
-                <div className="mt-3 text-xs text-gray-500 text-center">
-                  💡 Les éléments avec ✓ ont déjà été trouvés
-                </div>
-              )}
-            </div>
-                        {item.rank}
-                      </span>
-                      <div className="flex-1">
-                        <span className="text-xs md:text-sm font-medium">{item.name}</span>
-                        {item.value && (
-                          <div className="text-xs text-gray-500 hidden md:block">{item.value}</div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-
             {/* Scores des joueurs */}
             <div className="bg-gradient-to-br from-white to-orange-50 rounded-xl shadow-lg p-4 md:p-6 border border-orange-200">
               <h3 className="text-base md:text-lg font-semibold mb-4 text-orange-700">🏆 Scores</h3>
