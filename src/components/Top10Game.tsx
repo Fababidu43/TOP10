@@ -10,11 +10,9 @@ interface GameState {
   currentSaga: Top10Category | null;
   foundItems: string[];
   currentGuess: string;
-  hintsUsed: number;
-  maxHints: number;
+  hints: string[];
   gameStatus: 'playing' | 'completed' | 'abandoned';
   score: number;
-  timeLeft: number;
 }
 
 const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
@@ -22,30 +20,12 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     currentSaga: null,
     foundItems: [],
     currentGuess: '',
-    hintsUsed: 0,
-    maxHints: 3,
+    hints: [],
     gameStatus: 'playing',
     score: 0,
-    timeLeft: 300 // 5 minutes
   });
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    if (game.gameStatus === 'playing' && game.currentSaga && game.timeLeft > 0) {
-      const interval = setInterval(() => {
-        setGame(prev => {
-          if (prev.timeLeft <= 1) {
-            return { ...prev, timeLeft: 0, gameStatus: 'completed' };
-          }
-          return { ...prev, timeLeft: prev.timeLeft - 1 };
-        });
-      }, 1000);
-      setTimer(interval);
-      return () => clearInterval(interval);
-    }
-  }, [game.gameStatus, game.currentSaga, game.timeLeft]);
 
   const startGame = (category: string) => {
     const selectedCategory = top10Categories.find(cat => cat.id === category);
@@ -54,11 +34,9 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
         currentSaga: selectedCategory,
         foundItems: [],
         currentGuess: '',
-        hintsUsed: 0,
-        maxHints: 3,
+        hints: [],
         gameStatus: 'playing',
         score: 0,
-        timeLeft: 300
       });
     }
   };
@@ -88,7 +66,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   };
 
   const useHint = () => {
-    if (game.hintsUsed >= game.maxHints || !game.currentSaga) return;
+    if (!game.currentSaga) return;
 
     const unFoundItems = game.currentSaga.items.filter((item: Top10Item) => 
       !game.foundItems.includes(item.name)
@@ -96,14 +74,12 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     
     if (unFoundItems.length > 0) {
       const randomItem = unFoundItems[Math.floor(Math.random() * unFoundItems.length)];
-      const newFoundItems = [...game.foundItems, randomItem.name];
+      const firstLetter = randomItem.name.charAt(0).toUpperCase();
+      const hintText = `Une réponse commence par "${firstLetter}"`;
       
       setGame(prev => ({
         ...prev,
-        foundItems: newFoundItems,
-        hintsUsed: prev.hintsUsed + 1,
-        score: prev.score + Math.max(1, (11 - randomItem.rank) * 5), // Moins de points pour les indices
-        gameStatus: newFoundItems.length === game.currentSaga.items.length ? 'completed' : 'playing'
+        hints: [...prev.hints, hintText]
       }));
     }
   };
@@ -128,20 +104,11 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
       currentSaga: null,
       foundItems: [],
       currentGuess: '',
-      hintsUsed: 0,
-      maxHints: 3,
+      hints: [],
       gameStatus: 'playing',
       score: 0,
-      timeLeft: 300
     });
     setSelectedCategory('');
-    if (timer) clearInterval(timer);
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   const getScoreColor = (score: number) => {
@@ -234,10 +201,6 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
             
             <div className="flex items-center gap-6 text-white">
               <div className="text-center">
-                <div className="text-2xl font-bold">{formatTime(game.timeLeft)}</div>
-                <div className="text-sm text-purple-200">Temps restant</div>
-              </div>
-              <div className="text-center">
                 <div className={`text-2xl font-bold ${getScoreColor(game.score)}`}>
                   {game.score}
                 </div>
@@ -287,6 +250,20 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
               })}
             </div>
 
+            {/* Affichage des indices */}
+            {game.hints.length > 0 && (
+              <div className="bg-yellow-500/20 border border-yellow-400 rounded-lg p-4 mb-4">
+                <h4 className="text-yellow-300 font-semibold mb-2">💡 Indices :</h4>
+                <div className="space-y-1">
+                  {game.hints.map((hint, index) => (
+                    <p key={index} className="text-yellow-200 text-sm">
+                      • {hint}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-4">
               <input
                 type="text"
@@ -308,11 +285,10 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 </button>
                 <button
                   onClick={useHint}
-                  disabled={game.hintsUsed >= game.maxHints}
                   className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 md:py-4 px-4 md:px-6 rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium flex items-center justify-center gap-2 shadow-lg"
                 >
                   <Lightbulb size={20} />
-                  Indice ({game.maxHints - game.hintsUsed})
+                  Indice
                 </button>
                 <button
                   onClick={abandonGame}
