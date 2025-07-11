@@ -157,66 +157,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Marques les Plus Valorisées (2024)',
     description: 'Les 10 marques avec la plus grande valeur boursière mondiale selon Forbes 2024',
     items: [
-      { 
-        rank: 1,
-        name: 'Apple',
-        value: '516 milliards $',
-        alternatives: ['apple inc', 'iphone', 'mac', 'ios', 'tim cook']
-      },
-      { 
-        rank: 2,
-        name: 'Microsoft',
-        value: '340 milliards $',
-        alternatives: ['microsoft corporation', 'windows', 'xbox', 'office', 'bill gates']
-      },
-      { 
-        rank: 3,
-        name: 'Amazon',
-        value: '308 milliards $',
-        alternatives: ['amazon.com', 'bezos', 'jeff bezos', 'aws', 'prime']
-      },
-      { 
-        rank: 4,
-        name: 'Google',
-        value: '297 milliards $',
-        alternatives: ['alphabet', 'google inc', 'gmail', 'youtube', 'android']
-      },
-      { 
-        rank: 5,
-        name: 'Samsung',
-        value: '99 milliards $',
-        alternatives: ['samsung electronics', 'galaxy', 'coree', 'seoul']
-      },
-      { 
-        rank: 6,
-        name: 'Tesla',
-        value: '97 milliards $',
-        alternatives: ['tesla motors', 'elon musk', 'model s', 'model 3', 'spacex']
-      },
-      { 
-        rank: 7,
-        name: 'Meta (Facebook)',
-        value: '89 milliards $',
-        alternatives: ['facebook', 'meta', 'zuckerberg', 'instagram', 'whatsapp', 'mark zuckerberg']
-      },
-      { 
-        rank: 8,
-        name: 'NVIDIA',
-        value: '85 milliards $',
-        alternatives: ['nvidia corporation', 'geforce', 'rtx', 'gpu']
-      },
-      { 
-        rank: 9,
-        name: 'Toyota',
-        value: '59 milliards $',
-        alternatives: ['toyota motor', 'prius', 'camry', 'japon']
-      },
-      { 
-        rank: 10,
-        name: 'Coca-Cola',
-        value: '57 milliards $',
-        alternatives: ['coca cola', 'coke', 'cola', 'pepsi']
-      }
+      { rank: 1, name: 'Apple', value: '516 milliards $', alternatives: ['apple inc', 'iphone'] },
+      { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows'] },
+      { rank: 3, name: 'Amazon', value: '308 milliards $', alternatives: ['amazon.com', 'bezos'] },
+      { rank: 4, name: 'Google', value: '297 milliards $', alternatives: ['alphabet', 'google inc'] },
+      { rank: 5, name: 'Samsung', value: '99 milliards $', alternatives: ['samsung electronics'] },
+      { rank: 6, name: 'Tesla', value: '97 milliards $', alternatives: ['tesla motors', 'elon musk'] },
+      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg'] },
+      { rank: 8, name: 'NVIDIA', value: '85 milliards $', alternatives: ['nvidia corporation'] },
+      { rank: 9, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor'] },
+      { rank: 10, name: 'Coca-Cola', value: '57 milliards $', alternatives: ['coca cola', 'coke'] }
     ]
   },
   {
@@ -224,16 +174,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Sports les Plus Populaires (Fans Mondiaux)',
     description: 'Les 10 sports avec le plus de fans et pratiquants dans le monde (estimation 2024)',
     items: [
-      { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association'] },
-      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais'] },
-      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey'] },
-      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court'] },
-      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball'] },
-      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong'] },
-      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball'] },
-      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball'] },
-      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union'] },
-      { rank: 10, name: 'Golf', value: '450 millions de fans' }
+      { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association', 'ballon', 'fifa'] },
+      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais', 'batte', 'inde', 'angleterre'] },
+      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey', 'hockey herbe', 'gazon'] },
+      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court', 'raquette', 'roland garros', 'wimbledon'] },
+      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball', 'beach volley', 'filet'] },
+      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong', 'raquette', 'chine'] },
+      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball', 'nba', 'panier', 'jordan'] },
+      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball', 'batte', 'mlb', 'usa', 'yankees'] },
+      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union', 'ovale', 'all blacks', 'france'] },
+      { rank: 10, name: 'Golf', value: '450 millions de fans', alternatives: ['balle', 'tiger woods', 'green', 'club'] }
     ]
   },
   {
@@ -400,6 +350,7 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
       )
     );
     
+    const altMatchRatio = matchedAltWords.length / importantAltWords.length;
     if (altMatchRatio >= 0.8) return true;
   }
   
