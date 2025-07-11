@@ -33,7 +33,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     if (!currentSaga || !currentGuess.trim()) return;
 
     const matchedItem = currentSaga.items.find(item => 
-      fuzzyMatch(currentGuess.trim(), item.name, item.aliases || [])
+      fuzzyMatch(currentGuess.trim(), item.name)
     );
 
     if (matchedItem && !foundItems.includes(matchedItem.name)) {

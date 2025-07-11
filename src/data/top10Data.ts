@@ -9,7 +9,6 @@ export interface Top10Item {
   rank: number;
   name: string;
   value?: string;
-  alternatives?: string[];
   saga?: string;
   sagaItems?: string[];
 }
@@ -28,42 +27,36 @@ export const top10Categories: Top10Category[] = [
       { 
         rank: 1,
         name: 'All About Eve',
-        value: '14 nominations',
-        alternatives: ['all about eve', 'eve', 'bette davis']
+        value: '14 nominations'
       },
-      { rank: 2, name: 'Titanic', value: '14 nominations', alternatives: ['titanic 1997', 'leonardo dicaprio', 'james cameron'] },
+      { rank: 2, name: 'Titanic', value: '14 nominations' },
       { 
         rank: 3,
         name: 'La La Land',
-        value: '14 nominations',
-        alternatives: ['lalaland', 'la la land', 'ryan gosling', 'emma stone']
+        value: '14 nominations'
       },
-      { rank: 4, name: 'Roma', value: '10 nominations', alternatives: ['roma cuaron', 'alfonso cuaron'] },
+      { rank: 4, name: 'Roma', value: '10 nominations' },
       { 
         rank: 5,
         name: 'The Shape of Water',
-        value: '13 nominations',
-        alternatives: ['shape of water', 'guillermo del toro']
+        value: '13 nominations'
       },
       { 
         rank: 6,
         name: 'The Revenant',
-        value: '12 nominations',
-        alternatives: ['revenant', 'leonardo dicaprio', 'inarritu']
+        value: '12 nominations'
       },
-      { rank: 7, name: 'Lincoln', value: '12 nominations', alternatives: ['lincoln spielberg', 'daniel day lewis'] },
+      { rank: 7, name: 'Lincoln', value: '12 nominations' },
       { 
         rank: 8,
         name: 'Life of Pi',
-        value: '11 nominations',
-        alternatives: ['life of pi', 'ang lee', 'pi']
+        value: '11 nominations'
       },
-      { rank: 9, name: 'Hugo', value: '11 nominations', alternatives: ['hugo scorsese', 'martin scorsese'] },
+      { rank: 9, name: 'Hugo', value: '11 nominations' },
       { 
         rank: 10,
         name: 'The Curious Case of Benjamin Button',
-        value: '13 nominations',
-        alternatives: ['benjamin button', 'brad pitt', 'curious case']
+        value: '13 nominations'
       }
     ]
   },
@@ -72,16 +65,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Films Français Cultes (Box-Office)',
     description: 'Les 10 films français les plus populaires au box-office français (1945-2024)',
     items: [
-      { rank: 1, name: 'Intouchables', value: '2011 - Nakache & Toledano', alternatives: ['intouchable', 'omar sy', 'francois cluzet'] },
-      { rank: 2, name: 'Amélie Poulain', value: '2001 - Jean-Pierre Jeunet', alternatives: ['amelie', 'fabuleux destin amelie poulain', 'audrey tautou'] },
-      { rank: 3, name: 'Bienvenue chez les Ch\'tis', value: '2008 - Dany Boon', alternatives: ['chtis', 'bienvenue chez les chtis', 'kad merad', 'chtit', 'chtits', 'bienvenue chtis'] },
-      { rank: 4, name: 'Les Visiteurs', value: '1993 - Jean-Marie Poiré', alternatives: ['visiteurs', 'jean reno', 'christian clavier'] },
-      { rank: 5, name: 'Taxi', value: '1998 - Gérard Pirès', alternatives: ['taxi 1', 'samy naceri', 'freddy'] },
-      { rank: 6, name: 'Astérix et Obélix: Mission Cléopâtre', value: '2002 - Alain Chabat', alternatives: ['asterix cleopatre', 'mission cleopatre', 'jamel debbouze'] },
-      { rank: 7, name: 'La Grande Vadrouille', value: '1966 - Gérard Oury', alternatives: ['grande vadrouille', 'bourvil', 'louis de funes'] },
-      { rank: 8, name: 'OSS 117: Le Caire, nid d\'espions', value: '2006 - Michel Hazanavicius', alternatives: ['oss 117', 'jean dujardin', 'caire'] },
-      { rank: 9, name: 'Le Dîner de Cons', value: '1998 - Francis Veber', alternatives: ['diner de cons', 'le diner de cons', 'diner cons', 'thierry lhermitte', 'jacques villeret'] },
-      { rank: 10, name: 'La Cité de la Peur', value: '1994 - Alain Berbérian', alternatives: ['cite de la peur', 'les nuls', 'chantal lauby', 'la cite de la peur'] }
+      { rank: 1, name: 'Intouchables', value: '2011 - Nakache & Toledano' },
+      { rank: 2, name: 'Amélie Poulain', value: '2001 - Jean-Pierre Jeunet' },
+      { rank: 3, name: 'Bienvenue chez les Ch\'tis', value: '2008 - Dany Boon' },
+      { rank: 4, name: 'Les Visiteurs', value: '1993 - Jean-Marie Poiré' },
+      { rank: 5, name: 'Taxi', value: '1998 - Gérard Pirès' },
+      { rank: 6, name: 'Astérix et Obélix: Mission Cléopâtre', value: '2002 - Alain Chabat' },
+      { rank: 7, name: 'La Grande Vadrouille', value: '1966 - Gérard Oury' },
+      { rank: 8, name: 'OSS 117: Le Caire, nid d\'espions', value: '2006 - Michel Hazanavicius' },
+      { rank: 9, name: 'Le Dîner de Cons', value: '1998 - Francis Veber' },
+      { rank: 10, name: 'La Cité de la Peur', value: '1994 - Alain Berbérian' }
     ]
   },
   {
@@ -89,16 +82,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Séries Netflix les Plus Regardées (2024)',
     description: 'Les 10 séries avec le plus d\'heures de visionnage sur Netflix en 2024',
     items: [
-      { rank: 1, name: 'Squid Game', value: '1,65 milliard d\'heures', alternatives: ['squid games', 'jeu du calmar'] },
-      { rank: 2, name: 'Wednesday', value: '1,37 milliard d\'heures', alternatives: ['mercredi', 'wednesday addams', 'jenna ortega'] },
-      { rank: 3, name: 'Stranger Things 4', value: '1,35 milliard d\'heures', alternatives: ['stranger things saison 4', 'stranger things 4'] },
-      { rank: 4, name: 'Dahmer', value: '856 millions d\'heures', alternatives: ['dahmer netflix', 'jeffrey dahmer', 'evan peters'] },
-      { rank: 5, name: 'Bridgerton Saison 2', value: '656 millions d\'heures', alternatives: ['bridgerton 2', 'bridgerton saison 2'] },
-      { rank: 6, name: 'The Night Agent', value: '605 millions d\'heures', alternatives: ['night agent', 'agent de nuit'] },
-      { rank: 7, name: 'Ginny & Georgia Saison 2', value: '582 millions d\'heures', alternatives: ['ginny georgia 2', 'ginny and georgia'] },
-      { rank: 8, name: 'Lucifer Saison 5', value: '569 millions d\'heures', alternatives: ['lucifer 5', 'lucifer saison 5'] },
-      { rank: 9, name: 'All of Us Are Dead', value: '560 millions d\'heures', alternatives: ['all of us are dead', 'zombies coree'] },
-      { rank: 10, name: 'The Witcher Saison 1', value: '541 millions d\'heures', alternatives: ['witcher 1', 'the witcher saison 1', 'geralt'] }
+      { rank: 1, name: 'Squid Game', value: '1,65 milliard d\'heures' },
+      { rank: 2, name: 'Wednesday', value: '1,37 milliard d\'heures' },
+      { rank: 3, name: 'Stranger Things 4', value: '1,35 milliard d\'heures' },
+      { rank: 4, name: 'Dahmer', value: '856 millions d\'heures' },
+      { rank: 5, name: 'Bridgerton Saison 2', value: '656 millions d\'heures' },
+      { rank: 6, name: 'The Night Agent', value: '605 millions d\'heures' },
+      { rank: 7, name: 'Ginny & Georgia Saison 2', value: '582 millions d\'heures' },
+      { rank: 8, name: 'Lucifer Saison 5', value: '569 millions d\'heures' },
+      { rank: 9, name: 'All of Us Are Dead', value: '560 millions d\'heures' },
+      { rank: 10, name: 'The Witcher Saison 1', value: '541 millions d\'heures' }
     ]
   },
   {
@@ -106,16 +99,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Pays les Plus Peuplés (2024)',
     description: 'Les 10 pays avec le plus d\'habitants dans le monde selon les données 2024',
     items: [
-      { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan'] },
-      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc', 'chinois', 'pekin'] },
-      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique', 'america', 'us', 'washington'] },
-      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia', 'jakarta'] },
-      { rank: 5, name: 'Pakistan', value: '240 millions', alternatives: ['islamabad', 'pakistanais'] },
-      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria', 'lagos', 'nigerien'] },
-      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil', 'brasilia', 'bresilien'] },
-      { rank: 8, name: 'Bangladesh', value: '172 millions', alternatives: ['dhaka', 'bengladesh'] },
-      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie', 'moscou', 'russe'] },
-      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico', 'mexicain', 'mexico city'] }
+      { rank: 1, name: 'Inde', value: '1,43 milliard' },
+      { rank: 2, name: 'Chine', value: '1,42 milliard' },
+      { rank: 3, name: 'États-Unis', value: '340 millions' },
+      { rank: 4, name: 'Indonésie', value: '278 millions' },
+      { rank: 5, name: 'Pakistan', value: '240 millions' },
+      { rank: 6, name: 'Nigéria', value: '223 millions' },
+      { rank: 7, name: 'Brésil', value: '216 millions' },
+      { rank: 8, name: 'Bangladesh', value: '172 millions' },
+      { rank: 9, name: 'Russie', value: '144 millions' },
+      { rank: 10, name: 'Mexique', value: '132 millions' }
     ]
   },
   {
@@ -126,62 +119,52 @@ export const top10Categories: Top10Category[] = [
       { 
         rank: 1,
         name: 'Minecraft',
-        value: '300M copies',
-        alternatives: ['mine craft', 'minecraft mojang', 'mojang', 'steve', 'creeper', 'blocs', 'cubes']
+        value: '300M copies'
       },
       { 
         rank: 2,
         name: 'Grand Theft Auto V',
-        value: '195M copies',
-        alternatives: ['gta 5', 'gta v', 'grand theft auto 5', 'rockstar', 'los santos', 'gta', 'vol auto']
+        value: '195M copies'
       },
       { 
         rank: 3,
         name: 'Tetris (EA)',
-        value: '100M copies',
-        alternatives: ['tetris classic', 'tetris original', 'tetris ea', 'tetris', 'blocs', 'puzzle', 'russe']
+        value: '100M copies'
       },
       { 
         rank: 4,
         name: 'Wii Sports',
-        value: '83M copies',
-        alternatives: ['wii sport', 'nintendo wii sports', 'nintendo', 'bowling', 'tennis wii', 'sport wii']
+        value: '83M copies'
       },
       { 
         rank: 5,
         name: 'PUBG: Battlegrounds',
-        value: '75M copies',
-        alternatives: ['pubg', 'playerunknown battlegrounds', 'battlegrounds', 'battle royale', 'br']
+        value: '75M copies'
       },
       { 
         rank: 6,
         name: 'Mario Kart 8 Deluxe',
-        value: '60M copies',
-        alternatives: ['mario kart 8', 'mk8', 'mario kart switch', 'mario kart', 'nintendo switch', 'mario', 'kart']
+        value: '60M copies'
       },
       { 
         rank: 7,
         name: 'Super Mario Bros.',
-        value: '58M copies',
-        alternatives: ['super mario brothers', 'mario bros', 'mario nes', 'mario', 'luigi', 'nintendo', 'champignon']
+        value: '58M copies'
       },
       { 
         rank: 8,
         name: 'Red Dead Redemption 2',
-        value: '55M copies',
-        alternatives: ['rdr2', 'red dead 2', 'red dead redemption ii', 'arthur morgan', 'cowboy', 'western', 'far west']
+        value: '55M copies'
       },
       { 
         rank: 9,
         name: 'Overwatch',
-        value: '50M copies',
-        alternatives: ['overwatch 1', 'overwatch blizzard', 'blizzard', 'tracer', 'fps', 'heros']
+        value: '50M copies'
       },
       { 
         rank: 10,
         name: 'The Witcher 3: Wild Hunt',
-        value: '50M copies',
-        alternatives: ['witcher 3', 'the witcher 3', 'witcher wild hunt', 'geralt', 'cd projekt', 'sorceleur', 'rpg']
+        value: '50M copies'
       }
     ]
   },
@@ -190,16 +173,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Langues les Plus Parlées (Locuteurs Natifs)',
     description: 'Les 10 langues avec le plus de locuteurs natifs dans le monde (données 2024)',
     items: [
-      { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese'] },
-      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano', 'espagne', 'langue espagnole'] },
-      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english', 'angleterre', 'langue anglaise', 'britannique'] },
-      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien', 'inde', 'indien', 'langue indienne'] },
-      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard', 'langue arabe', 'arabie'] },
-      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla', 'bangladesh', 'bengale'] },
-      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien', 'portugal', 'bresil', 'langue portugaise'] },
-      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russie', 'langue russe', 'sovietique'] },
-      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon', 'japon', 'langue japonaise'] },
-      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi', 'pendjab', 'punjab'] }
+      { rank: 1, name: 'Chinois Mandarin', value: '918 millions' },
+      { rank: 2, name: 'Espagnol', value: '500 millions' },
+      { rank: 3, name: 'Anglais', value: '380 millions' },
+      { rank: 4, name: 'Hindi', value: '341 millions' },
+      { rank: 5, name: 'Arabe', value: '422 millions' },
+      { rank: 6, name: 'Bengalî', value: '265 millions' },
+      { rank: 7, name: 'Portugais', value: '260 millions' },
+      { rank: 8, name: 'Russe', value: '154 millions' },
+      { rank: 9, name: 'Japonais', value: '125 millions' },
+      { rank: 10, name: 'Pendjabi', value: '113 millions' }
     ]
   },
   {
@@ -207,16 +190,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Marques les Plus Valorisées (2024)',
     description: 'Les 10 marques avec la plus grande valeur boursière mondiale selon Forbes 2024',
     items: [
-      { rank: 1, name: 'Apple', value: '516 milliards $', alternatives: ['apple inc', 'iphone'] },
-      { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows', 'xbox', 'office'] },
-      { rank: 3, name: 'Amazon', value: '308 milliards $', alternatives: ['amazon.com', 'bezos', 'aws', 'prime'] },
-      { rank: 4, name: 'Google', value: '297 milliards $', alternatives: ['alphabet', 'google inc', 'youtube', 'android'] },
-      { rank: 5, name: 'Samsung', value: '99 milliards $', alternatives: ['samsung electronics', 'galaxy', 'coreen'] },
-      { rank: 6, name: 'Tesla', value: '97 milliards $', alternatives: ['tesla motors', 'elon musk', 'voiture electrique'] },
-      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $', alternatives: ['facebook', 'meta', 'zuckerberg', 'instagram', 'whatsapp'] },
-      { rank: 8, name: 'NVIDIA', value: '85 milliards $', alternatives: ['nvidia corporation', 'carte graphique', 'gpu'] },
-      { rank: 9, name: 'Toyota', value: '59 milliards $', alternatives: ['toyota motor', 'japonais', 'voiture japonaise'] },
-      { rank: 10, name: 'Coca-Cola', value: '57 milliards $', alternatives: ['coca cola', 'coke', 'cola', 'soda'] }
+      { rank: 1, name: 'Apple', value: '516 milliards $' },
+      { rank: 2, name: 'Microsoft', value: '340 milliards $' },
+      { rank: 3, name: 'Amazon', value: '308 milliards $' },
+      { rank: 4, name: 'Google', value: '297 milliards $' },
+      { rank: 5, name: 'Samsung', value: '99 milliards $' },
+      { rank: 6, name: 'Tesla', value: '97 milliards $' },
+      { rank: 7, name: 'Meta (Facebook)', value: '89 milliards $' },
+      { rank: 8, name: 'NVIDIA', value: '85 milliards $' },
+      { rank: 9, name: 'Toyota', value: '59 milliards $' },
+      { rank: 10, name: 'Coca-Cola', value: '57 milliards $' }
     ]
   },
   {
@@ -224,16 +207,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Sports les Plus Populaires (Fans Mondiaux)',
     description: 'Les 10 sports avec le plus de fans et pratiquants dans le monde (estimation 2024)',
     items: [
-      { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association'] },
-      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais', 'batte cricket'] },
-      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey', 'hockey gazon', 'hockey herbe'] },
-      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court', 'raquette', 'roland garros', 'wimbledon'] },
-      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball', 'beach volley'] },
-      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong', 'raquette ping pong'] },
-      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball', 'nba', 'panier basket'] },
-      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball', 'batte baseball', 'mlb'] },
-      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union', 'ovale', 'ballon ovale'] },
-      { rank: 10, name: 'Golf', value: '450 millions de fans', alternatives: ['club golf', 'balle golf', 'green'] }
+      { rank: 1, name: 'Football', value: '4 milliards de fans' },
+      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans' },
+      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans' },
+      { rank: 4, name: 'Tennis', value: '1 milliard de fans' },
+      { rank: 5, name: 'Volleyball', value: '900 millions de fans' },
+      { rank: 6, name: 'Tennis de table', value: '875 millions de fans' },
+      { rank: 7, name: 'Basketball', value: '825 millions de fans' },
+      { rank: 8, name: 'Baseball', value: '500 millions de fans' },
+      { rank: 9, name: 'Rugby', value: '475 millions de fans' },
+      { rank: 10, name: 'Golf', value: '450 millions de fans' }
     ]
   },
   {
@@ -241,16 +224,16 @@ export const top10Categories: Top10Category[] = [
     name: 'YouTubeurs Français les Plus Suivis (2024)',
     description: 'Les 10 créateurs de contenu français avec le plus d\'abonnés YouTube en 2024',
     items: [
-      { rank: 1, name: 'Squeezie', value: '18,5M abonnés', alternatives: ['lucas hauchard', 'squeezie gaming'] },
-      { rank: 2, name: 'Cyprien', value: '14,2M abonnés', alternatives: ['cyprien iov', 'monsieur dream'] },
-      { rank: 3, name: 'Norman', value: '12,1M abonnés', alternatives: ['norman fait des videos', 'norman thavaud'] },
-      { rank: 4, name: 'Tibo InShape', value: '8,9M abonnés', alternatives: ['tibo inshape', 'thibaud delapart'] },
-      { rank: 5, name: 'Amixem', value: '7,8M abonnés', alternatives: ['maxime chabroud'] },
-      { rank: 6, name: 'Rémi Gaillard', value: '7,2M abonnés', alternatives: ['remi gaillard', 'gaillard'] },
-      { rank: 7, name: 'Michou', value: '7,1M abonnés', alternatives: ['michou youtube'] },
-      { rank: 8, name: 'Inoxtag', value: '6,8M abonnés', alternatives: ['inox tag'] },
-      { rank: 9, name: 'McFly et Carlito', value: '6,5M abonnés', alternatives: ['mcfly carlito', 'david coscas', 'raphael carlier'] },
-      { rank: 10, name: 'Gotaga', value: '4,2M abonnés', alternatives: ['corentin houssein', 'gotaga twitch'] }
+      { rank: 1, name: 'Squeezie', value: '18,5M abonnés' },
+      { rank: 2, name: 'Cyprien', value: '14,2M abonnés' },
+      { rank: 3, name: 'Norman', value: '12,1M abonnés' },
+      { rank: 4, name: 'Tibo InShape', value: '8,9M abonnés' },
+      { rank: 5, name: 'Amixem', value: '7,8M abonnés' },
+      { rank: 6, name: 'Rémi Gaillard', value: '7,2M abonnés' },
+      { rank: 7, name: 'Michou', value: '7,1M abonnés' },
+      { rank: 8, name: 'Inoxtag', value: '6,8M abonnés' },
+      { rank: 9, name: 'McFly et Carlito', value: '6,5M abonnés' },
+      { rank: 10, name: 'Gotaga', value: '4,2M abonnés' }
     ]
   },
   {
@@ -258,16 +241,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Artistes les Plus Streamés Spotify (2024)',
     description: 'Les 10 artistes avec le plus d\'écoutes mensuelles sur Spotify en 2024',
     items: [
-      { rank: 1, name: 'The Weeknd', value: '107M écoutes/mois', alternatives: ['weeknd', 'abel tesfaye'] },
-      { rank: 2, name: 'Taylor Swift', value: '95M écoutes/mois', alternatives: ['taylor', 'swift'] },
-      { rank: 3, name: 'Bad Bunny', value: '88M écoutes/mois', alternatives: ['bad bunny reggaeton'] },
-      { rank: 4, name: 'Drake', value: '85M écoutes/mois', alternatives: ['drake rapper'] },
-      { rank: 5, name: 'Ariana Grande', value: '82M écoutes/mois', alternatives: ['ariana', 'grande'] },
-      { rank: 6, name: 'Ed Sheeran', value: '79M écoutes/mois', alternatives: ['ed', 'sheeran'] },
-      { rank: 7, name: 'Justin Bieber', value: '77M écoutes/mois', alternatives: ['bieber', 'justin'] },
-      { rank: 8, name: 'Billie Eilish', value: '74M écoutes/mois', alternatives: ['billie', 'eilish'] },
-      { rank: 9, name: 'Dua Lipa', value: '72M écoutes/mois', alternatives: ['dua', 'lipa'] },
-      { rank: 10, name: 'Post Malone', value: '70M écoutes/mois', alternatives: ['post malone', 'malone'] }
+      { rank: 1, name: 'The Weeknd', value: '107M écoutes/mois' },
+      { rank: 2, name: 'Taylor Swift', value: '95M écoutes/mois' },
+      { rank: 3, name: 'Bad Bunny', value: '88M écoutes/mois' },
+      { rank: 4, name: 'Drake', value: '85M écoutes/mois' },
+      { rank: 5, name: 'Ariana Grande', value: '82M écoutes/mois' },
+      { rank: 6, name: 'Ed Sheeran', value: '79M écoutes/mois' },
+      { rank: 7, name: 'Justin Bieber', value: '77M écoutes/mois' },
+      { rank: 8, name: 'Billie Eilish', value: '74M écoutes/mois' },
+      { rank: 9, name: 'Dua Lipa', value: '72M écoutes/mois' },
+      { rank: 10, name: 'Post Malone', value: '70M écoutes/mois' }
     ]
   },
   {
@@ -275,16 +258,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Jeux Mobiles les Plus Téléchargés (Tous Temps)',
     description: 'Les 10 jeux mobiles avec le plus de téléchargements de tous les temps (données 2024)',
     items: [
-      { rank: 1, name: 'Subway Surfers', value: '4 milliards', alternatives: ['subway surfer'] },
-      { rank: 2, name: 'PUBG Mobile', value: '1,3 milliard', alternatives: ['pubg mobile', 'battlegrounds mobile'] },
-      { rank: 3, name: 'Candy Crush Saga', value: '1,1 milliard', alternatives: ['candy crush', 'crush saga'] },
-      { rank: 4, name: 'Free Fire', value: '1 milliard', alternatives: ['garena free fire', 'free fire garena'] },
-      { rank: 5, name: 'Roblox', value: '900 millions', alternatives: ['roblox mobile'] },
-      { rank: 6, name: 'Among Us', value: '500 millions', alternatives: ['among us mobile'] },
-      { rank: 7, name: 'Temple Run 2', value: '500 millions', alternatives: ['temple run', 'temple run 2'] },
-      { rank: 8, name: 'Clash of Clans', value: '500 millions', alternatives: ['clash clans', 'coc'] },
-      { rank: 9, name: 'Pokémon GO', value: '500 millions', alternatives: ['pokemon go', 'pokemon mobile'] },
-      { rank: 10, name: 'Clash Royale', value: '500 millions', alternatives: ['clash royale', 'royale'] }
+      { rank: 1, name: 'Subway Surfers', value: '4 milliards' },
+      { rank: 2, name: 'PUBG Mobile', value: '1,3 milliard' },
+      { rank: 3, name: 'Candy Crush Saga', value: '1,1 milliard' },
+      { rank: 4, name: 'Free Fire', value: '1 milliard' },
+      { rank: 5, name: 'Roblox', value: '900 millions' },
+      { rank: 6, name: 'Among Us', value: '500 millions' },
+      { rank: 7, name: 'Temple Run 2', value: '500 millions' },
+      { rank: 8, name: 'Clash of Clans', value: '500 millions' },
+      { rank: 9, name: 'Pokémon GO', value: '500 millions' },
+      { rank: 10, name: 'Clash Royale', value: '500 millions' }
     ]
   },
   {
@@ -292,16 +275,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Rappeurs Français les Plus Populaires (2024)',
     description: 'Les 10 rappeurs français les plus écoutés sur les plateformes de streaming en 2024',
     items: [
-      { rank: 1, name: 'Jul', value: 'Marseille, 30+ albums', alternatives: ['jul marseille', 'jul rap'] },
-      { rank: 2, name: 'PNL', value: 'Duo, Ademo & N.O.S', alternatives: ['pnl rap', 'ademo nos'] },
-      { rank: 3, name: 'Ninho', value: 'Essonne, M.I.L.S', alternatives: ['ninho rap'] },
-      { rank: 4, name: 'SCH', value: 'Marseille, JVLIVS', alternatives: ['sch rap', 'sch marseille'] },
-      { rank: 5, name: 'Nekfeu', value: '1995, Feu', alternatives: ['nekfeu rap'] },
-      { rank: 6, name: 'Booba', value: 'B2O, Duc de Boulogne', alternatives: ['booba rap', 'b2o'] },
-      { rank: 7, name: 'Damso', value: 'Belgique, 92i', alternatives: ['damso rap', 'damso belge'] },
-      { rank: 8, name: 'Orelsan', value: 'Caen, OrelSan', alternatives: ['orelsan rap', 'orel san'] },
-      { rank: 9, name: 'Gazo', value: 'Drill français', alternatives: ['gazo drill', 'gazo rap'] },
-      { rank: 10, name: 'Freeze Corleone', value: 'LMF, 667', alternatives: ['freeze corleone', 'lmf'] }
+      { rank: 1, name: 'Jul', value: 'Marseille, 30+ albums' },
+      { rank: 2, name: 'PNL', value: 'Duo, Ademo & N.O.S' },
+      { rank: 3, name: 'Ninho', value: 'Essonne, M.I.L.S' },
+      { rank: 4, name: 'SCH', value: 'Marseille, JVLIVS' },
+      { rank: 5, name: 'Nekfeu', value: '1995, Feu' },
+      { rank: 6, name: 'Booba', value: 'B2O, Duc de Boulogne' },
+      { rank: 7, name: 'Damso', value: 'Belgique, 92i' },
+      { rank: 8, name: 'Orelsan', value: 'Caen, OrelSan' },
+      { rank: 9, name: 'Gazo', value: 'Drill français' },
+      { rank: 10, name: 'Freeze Corleone', value: 'LMF, 667' }
     ]
   }
 ];
@@ -323,84 +306,112 @@ export const getDrinksForRank = (rank: number): number => {
 };
 
 // Fonction de fuzzy matching améliorée
-export const fuzzyMatch = (input: string, target: string, alternatives: string[] = []): boolean => {
+export const fuzzyMatch = (input: string, target: string): boolean => {
   const normalize = (str: string) => 
     str.toLowerCase()
        .trim()
        // Normaliser les accents
        .normalize('NFD')
        .replace(/[\u0300-\u036f]/g, '')
-       // Remplacer la ponctuation par des espaces
-       .replace(/[^\w\s]/g, ' ')
+       // Supprimer la ponctuation et caractères spéciaux
+       .replace(/[^\w\s]/g, '')
+       // Supprimer les doubles lettres (fautes de frappe)
+       .replace(/(.)\1+/g, '$1')
        // Supprimer les articles courants
-       .replace(/\b(le|la|les|un|une|des|du|de|d|l)\b/g, ' ')
+       .replace(/\b(le|la|les|un|une|des|du|de|d|l|the|a|an|and|et|of)\b/g, '')
        // Normaliser les espaces
-       .replace(/\s+/g, ' ');
+       .replace(/\s+/g, ' ')
+       .trim();
   
   const normalizedInput = normalize(input);
   const normalizedTarget = normalize(target);
   
-  console.log('Matching:', { input, normalizedInput, target, normalizedTarget });
-  
-  // Correspondance exacte
+  // Correspondance exacte après normalisation
   if (normalizedInput === normalizedTarget) return true;
   
-  // Vérifier les alternatives
-  for (const alt of alternatives) {
-    const normalizedAlt = normalize(alt);
-    console.log('Checking alternative:', { alt, normalizedAlt });
-    if (normalizedInput === normalizedAlt) return true;
-  }
+  const inputWords = normalizedInput.split(' ').filter(word => word.length > 0);
+  const targetWords = normalizedTarget.split(' ').filter(word => word.length > 0);
   
-  // Correspondance partielle avec tolérance aux fautes
-  const inputWords = normalizedInput.split(' ');
-  const targetWords = normalizedTarget.split(' ');
+  // Si pas de mots valides, pas de match
+  if (inputWords.length === 0 || targetWords.length === 0) return false;
   
-  // Filtrer les mots importants (longueur > 2)
-  const importantWords = targetWords.filter(word => word.length > 2);
-  if (importantWords.length === 0) return false;
-  
-  // Vérifier chaque mot important
-  const matchedWords = importantWords.filter(word => 
-    inputWords.some(inputWord => {
-      // Correspondance exacte
-      if (inputWord === word) return true;
-      
-      // Tolérance aux fautes pour les mots de 4+ caractères
-      if (word.length >= 4 && inputWord.length >= 3) {
-        const maxDistance = Math.floor(word.length * 0.25); // 25% de tolérance
-        return levenshteinDistance(inputWord, word) <= maxDistance;
-      }
-      
-      // Pour les mots courts, correspondance exacte requise
-      return false;
-    })
-  );
-  
-  console.log('Word matching:', { importantWords, matchedWords, inputWords });
-  
-  // Ratio de correspondance plus strict
-  const matchRatio = matchedWords.length / importantWords.length;
-  if (matchRatio >= 0.8) return true; // 80% des mots doivent matcher
-  
-  // Vérifier les alternatives avec correspondance partielle
-  for (const alt of alternatives) {
-    const normalizedAlt = normalize(alt);
-    if (normalizedInput === normalizedAlt) return true;
-    
-    const altWords = normalizedAlt.split(' ');
-    const importantAltWords = altWords.filter(word => word.length > 2);
-    if (importantAltWords.length === 0) continue;
-    
-    const matchedAltWords = importantAltWords.filter(word => 
-      inputWords.some(inputWord => 
-        inputWord === word ||
-        (word.length >= 4 && inputWord.length >= 3 && 
-         levenshteinDistance(inputWord, word) <= Math.floor(word.length * 0.25))
-      )
+  // Pour les noms composés (2+ mots), si la moitié des mots matchent c'est bon
+  if (targetWords.length >= 2) {
+    const matchedWords = targetWords.filter(targetWord => 
+      inputWords.some(inputWord => {
+        // Correspondance exacte
+        if (inputWord === targetWord) return true;
+        
+        // Tolérance aux fautes pour les mots de 4+ caractères
+        if (targetWord.length >= 4 && inputWord.length >= 3) {
+          const maxDistance = Math.floor(targetWord.length * 0.3); // 30% de tolérance
+          return levenshteinDistance(inputWord, targetWord) <= maxDistance;
+        }
+        
+        // Pour les mots courts, vérifier si l'un contient l'autre
+        if (targetWord.length >= 3 && inputWord.length >= 3) {
+          return targetWord.includes(inputWord) || inputWord.includes(targetWord);
+        }
+        
+        return false;
+      })
     );
     
-    if (altMatchRatio >= 0.8) return true;
+    // Au moins 50% des mots du target doivent matcher
+    const matchRatio = matchedWords.length / targetWords.length;
+    return matchRatio >= 0.5;
+  }
+  
+  // Pour les noms simples (1 mot), correspondance plus stricte
+  if (targetWords.length === 1 && inputWords.length === 1) {
+    const targetWord = targetWords[0];
+    const inputWord = inputWords[0];
+    
+    // Correspondance exacte
+    if (inputWord === targetWord) return true;
+    
+    // Tolérance aux fautes pour les mots longs
+    if (targetWord.length >= 4 && inputWord.length >= 3) {
+      const maxDistance = Math.floor(targetWord.length * 0.25); // 25% de tolérance
+      return levenshteinDistance(inputWord, targetWord) <= maxDistance;
+    }
+    
+    // Pour les mots courts, vérifier si l'un contient l'autre
+    if (targetWord.length >= 3 && inputWord.length >= 3) {
+      return targetWord.includes(inputWord) || inputWord.includes(targetWord);
+    }
+  }
+  
+  // Pour les cas mixtes (input multiple mots, target un mot ou vice versa)
+  if (inputWords.length !== targetWords.length) {
+    // Vérifier si tous les mots de l'input sont dans le target ou vice versa
+    const allInputWordsMatch = inputWords.every(inputWord =>
+      targetWords.some(targetWord => {
+        if (inputWord === targetWord) return true;
+        if (targetWord.length >= 4 && inputWord.length >= 3) {
+          const maxDistance = Math.floor(targetWord.length * 0.3);
+          return levenshteinDistance(inputWord, targetWord) <= maxDistance;
+        }
+        return targetWord.includes(inputWord) || inputWord.includes(targetWord);
+      })
+    );
+    
+    if (allInputWordsMatch) return true;
+    
+    // Ou vérifier si au moins 50% des mots du target sont dans l'input
+    const matchedTargetWords = targetWords.filter(targetWord =>
+      inputWords.some(inputWord => {
+        if (inputWord === targetWord) return true;
+        if (targetWord.length >= 4 && inputWord.length >= 3) {
+          const maxDistance = Math.floor(targetWord.length * 0.3);
+          return levenshteinDistance(inputWord, targetWord) <= maxDistance;
+        }
+        return targetWord.includes(inputWord) || inputWord.includes(targetWord);
+      })
+    );
+    
+    const targetMatchRatio = matchedTargetWords.length / targetWords.length;
+    return targetMatchRatio >= 0.5;
   }
   
   return false;
@@ -428,9 +439,10 @@ function levenshteinDistance(str1: string, str2: string): number {
           matrix[i - 1][j] + 1
         );
       }
-    }
+    })
   }
   
+
   return matrix[str2.length][str1.length];
 }
 
