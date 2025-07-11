@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import InvitationGate from './components/InvitationGate';
 import SEOHead from './components/SEOHead';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
@@ -16,33 +15,6 @@ type AppPage = 'home' | 'games' | 'about' | 'game-detail' | 'top10-game' | 'neve
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
   const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
-  const [hasAccess, setHasAccess] = useState(() => {
-    // Vérifier si l'utilisateur a déjà validé le code et si ce n'est pas expiré
-    try {
-      const accessData = localStorage.getItem('fababicuite_access');
-      if (accessData) {
-        const parsed = JSON.parse(accessData);
-        if (parsed.granted && parsed.expires > Date.now()) {
-          return true;
-        } else {
-          // Supprimer l'accès expiré
-          localStorage.removeItem('fababicuite_access');
-        }
-      }
-    } catch (error) {
-      localStorage.removeItem('fababicuite_access');
-    }
-    return false;
-  });
-
-  const handleValidCode = () => {
-    setHasAccess(true);
-  };
-
-  // Si l'utilisateur n'a pas accès, afficher la page de code d'invitation
-  if (!hasAccess) {
-    return <InvitationGate onValidCode={handleValidCode} />;
-  }
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page as AppPage);
