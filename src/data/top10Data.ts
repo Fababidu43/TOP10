@@ -106,16 +106,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Pays les Plus Peuplés (2024)',
     description: 'Les 10 pays avec le plus d\'habitants dans le monde selon les données 2024',
     items: [
-      { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan'] },
-      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc'] },
-      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique'] },
-      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia'] },
-      { rank: 5, name: 'Pakistan', value: '240 millions' },
-      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria'] },
-      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil'] },
-      { rank: 8, name: 'Bangladesh', value: '172 millions' },
-      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie'] },
-      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico'] }
+      { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan', 'hindou'] },
+      { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc', 'chinois', 'pekin'] },
+      { rank: 3, name: 'États-Unis', value: '340 millions', alternatives: ['usa', 'amérique', 'etats unis', 'united states', 'amerique', 'america', 'us'] },
+      { rank: 4, name: 'Indonésie', value: '278 millions', alternatives: ['indonesia', 'indonesien', 'jakarta'] },
+      { rank: 5, name: 'Pakistan', value: '240 millions', alternatives: ['pakistanais', 'islamabad'] },
+      { rank: 6, name: 'Nigéria', value: '223 millions', alternatives: ['nigeria', 'nigerian', 'lagos'] },
+      { rank: 7, name: 'Brésil', value: '216 millions', alternatives: ['brazil', 'bresil', 'bresilien', 'sao paulo'] },
+      { rank: 8, name: 'Bangladesh', value: '172 millions', alternatives: ['bangladais', 'dhaka', 'bengale'] },
+      { rank: 9, name: 'Russie', value: '144 millions', alternatives: ['russia', 'fédération de russie', 'russe', 'moscou'] },
+      { rank: 10, name: 'Mexique', value: '132 millions', alternatives: ['mexico', 'mexicain', 'mexico city'] }
     ]
   },
   {
@@ -140,16 +140,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Langues les Plus Parlées (Locuteurs Natifs)',
     description: 'Les 10 langues avec le plus de locuteurs natifs dans le monde (données 2024)',
     items: [
-      { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese', 'langue chinoise'] },
-      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano', 'espagne', 'castillan'] },
-      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english', 'langue anglaise', 'angleterre'] },
-      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien', 'inde', 'indien', 'hindou'] },
-      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard', 'langue arabe', 'arabique'] },
-      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla', 'bangladesh', 'bengale'] },
-      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien', 'portugal', 'bresil'] },
-      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russie', 'langue russe'] },
-      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon', 'japon', 'langue japonaise'] },
-      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi', 'punjab', 'pendjab'] }
+      { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese'] },
+      { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano'] },
+      { rank: 3, name: 'Anglais', value: '380 millions', alternatives: ['english'] },
+      { rank: 4, name: 'Hindi', value: '341 millions', alternatives: ['hindi indien'] },
+      { rank: 5, name: 'Arabe', value: '422 millions', alternatives: ['arabic', 'arabe standard'] },
+      { rank: 6, name: 'Bengalî', value: '265 millions', alternatives: ['bengali', 'bangla'] },
+      { rank: 7, name: 'Portugais', value: '260 millions', alternatives: ['portuguese', 'portugais bresilien'] },
+      { rank: 8, name: 'Russe', value: '154 millions', alternatives: ['russian', 'russe'] },
+      { rank: 9, name: 'Japonais', value: '125 millions', alternatives: ['japanese', 'nippon'] },
+      { rank: 10, name: 'Pendjabi', value: '113 millions', alternatives: ['punjabi', 'panjabi'] }
     ]
   },
   {
