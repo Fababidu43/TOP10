@@ -17,7 +17,7 @@ interface GameState {
   timeLeft: number;
 }
 
-export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
+const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const [game, setGame] = useState<GameState>({
     currentSaga: null,
     foundItems: [],
@@ -431,3 +431,5 @@ export const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     </div>
   );
 };
+
+export default Top10Game;
