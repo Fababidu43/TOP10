@@ -123,16 +123,66 @@ export const top10Categories: Top10Category[] = [
     name: 'Jeux Vidéo les Plus Vendus (Tous Temps)',
     description: 'Les 10 jeux vidéo avec le plus de ventes mondiales de tous les temps (données 2024)',
     items: [
-      { rank: 1, name: 'Minecraft', value: '300M copies', alternatives: ['mine craft', 'minecraft mojang'] },
-      { rank: 2, name: 'Grand Theft Auto V', value: '195M copies', alternatives: ['gta 5', 'gta v', 'grand theft auto 5'] },
-      { rank: 3, name: 'Tetris (EA)', value: '100M copies', alternatives: ['tetris classic', 'tetris original', 'tetris ea'] },
-      { rank: 4, name: 'Wii Sports', value: '83M copies', alternatives: ['wii sport', 'nintendo wii sports'] },
-      { rank: 5, name: 'PUBG: Battlegrounds', value: '75M copies', alternatives: ['pubg', 'playerunknown battlegrounds', 'battlegrounds'] },
-      { rank: 6, name: 'Mario Kart 8 Deluxe', value: '60M copies', alternatives: ['mario kart 8', 'mk8', 'mario kart switch'] },
-      { rank: 7, name: 'Super Mario Bros.', value: '58M copies', alternatives: ['super mario brothers', 'mario bros', 'mario nes'] },
-      { rank: 8, name: 'Red Dead Redemption 2', value: '55M copies', alternatives: ['rdr2', 'red dead 2', 'red dead redemption ii'] },
-      { rank: 9, name: 'Overwatch', value: '50M copies', alternatives: ['overwatch 1', 'overwatch blizzard'] },
-      { rank: 10, name: 'The Witcher 3: Wild Hunt', value: '50M copies', alternatives: ['witcher 3', 'the witcher 3', 'witcher wild hunt'] }
+      { 
+        rank: 1,
+        name: 'Minecraft',
+        value: '300M copies',
+        alternatives: ['mine craft', 'minecraft mojang', 'mojang', 'steve', 'creeper']
+      },
+      { 
+        rank: 2,
+        name: 'Grand Theft Auto V',
+        value: '195M copies',
+        alternatives: ['gta 5', 'gta v', 'grand theft auto 5', 'rockstar', 'los santos']
+      },
+      { 
+        rank: 3,
+        name: 'Tetris (EA)',
+        value: '100M copies',
+        alternatives: ['tetris classic', 'tetris original', 'tetris ea', 'tetris', 'blocs']
+      },
+      { 
+        rank: 4,
+        name: 'Wii Sports',
+        value: '83M copies',
+        alternatives: ['wii sport', 'nintendo wii sports', 'nintendo', 'bowling', 'tennis wii']
+      },
+      { 
+        rank: 5,
+        name: 'PUBG: Battlegrounds',
+        value: '75M copies',
+        alternatives: ['pubg', 'playerunknown battlegrounds', 'battlegrounds', 'battle royale']
+      },
+      { 
+        rank: 6,
+        name: 'Mario Kart 8 Deluxe',
+        value: '60M copies',
+        alternatives: ['mario kart 8', 'mk8', 'mario kart switch', 'mario kart', 'nintendo switch']
+      },
+      { 
+        rank: 7,
+        name: 'Super Mario Bros.',
+        value: '58M copies',
+        alternatives: ['super mario brothers', 'mario bros', 'mario nes', 'mario', 'luigi', 'nintendo']
+      },
+      { 
+        rank: 8,
+        name: 'Red Dead Redemption 2',
+        value: '55M copies',
+        alternatives: ['rdr2', 'red dead 2', 'red dead redemption ii', 'arthur morgan', 'cowboy']
+      },
+      { 
+        rank: 9,
+        name: 'Overwatch',
+        value: '50M copies',
+        alternatives: ['overwatch 1', 'overwatch blizzard', 'blizzard', 'tracer', 'fps']
+      },
+      { 
+        rank: 10,
+        name: 'The Witcher 3: Wild Hunt',
+        value: '50M copies',
+        alternatives: ['witcher 3', 'the witcher 3', 'witcher wild hunt', 'geralt', 'cd projekt']
+      }
     ]
   },
   {
@@ -174,16 +224,16 @@ export const top10Categories: Top10Category[] = [
     name: 'Sports les Plus Populaires (Fans Mondiaux)',
     description: 'Les 10 sports avec le plus de fans et pratiquants dans le monde (estimation 2024)',
     items: [
-      { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association', 'ballon', 'fifa'] },
-      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais', 'batte', 'inde', 'angleterre'] },
-      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey', 'hockey herbe', 'gazon'] },
-      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court', 'raquette', 'roland garros', 'wimbledon'] },
-      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball', 'beach volley', 'filet'] },
-      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong', 'raquette', 'chine'] },
-      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball', 'nba', 'panier', 'jordan'] },
-      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball', 'batte', 'mlb', 'usa', 'yankees'] },
-      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union', 'ovale', 'all blacks', 'france'] },
-      { rank: 10, name: 'Golf', value: '450 millions de fans', alternatives: ['balle', 'tiger woods', 'green', 'club'] }
+      { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association'] },
+      { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais'] },
+      { rank: 3, name: 'Hockey sur gazon', value: '2 milliards de fans', alternatives: ['field hockey', 'hockey'] },
+      { rank: 4, name: 'Tennis', value: '1 milliard de fans', alternatives: ['tennis de court'] },
+      { rank: 5, name: 'Volleyball', value: '900 millions de fans', alternatives: ['volley', 'volley ball'] },
+      { rank: 6, name: 'Tennis de table', value: '875 millions de fans', alternatives: ['ping pong', 'ping-pong'] },
+      { rank: 7, name: 'Basketball', value: '825 millions de fans', alternatives: ['basket', 'basket ball'] },
+      { rank: 8, name: 'Baseball', value: '500 millions de fans', alternatives: ['base ball'] },
+      { rank: 9, name: 'Rugby', value: '475 millions de fans', alternatives: ['rugby union'] },
+      { rank: 10, name: 'Golf', value: '450 millions de fans' }
     ]
   },
   {
@@ -350,7 +400,6 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
       )
     );
     
-    const altMatchRatio = matchedAltWords.length / importantAltWords.length;
     if (altMatchRatio >= 0.8) return true;
   }
   
