@@ -444,7 +444,6 @@ function levenshteinDistance(str1: string, str2: string): number {
   
   return matrix[str2.length][str1.length];
 }
-}
 
 // Fonction pour détecter si l'input correspond à une saga
 export const detectSaga = (input: string, categories: Top10Category[]): SagaChoice | null => {
