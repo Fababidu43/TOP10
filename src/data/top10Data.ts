@@ -22,8 +22,8 @@ export interface SagaChoice {
 export const top10Categories: Top10Category[] = [
   {
     id: 'films-nominations-oscars',
-    name: 'Films les Plus Nommés aux Oscars',
-    description: 'Les 10 films avec le plus de nominations aux Oscars dans l\'histoire',
+    name: 'Films les Plus Nommés aux Oscars (Histoire)',
+    description: 'Les 10 films avec le plus de nominations aux Oscars de tous les temps (1929-2024)',
     items: [
       { 
         rank: 1,
@@ -69,8 +69,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'films-cultes-francais',
-    name: 'Films Français Cultes',
-    description: 'Les 10 films français les plus emblématiques et populaires',
+    name: 'Films Français Cultes (Box-Office)',
+    description: 'Les 10 films français les plus populaires au box-office français (1945-2024)',
     items: [
       { rank: 1, name: 'Intouchables', value: '2011 - Nakache & Toledano', alternatives: ['intouchable', 'omar sy', 'francois cluzet'] },
       { rank: 2, name: 'Amélie Poulain', value: '2001 - Jean-Pierre Jeunet', alternatives: ['amelie', 'fabuleux destin amelie poulain', 'audrey tautou'] },
@@ -86,8 +86,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'series-netflix',
-    name: 'Séries Netflix les Plus Regardées',
-    description: 'Les 10 séries les plus populaires sur Netflix (2024)',
+    name: 'Séries Netflix les Plus Regardées (2024)',
+    description: 'Les 10 séries avec le plus d\'heures de visionnage sur Netflix en 2024',
     items: [
       { rank: 1, name: 'Squid Game', value: '1,65 milliard d\'heures', alternatives: ['squid games', 'jeu du calmar'] },
       { rank: 2, name: 'Wednesday', value: '1,37 milliard d\'heures', alternatives: ['mercredi', 'wednesday addams', 'jenna ortega'] },
@@ -103,8 +103,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'pays-population',
-    name: 'Pays les Plus Peuplés',
-    description: 'Les 10 pays avec le plus d\'habitants dans le monde (2024)',
+    name: 'Pays les Plus Peuplés (2024)',
+    description: 'Les 10 pays avec le plus d\'habitants dans le monde selon les données 2024',
     items: [
       { rank: 1, name: 'Inde', value: '1,43 milliard', alternatives: ['india', 'hindustan'] },
       { rank: 2, name: 'Chine', value: '1,42 milliard', alternatives: ['china', 'république populaire de chine', 'rpc'] },
@@ -120,8 +120,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'jeux-video-vendus',
-    name: 'Jeux Vidéo les Plus Vendus',
-    description: 'Les 10 jeux vidéo avec le plus de ventes mondiales (2024)',
+    name: 'Jeux Vidéo les Plus Vendus (Tous Temps)',
+    description: 'Les 10 jeux vidéo avec le plus de ventes mondiales de tous les temps (données 2024)',
     items: [
       { rank: 1, name: 'Minecraft', value: '300M copies', alternatives: ['mine craft', 'minecraft mojang'] },
       { rank: 2, name: 'Grand Theft Auto V', value: '195M copies', alternatives: ['gta 5', 'gta v', 'grand theft auto 5'] },
@@ -137,8 +137,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'langues-parlees',
-    name: 'Langues les Plus Parlées',
-    description: 'Les 10 langues avec le plus de locuteurs natifs (2024)',
+    name: 'Langues les Plus Parlées (Locuteurs Natifs)',
+    description: 'Les 10 langues avec le plus de locuteurs natifs dans le monde (données 2024)',
     items: [
       { rank: 1, name: 'Chinois Mandarin', value: '918 millions', alternatives: ['mandarin', 'chinois', 'chinese'] },
       { rank: 2, name: 'Espagnol', value: '500 millions', alternatives: ['spanish', 'castillan', 'castellano'] },
@@ -154,8 +154,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'marques-valorisees',
-    name: 'Marques les Plus Valorisées',
-    description: 'Les 10 marques avec la plus grande valeur mondiale (2024)',
+    name: 'Marques les Plus Valorisées (2024)',
+    description: 'Les 10 marques avec la plus grande valeur boursière mondiale selon Forbes 2024',
     items: [
       { rank: 1, name: 'Apple', value: '516 milliards $', alternatives: ['apple inc', 'iphone'] },
       { rank: 2, name: 'Microsoft', value: '340 milliards $', alternatives: ['microsoft corporation', 'windows'] },
@@ -171,8 +171,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'sports-populaires',
-    name: 'Sports les Plus Populaires',
-    description: 'Les 10 sports avec le plus de fans dans le monde',
+    name: 'Sports les Plus Populaires (Fans Mondiaux)',
+    description: 'Les 10 sports avec le plus de fans et pratiquants dans le monde (estimation 2024)',
     items: [
       { rank: 1, name: 'Football', value: '4 milliards de fans', alternatives: ['soccer', 'foot', 'football association'] },
       { rank: 2, name: 'Cricket', value: '2,5 milliards de fans', alternatives: ['cricket anglais'] },
@@ -188,8 +188,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'youtubers-francais',
-    name: 'YouTubeurs Français les Plus Suivis',
-    description: 'Les 10 créateurs français avec le plus d\'abonnés (2024)',
+    name: 'YouTubeurs Français les Plus Suivis (2024)',
+    description: 'Les 10 créateurs de contenu français avec le plus d\'abonnés YouTube en 2024',
     items: [
       { rank: 1, name: 'Squeezie', value: '18,5M abonnés', alternatives: ['lucas hauchard', 'squeezie gaming'] },
       { rank: 2, name: 'Cyprien', value: '14,2M abonnés', alternatives: ['cyprien iov', 'monsieur dream'] },
@@ -205,8 +205,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'artistes-spotify',
-    name: 'Artistes les Plus Streamés sur Spotify',
-    description: 'Les 10 artistes avec le plus d\'écoutes mensuelles (2024)',
+    name: 'Artistes les Plus Streamés Spotify (2024)',
+    description: 'Les 10 artistes avec le plus d\'écoutes mensuelles sur Spotify en 2024',
     items: [
       { rank: 1, name: 'The Weeknd', value: '107M écoutes/mois', alternatives: ['weeknd', 'abel tesfaye'] },
       { rank: 2, name: 'Taylor Swift', value: '95M écoutes/mois', alternatives: ['taylor', 'swift'] },
@@ -222,8 +222,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'jeux-mobiles',
-    name: 'Jeux Mobiles les Plus Téléchargés',
-    description: 'Les 10 jeux mobiles avec le plus de téléchargements (2024)',
+    name: 'Jeux Mobiles les Plus Téléchargés (Tous Temps)',
+    description: 'Les 10 jeux mobiles avec le plus de téléchargements de tous les temps (données 2024)',
     items: [
       { rank: 1, name: 'Subway Surfers', value: '4 milliards', alternatives: ['subway surfer'] },
       { rank: 2, name: 'PUBG Mobile', value: '1,3 milliard', alternatives: ['pubg mobile', 'battlegrounds mobile'] },
@@ -239,8 +239,8 @@ export const top10Categories: Top10Category[] = [
   },
   {
     id: 'rappeurs-francais',
-    name: 'Rappeurs Français les Plus Populaires',
-    description: 'Les 10 rappeurs français les plus écoutés (2024)',
+    name: 'Rappeurs Français les Plus Populaires (2024)',
+    description: 'Les 10 rappeurs français les plus écoutés sur les plateformes de streaming en 2024',
     items: [
       { rank: 1, name: 'Jul', value: 'Marseille, 30+ albums', alternatives: ['jul marseille', 'jul rap'] },
       { rank: 2, name: 'PNL', value: 'Duo, Ademo & N.O.S', alternatives: ['pnl rap', 'ademo nos'] },
@@ -277,7 +277,7 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
   const normalize = (str: string) => 
     str.toLowerCase()
        .trim()
-       .replace(/[^\w\s]/g, '')
+       .replace(/[^\w\s]/g, ' ')
        .replace(/\s+/g, ' ');
   
   const normalizedInput = normalize(input);
@@ -291,39 +291,46 @@ export const fuzzyMatch = (input: string, target: string, alternatives: string[]
     if (normalizedInput === normalize(alt)) return true;
   }
   
-  // Correspondance partielle (contient le mot principal)
+  // Correspondance partielle stricte - doit contenir les mots principaux
   const inputWords = normalizedInput.split(' ');
   const targetWords = normalizedTarget.split(' ');
   
-  // Si l'input contient tous les mots importants du target
+  // Vérifier que l'input contient au moins 70% des mots importants du target
   const importantWords = targetWords.filter(word => word.length > 2);
+  if (importantWords.length === 0) return false;
+  
   const matchedWords = importantWords.filter(word => 
-    inputWords.some(inputWord => 
-      inputWord.includes(word) || word.includes(inputWord) || 
-      levenshteinDistance(inputWord, word) <= 1
-    )
+    inputWords.some(inputWord => {
+      // Correspondance exacte ou très proche
+      if (inputWord === word) return true;
+      if (word.length > 4 && inputWord.length > 4) {
+        return levenshteinDistance(inputWord, word) <= 1;
+      }
+      return false;
+    })
   );
   
-  if (matchedWords.length >= Math.min(2, importantWords.length)) return true;
+  const matchRatio = matchedWords.length / importantWords.length;
+  if (matchRatio >= 0.7) return true;
   
   // Vérifier les alternatives avec correspondance partielle
   for (const alt of alternatives) {
     const normalizedAlt = normalize(alt);
+    if (normalizedInput === normalizedAlt) return true;
+    
     const altWords = normalizedAlt.split(' ');
     const importantAltWords = altWords.filter(word => word.length > 2);
+    if (importantAltWords.length === 0) continue;
+    
     const matchedAltWords = importantAltWords.filter(word => 
       inputWords.some(inputWord => 
-        inputWord.includes(word) || word.includes(inputWord) ||
-        levenshteinDistance(inputWord, word) <= 1
+        inputWord === word || 
+        (word.length > 4 && inputWord.length > 4 && levenshteinDistance(inputWord, word) <= 1)
       )
     );
     
-    if (matchedAltWords.length >= Math.min(1, importantAltWords.length)) return true;
-  }
-  
-  // Distance de Levenshtein pour les mots courts
-  if (normalizedInput.length <= 6 && normalizedTarget.length <= 6) {
-    return levenshteinDistance(normalizedInput, normalizedTarget) <= 2;
+    const altMatchRatio = matchedAltWords.length / importantAltWords.length;
+    if (altMatchRatio >= 0.7) return true;
   }
   
   return false;
