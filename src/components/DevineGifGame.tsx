@@ -14,13 +14,14 @@ interface GameState {
   isTimerRunning: boolean;
   isPaused: boolean;
   scores: { [playerName: string]: { correct: number; wrong: number; timeout: number } };
-  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result' | 'game-over' | 'continue-choice';
+  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result' | 'game-over';
   roundsPlayed: number;
   maxRounds: number;
   showVideo: boolean;
   usedGifIds: string[];
   shuffledGifs: GifItem[];
   totalGamesPlayed: number;
+  isFirstGame: boolean;
 }
 
 const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
@@ -39,7 +40,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     showVideo: false,
     usedGifIds: [],
     shuffledGifs: [],
-    totalGamesPlayed: 0
+    totalGamesPlayed: 0,
+    isFirstGame: true
   });
   const [lastResult, setLastResult] = useState<'correct' | 'wrong' | 'timeout' | null>(null);
 
@@ -95,10 +97,14 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       maxRounds: Math.min(shuffled.length, validPlayers.length * 3),
       showVideo: false,
       usedGifIds: [],
-      shuffledGifs: shuffled
+      shuffledGifs: shuffled,
+      isFirstGame: true
     }));
 
-    startNewRound();
+    // Démarrer la première manche après un petit délai
+    setTimeout(() => {
+      startNewRound();
+    }, 500);
   };
 
   const startNewRound = () => {
@@ -221,8 +227,9 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
   const endGame = () => {
     setGame(prev => ({ 
       ...prev, 
-      gamePhase: 'continue-choice',
-      totalGamesPlayed: prev.totalGamesPlayed + 1
+      gamePhase: 'game-over',
+      totalGamesPlayed: prev.totalGamesPlayed + 1,
+      isFirstGame: false
     }));
   };
 
@@ -230,28 +237,18 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     // Vérifier s'il reste assez de GIFs pour une nouvelle partie
     const remainingGifs = game.shuffledGifs.filter(gif => !game.usedGifIds.includes(gif.id));
     
+    let newShuffledGifs = game.shuffledGifs;
+    let newUsedGifIds = game.usedGifIds;
+    let newMaxRounds = game.players.length * 3;
+
     if (remainingGifs.length < 3) {
       // Pas assez de GIFs, réinitialiser complètement
-      const newShuffled = [...frenchGifs].sort(() => Math.random() - 0.5);
-      setGame(prev => ({
-        ...prev,
-        usedGifIds: [],
-        shuffledGifs: newShuffled,
-        roundsPlayed: 0,
-        maxRounds: Math.min(newShuffled.length, prev.players.length * 2), // Partie plus courte
-        currentPlayerIndex: 0,
-        gamePhase: 'playing'
-      }));
+      newShuffledGifs = [...frenchGifs].sort(() => Math.random() - 0.5);
+      newUsedGifIds = [];
+      newMaxRounds = Math.min(newShuffledGifs.length, game.players.length * 3);
     } else {
       // Assez de GIFs pour continuer
-      const newMaxRounds = Math.min(remainingGifs.length, game.players.length * 3);
-      setGame(prev => ({
-        ...prev,
-        roundsPlayed: 0,
-        maxRounds: newMaxRounds,
-        currentPlayerIndex: 0,
-        gamePhase: 'playing'
-      }));
+      newMaxRounds = Math.min(remainingGifs.length, game.players.length * 3);
     }
     
     // Réinitialiser les scores
@@ -262,16 +259,20 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     
     setGame(prev => ({
       ...prev,
-      scores: resetScores
+      usedGifIds: newUsedGifIds,
+      shuffledGifs: newShuffledGifs,
+      roundsPlayed: 0,
+      maxRounds: newMaxRounds,
+      currentPlayerIndex: 0,
+      gamePhase: 'playing',
+      scores: resetScores,
+      totalGamesPlayed: prev.totalGamesPlayed + 1,
+      isFirstGame: false
     }));
     
     setTimeout(() => {
       startNewRound();
     }, 1000);
-  };
-
-  const stopGame = () => {
-    setGame(prev => ({ ...prev, gamePhase: 'game-over' }));
   };
 
   const resetGame = () => {
@@ -289,7 +290,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       showVideo: false,
       usedGifIds: [],
       shuffledGifs: [],
-      totalGamesPlayed: 0
+      totalGamesPlayed: 0,
+      isFirstGame: true
     });
     setPlayers(['']);
     setLastResult(null);
@@ -389,64 +391,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     );
   }
 
-  if (game.gamePhase === 'continue-choice') {
-    return (
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl shadow-lg p-8 border border-green-300">
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-4">🎉</div>
-            <h2 className="text-2xl font-bold text-green-800 mb-2">
-              Partie terminée !
-            </h2>
-            <p className="text-green-700">
-              Parties jouées : {game.totalGamesPlayed}
-            </p>
-          </div>
-
-          {/* Scores finaux */}
-          <div className="bg-white/50 rounded-lg p-4 mb-6">
-            <h3 className="font-semibold text-green-800 mb-3">🏆 Scores finaux</h3>
-            <div className="space-y-2">
-              {getTopPlayers().map((player, index) => (
-                <div key={player.name} className="flex items-center justify-between p-2 rounded bg-green-50">
-                  <div className="flex items-center gap-2">
-                    {index === 0 && <span className="text-yellow-500">👑</span>}
-                    <span className="font-medium">{player.name}</span>
-                  </div>
-                  <div className="text-sm">
-                    {player.total} pts ({player.correct}✅ {player.wrong}❌ {player.timeout}⏰)
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center mb-6">
-            <p className="text-green-700 mb-4">
-              Que voulez-vous faire ?
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={continueGame}
-              className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-medium text-lg shadow-lg flex items-center justify-center gap-2"
-            >
-              <RefreshCw size={20} />
-              Continuer (nouvelle partie)
-            </button>
-            <button
-              onClick={stopGame}
-              className="bg-gradient-to-r from-red-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-red-600 hover:to-pink-600 transition-all font-medium text-lg shadow-lg"
-            >
-              Arrêter et voir les résultats
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (game.gamePhase === 'game-over') {
     return (
       <div className="max-w-2xl mx-auto">
@@ -454,11 +398,13 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">🏆</div>
             <h2 className="text-2xl font-bold text-purple-800 mb-2">
-              Jeu terminé !
+              Partie terminée !
             </h2>
-            <p className="text-purple-700">
-              Total de parties jouées : {game.totalGamesPlayed}
-            </p>
+            {!game.isFirstGame && (
+              <p className="text-purple-700">
+                Total de parties jouées : {game.totalGamesPlayed}
+              </p>
+            )}
           </div>
 
           {/* Scores finaux */}
@@ -490,7 +436,25 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
             </div>
           </div>
 
+          {/* Choix de continuation seulement si ce n'est pas la première partie */}
+          {!game.isFirstGame && (
+            <div className="text-center mb-6">
+              <p className="text-purple-700 mb-4">
+                Que voulez-vous faire ?
+              </p>
+            </div>
+          )}
+
           <div className="flex flex-col gap-3">
+            {!game.isFirstGame && (
+              <button
+                onClick={continueGame}
+                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-medium text-lg shadow-lg flex items-center justify-center gap-2"
+              >
+                <RefreshCw size={20} />
+                Continuer (nouvelle partie)
+              </button>
+            )}
             <button
               onClick={resetGame}
               className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all font-medium text-lg shadow-lg"
@@ -639,9 +603,11 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                   ></div>
                 </div>
               </div>
-              <div className="text-sm text-gray-600">
-                Parties jouées : {game.totalGamesPlayed}
-              </div>
+              {!game.isFirstGame && (
+                <div className="text-sm text-gray-600">
+                  Parties jouées : {game.totalGamesPlayed}
+                </div>
+              )}
             </div>
 
             <div className="bg-gradient-to-br from-white to-yellow-50 rounded-xl shadow-lg p-6 border border-yellow-200">
