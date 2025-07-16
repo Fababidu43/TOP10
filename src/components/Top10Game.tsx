@@ -11,7 +11,8 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const [currentSaga, setCurrentSaga] = useState<Top10Category | null>(null);
   const [foundItems, setFoundItems] = useState<string[]>([]);
   const [currentGuess, setCurrentGuess] = useState('');
-  const [hints, setHints] = useState<string[]>([]);
+  const [availableHints, setAvailableHints] = useState<{ [key: string]: string }>({});
+  const [usedHints, setUsedHints] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState<{type: 'correct' | 'incorrect', message: string} | null>(null);
   const [totalDrinksGiven, setTotalDrinksGiven] = useState(0);
   const [totalDrinksTaken, setTotalDrinksTaken] = useState(0);
@@ -21,10 +22,20 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
     if (category) {
       setCurrentSaga(category);
       setFoundItems([]);
-      setHints([]);
+      setUsedHints([]);
       setCurrentGuess('');
       setTotalDrinksGiven(0);
       setTotalDrinksTaken(0);
+      
+      // Préparer les indices (un par réponse)
+      const hints: { [key: string]: string } = {};
+      category.items.forEach(item => {
+        if (item.hint) {
+          hints[item.name] = item.hint;
+        }
+      });
+      setAvailableHints(hints);
+      
       setGameState('playing');
     }
   };
@@ -75,14 +86,26 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   const getHint = () => {
     if (!currentSaga) return;
 
-    const unfoundItems = currentSaga.items.filter(item => !foundItems.includes(item.name));
-    if (unfoundItems.length === 0) return;
-
-    const randomItem = unfoundItems[Math.floor(Math.random() * unfoundItems.length)];
-    const firstLetter = randomItem.name.charAt(0).toUpperCase();
-    const newHint = `Une réponse commence par "${firstLetter}"`;
+    // Trouver les réponses non trouvées qui ont des indices disponibles
+    const unfoundItemsWithHints = currentSaga.items.filter(item => 
+      !foundItems.includes(item.name) && 
+      availableHints[item.name] && 
+      !usedHints.includes(item.name)
+    );
     
-    setHints(prev => [...prev, newHint]);
+    if (unfoundItemsWithHints.length === 0) return;
+
+    const randomItem = unfoundItemsWithHints[Math.floor(Math.random() * unfoundItemsWithHints.length)];
+    const hint = availableHints[randomItem.name];
+    
+    setUsedHints(prev => [...prev, randomItem.name]);
+    
+    setShowPopup({
+      type: 'correct',
+      message: `💡 INDICE : ${hint}`
+    });
+    
+    setTimeout(() => setShowPopup(null), 3000);
   };
 
   const abandonGame = () => {
@@ -99,14 +122,28 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
 
   const getCategoryIcon = (categoryId: string) => {
     switch (categoryId) {
-      case 'films-oscars': return '🏆';
+      case 'films-nominations-oscars': return '🏆';
+      case 'films-cultes-francais': return '🎬';
+      case 'series-netflix': return '📺';
       case 'pays-population': return '🌍';
-      case 'sports-populaires': return '⚽';
+      case 'jeux-video-vendus': return '🎮';
       case 'langues-parlees': return '🗣️';
+      case 'marques-valorisees': return '💰';
+      case 'sports-populaires': return '⚽';
+      case 'youtubers-francais': return '📹';
+      case 'artistes-spotify': return '🎵';
+      case 'jeux-mobiles': return '📱';
+      case 'rappeurs-francais': return '🎤';
+      case 'monuments-visites': return '🏛️';
       case 'animaux-dangereux': return '🦁';
-      case 'villes-france': return '🏙️';
+      case 'villes-france-population': return '🏙️';
       case 'marques-voitures': return '🚗';
-      case 'reseaux-sociaux': return '📱';
+      case 'reseaux-sociaux-utilisateurs': return '📱';
+      case 'plats-francais-populaires': return '🍽️';
+      case 'super-heros-populaires': return '🦸';
+      case 'festivals-musique-france': return '🎪';
+      case 'desserts-francais': return '🍰';
+      case 'inventions-francaises': return '💡';
       default: return '🎯';
     }
   };
@@ -114,7 +151,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   if (gameState === 'selecting') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-indigo-900 p-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="flex items-center mb-8">
             <button
               onClick={onBack}
@@ -245,6 +282,10 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
   }
 
   if (gameState === 'playing') {
+    const remainingHints = Object.keys(availableHints).filter(itemName => 
+      !foundItems.includes(itemName) && !usedHints.includes(itemName)
+    ).length;
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-indigo-900 p-4">
         {/* Pop-up */}
@@ -308,7 +349,7 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 <div className="text-red-200 text-sm">Bues</div>
               </div>
               <div className="bg-yellow-500/20 rounded-xl p-4 text-center border border-yellow-400/30">
-                <div className="text-2xl font-bold text-yellow-300">{hints.length}</div>
+                <div className="text-2xl font-bold text-yellow-300">{remainingHints}</div>
                 <div className="text-yellow-200 text-sm">Indices</div>
               </div>
             </div>
@@ -364,7 +405,8 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                   </button>
                   <button
                     onClick={getHint}
-                    className="px-6 py-4 bg-gradient-to-r from-yellow-600 to-orange-600 text-white font-bold rounded-xl hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 hover:scale-105 shadow-lg"
+                    disabled={remainingHints === 0}
+                    className="px-6 py-4 bg-gradient-to-r from-yellow-600 to-orange-600 text-white font-bold rounded-xl hover:from-yellow-700 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 shadow-lg"
                   >
                     <Lightbulb className="w-5 h-5" />
                   </button>
@@ -377,23 +419,6 @@ const Top10Game: React.FC<Top10GameProps> = ({ onBack }) => {
                 </div>
               </div>
             </div>
-
-            {/* Zone des indices */}
-            {hints.length > 0 && (
-              <div className="bg-yellow-500/10 border border-yellow-400/30 rounded-xl p-4">
-                <h3 className="text-lg font-bold text-yellow-300 mb-3 flex items-center gap-2">
-                  <Lightbulb className="w-5 h-5" />
-                  Indices reçus :
-                </h3>
-                <div className="space-y-2">
-                  {hints.map((hint, index) => (
-                    <div key={index} className="text-yellow-200 bg-yellow-500/10 rounded-lg p-2 text-sm">
-                      💡 {hint}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

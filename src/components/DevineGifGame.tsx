@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Trophy, Target, Play, Video } from 'lucide-react';
+import { ArrowLeft, Users, RotateCcw, Timer, CheckCircle, XCircle, Trophy, Target, Play, Video, RefreshCw } from 'lucide-react';
 import { frenchGifs, GifItem, getCategoryIcon, getCategoryName, getCategoryColor } from '../data/devineGifData';
 
 interface DevineGifGameProps {
@@ -14,12 +14,13 @@ interface GameState {
   isTimerRunning: boolean;
   isPaused: boolean;
   scores: { [playerName: string]: { correct: number; wrong: number; timeout: number } };
-  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result' | 'video-playing';
+  gamePhase: 'setup' | 'playing' | 'waiting-answer' | 'round-result' | 'game-over' | 'continue-choice';
   roundsPlayed: number;
   maxRounds: number;
   showVideo: boolean;
   usedGifIds: string[];
   shuffledGifs: GifItem[];
+  totalGamesPlayed: number;
 }
 
 const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
@@ -37,7 +38,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     maxRounds: 10,
     showVideo: false,
     usedGifIds: [],
-    shuffledGifs: []
+    shuffledGifs: [],
+    totalGamesPlayed: 0
   });
   const [lastResult, setLastResult] = useState<'correct' | 'wrong' | 'timeout' | null>(null);
 
@@ -79,7 +81,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       initialScores[player] = { correct: 0, wrong: 0, timeout: 0 };
     });
 
-    setGame({
+    setGame(prev => ({
+      ...prev,
       players: validPlayers,
       currentPlayerIndex: 0,
       currentGif: null,
@@ -93,7 +96,7 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       showVideo: false,
       usedGifIds: [],
       shuffledGifs: shuffled
-    });
+    }));
 
     startNewRound();
   };
@@ -216,7 +219,59 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
   };
 
   const endGame = () => {
-    setGame(prev => ({ ...prev, gamePhase: 'setup' }));
+    setGame(prev => ({ 
+      ...prev, 
+      gamePhase: 'continue-choice',
+      totalGamesPlayed: prev.totalGamesPlayed + 1
+    }));
+  };
+
+  const continueGame = () => {
+    // Vérifier s'il reste assez de GIFs pour une nouvelle partie
+    const remainingGifs = game.shuffledGifs.filter(gif => !game.usedGifIds.includes(gif.id));
+    
+    if (remainingGifs.length < 3) {
+      // Pas assez de GIFs, réinitialiser complètement
+      const newShuffled = [...frenchGifs].sort(() => Math.random() - 0.5);
+      setGame(prev => ({
+        ...prev,
+        usedGifIds: [],
+        shuffledGifs: newShuffled,
+        roundsPlayed: 0,
+        maxRounds: Math.min(newShuffled.length, prev.players.length * 2), // Partie plus courte
+        currentPlayerIndex: 0,
+        gamePhase: 'playing'
+      }));
+    } else {
+      // Assez de GIFs pour continuer
+      const newMaxRounds = Math.min(remainingGifs.length, game.players.length * 3);
+      setGame(prev => ({
+        ...prev,
+        roundsPlayed: 0,
+        maxRounds: newMaxRounds,
+        currentPlayerIndex: 0,
+        gamePhase: 'playing'
+      }));
+    }
+    
+    // Réinitialiser les scores
+    const resetScores: { [key: string]: { correct: number; wrong: number; timeout: number } } = {};
+    game.players.forEach(player => {
+      resetScores[player] = { correct: 0, wrong: 0, timeout: 0 };
+    });
+    
+    setGame(prev => ({
+      ...prev,
+      scores: resetScores
+    }));
+    
+    setTimeout(() => {
+      startNewRound();
+    }, 1000);
+  };
+
+  const stopGame = () => {
+    setGame(prev => ({ ...prev, gamePhase: 'game-over' }));
   };
 
   const resetGame = () => {
@@ -233,7 +288,8 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
       maxRounds: 10,
       showVideo: false,
       usedGifIds: [],
-      shuffledGifs: []
+      shuffledGifs: [],
+      totalGamesPlayed: 0
     });
     setPlayers(['']);
     setLastResult(null);
@@ -252,7 +308,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
   };
 
   if (game.gamePhase === 'setup') {
-
     return (
       <div className="max-w-2xl mx-auto">
         <button
@@ -273,7 +328,6 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
               Devinez le contenu de GIFs issus de la culture française !
             </p>
           </div>
-
 
           <div className="mb-6">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-purple-700">
@@ -335,33 +389,120 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
     );
   }
 
-  if (game.gamePhase === 'video-playing' && game.currentGif) {
+  if (game.gamePhase === 'continue-choice') {
     return (
       <div className="max-w-2xl mx-auto">
         <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl shadow-lg p-8 border border-green-300">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">🎉</div>
             <h2 className="text-2xl font-bold text-green-800 mb-2">
-              Bonne réponse !
+              Partie terminée !
             </h2>
+            <p className="text-green-700">
+              Parties jouées : {game.totalGamesPlayed}
+            </p>
+          </div>
+
+          {/* Scores finaux */}
+          <div className="bg-white/50 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold text-green-800 mb-3">🏆 Scores finaux</h3>
+            <div className="space-y-2">
+              {getTopPlayers().map((player, index) => (
+                <div key={player.name} className="flex items-center justify-between p-2 rounded bg-green-50">
+                  <div className="flex items-center gap-2">
+                    {index === 0 && <span className="text-yellow-500">👑</span>}
+                    <span className="font-medium">{player.name}</span>
+                  </div>
+                  <div className="text-sm">
+                    {player.total} pts ({player.correct}✅ {player.wrong}❌ {player.timeout}⏰)
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="text-center mb-6">
-            <a 
-              href={`https://www.youtube.com/watch?v=${game.currentGif.videoUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-xl hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg font-bold text-lg"
-            >
-              <div className="bg-white/20 p-2 rounded-full">
-                <Play size={24} className="text-white" />
-              </div>
-              🎬 Regarder la vidéo complète
-            </a>
+            <p className="text-green-700 mb-4">
+              Que voulez-vous faire ?
+            </p>
           </div>
 
-          <div className="text-center text-green-600">
-            <p>Passage au joueur suivant dans quelques secondes...</p>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={continueGame}
+              className="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-6 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-medium text-lg shadow-lg flex items-center justify-center gap-2"
+            >
+              <RefreshCw size={20} />
+              Continuer (nouvelle partie)
+            </button>
+            <button
+              onClick={stopGame}
+              className="bg-gradient-to-r from-red-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-red-600 hover:to-pink-600 transition-all font-medium text-lg shadow-lg"
+            >
+              Arrêter et voir les résultats
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (game.gamePhase === 'game-over') {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl shadow-lg p-8 border border-purple-300">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">🏆</div>
+            <h2 className="text-2xl font-bold text-purple-800 mb-2">
+              Jeu terminé !
+            </h2>
+            <p className="text-purple-700">
+              Total de parties jouées : {game.totalGamesPlayed}
+            </p>
+          </div>
+
+          {/* Scores finaux */}
+          <div className="bg-white/50 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold text-purple-800 mb-3">🏆 Classement final</h3>
+            <div className="space-y-2">
+              {getTopPlayers().map((player, index) => (
+                <div key={player.name} className={`flex items-center justify-between p-3 rounded ${
+                  index === 0 ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-2 border-yellow-400' : 'bg-purple-50'
+                }`}>
+                  <div className="flex items-center gap-2">
+                    {index === 0 && <span className="text-2xl">👑</span>}
+                    {index === 1 && <span className="text-xl">🥈</span>}
+                    {index === 2 && <span className="text-xl">🥉</span>}
+                    <span className={`font-medium ${index === 0 ? 'text-yellow-800' : 'text-purple-800'}`}>
+                      {player.name}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <div className={`font-bold ${index === 0 ? 'text-yellow-800' : 'text-purple-600'}`}>
+                      {player.total} points
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      {player.correct}✅ {player.wrong}❌ {player.timeout}⏰
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={resetGame}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all font-medium text-lg shadow-lg"
+            >
+              🎮 Nouvelle partie complète
+            </button>
+            <button
+              onClick={onBack}
+              className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-4 px-6 rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all font-medium text-lg shadow-lg"
+            >
+              🏠 Retour au menu
+            </button>
           </div>
         </div>
       </div>
@@ -497,6 +638,9 @@ const DevineGifGame: React.FC<DevineGifGameProps> = ({ onBack }) => {
                     style={{ width: `${((game.roundsPlayed + 1) / game.maxRounds) * 100}%` }}
                   ></div>
                 </div>
+              </div>
+              <div className="text-sm text-gray-600">
+                Parties jouées : {game.totalGamesPlayed}
               </div>
             </div>
 
